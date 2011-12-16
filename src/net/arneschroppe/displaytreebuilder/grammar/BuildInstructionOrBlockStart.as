@@ -1,5 +1,5 @@
 package net.arneschroppe.displaytreebuilder.grammar {
-	public interface BuildInstructionOrStop {
+	public interface BuildInstructionOrBlockStart {
 
 		function add(type:Class):BuildInstructionOrNameOrBlockStart;
 
@@ -7,6 +7,7 @@ package net.arneschroppe.displaytreebuilder.grammar {
 
 		function get end():BuildInstructionOrStop;
 
-		function finish():void;
+		function get begin():BuildInstruction;
+
 	}
 }

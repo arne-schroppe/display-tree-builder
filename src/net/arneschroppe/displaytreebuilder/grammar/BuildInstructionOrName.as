@@ -6,6 +6,6 @@ package net.arneschroppe.displaytreebuilder.grammar {
 
 		function get end():BuildInstructionOrStop;
 
-		function withName(name:String):BuildInstruction;
+		function withName(name:String):BuildInstructionOrBlockStart;
 	}
 }
