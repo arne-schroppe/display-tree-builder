@@ -233,7 +233,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 				.addInstance(instance2).withName("3").begin
 					.add(TestSprite).withName("4")
 				.end
-			.end.finish();
+			.end;
 
 
 			assertThat(_contextView.numChildren, equalTo(2));
@@ -251,6 +251,34 @@ package net.arneschroppe.displaytreebuilder.builder {
 			assertThat(secondChild.name, equalTo("3"));
 			assertThat(secondChild.getChildAt(0), isA(TestSprite));
 			assertThat(secondChild.getChildAt(0).name, equalTo("4"));
+
+		}
+
+
+
+		[Test]
+		public function should_initialize_from_data_array():void {
+
+			var dataArray:Array = [
+				{"field": "1"},
+				{"field": "2"},
+				{"field": "3"}
+			];
+
+			_displayTreeBuilder.startWith(_contextView).begin
+				.usElementsIn(dataArray).toAddObjectsOfType(Sprite)
+					.setProperty("name").fromDataField("field")
+			.end;
+
+			assertThat(_contextView.numChildren, equalTo(3));
+
+			assertThat(_contextView.getChildAt(0), isA(TestSprite));
+			assertThat(_contextView.getChildAt(1), isA(TestSprite));
+			assertThat(_contextView.getChildAt(2), isA(TestSprite));
+
+			assertThat(_contextView.getChildAt(0).name, equalTo("1"));
+			assertThat(_contextView.getChildAt(1).name, equalTo("2"));
+			assertThat(_contextView.getChildAt(2).name, equalTo("3"));
 
 		}
 	}

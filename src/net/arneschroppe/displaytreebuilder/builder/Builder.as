@@ -7,10 +7,14 @@ package net.arneschroppe.displaytreebuilder.builder {
 	import net.arneschroppe.displaytreebuilder.grammar.BuildInstruction;
 	import net.arneschroppe.displaytreebuilder.grammar.BuildInstructionOrBlockStart;
 	import net.arneschroppe.displaytreebuilder.grammar.BuildInstructionOrNameOrBlockStart;
+	import net.arneschroppe.displaytreebuilder.grammar.BuildInstructionOrNameOrBlockStartOrFromField;
+	import net.arneschroppe.displaytreebuilder.grammar.BuildInstructionOrNameOrBlockStartOrSetProperty;
 	import net.arneschroppe.displaytreebuilder.grammar.BuildInstructionOrStop;
 	import net.arneschroppe.displaytreebuilder.grammar.BuilderLang;
+	import net.arneschroppe.displaytreebuilder.grammar.From;
+	import net.arneschroppe.displaytreebuilder.grammar.AddObjects;
 
-	public class Builder implements BuildInstructionOrBlockStart, BuilderLang, Add,  BlockStart, BuildInstruction, BuildInstructionOrStop, BuildInstructionOrNameOrBlockStart {
+	public class Builder implements BuildInstructionOrNameOrBlockStartOrFromField, BuildInstructionOrNameOrBlockStartOrSetProperty, AddObjects, BuildInstructionOrBlockStart, BuilderLang, Add,  BlockStart, BuildInstruction, BuildInstructionOrStop, BuildInstructionOrNameOrBlockStart {
 
 		private var _currentContainersStack:Array = [[]];
 		private var _currentObjectsStack:Array = [];
@@ -126,5 +130,21 @@ package net.arneschroppe.displaytreebuilder.builder {
 		}
 
 
+		public function usElementsIn(array:Object):AddObjects {
+			return this;
+		}
+
+
+		public function toAddObjectsOfType(type:Class):BuildInstructionOrNameOrBlockStartOrSetProperty {
+			return this;
+		}
+
+		public function setProperty(propertyName:String):BuildInstructionOrNameOrBlockStartOrFromField {
+			return this;
+		}
+
+		public function fromDataField(propertyName:String):BuildInstructionOrNameOrBlockStartOrSetProperty {
+			return this;
+		}
 	}
 }
