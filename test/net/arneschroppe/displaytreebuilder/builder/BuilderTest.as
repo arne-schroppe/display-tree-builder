@@ -2,12 +2,18 @@ package net.arneschroppe.displaytreebuilder.builder {
 	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
 
+	import mx.core.Container;
+
+	import net.arneschroppe.displaytreebuilder.DisplayTreeBuilder;
+
 	import net.wooga.utils.flexunit.FlexUnitUtils;
 
 	import org.hamcrest.assertThat;
 	import org.hamcrest.core.isA;
 	import org.hamcrest.object.equalTo;
 	import org.mockito.integrations.times;
+
+	import spark.skins.spark.mediaClasses.fullScreen.FullScreenButtonSkin;
 
 	public class BuilderTest {
 
