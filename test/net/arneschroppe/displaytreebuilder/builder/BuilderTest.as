@@ -1,19 +1,13 @@
 package net.arneschroppe.displaytreebuilder.builder {
+	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
-
-	import mx.core.Container;
-
-	import net.arneschroppe.displaytreebuilder.DisplayTreeBuilder;
 
 	import net.wooga.utils.flexunit.FlexUnitUtils;
 
 	import org.hamcrest.assertThat;
 	import org.hamcrest.core.isA;
 	import org.hamcrest.object.equalTo;
-	import org.mockito.integrations.times;
-
-	import spark.skins.spark.mediaClasses.fullScreen.FullScreenButtonSkin;
 
 	public class BuilderTest {
 
@@ -209,11 +203,60 @@ package net.arneschroppe.displaytreebuilder.builder {
 			assertThat(secondSecondChild.getChildAt(1), isA(TestSprite3));
 
 		}
+
+
+		[Test]
+		public function should_add_instances():void {
+			var instance1:DisplayObject = new TestSprite();
+			var instance2:DisplayObject = new TestSprite2();
+
+			_displayTreeBuilder.startWith(_contextView).begin
+				.addInstance(instance1)
+				.addInstance(instance2)
+			.end;
+
+			assertThat(_contextView.numChildren, equalTo(2));
+			assertThat(_contextView.getChildAt(0), equalTo(instance1));
+			assertThat(_contextView.getChildAt(1), equalTo(instance2));
+		}
+
+
+		[Test]
+		public function should_add_instances_with_sub_structures():void {
+			var instance1:DisplayObject = new TestSprite();
+			var instance2:DisplayObject = new TestSprite2();
+
+			_displayTreeBuilder.startWith(_contextView).begin
+				.addInstance(instance1).withName("1").begin
+					.add(TestSprite).withName("2")
+				.end
+				.addInstance(instance2).withName("3").begin
+					.add(TestSprite).withName("4")
+				.end
+			.end.finish();
+
+
+			assertThat(_contextView.numChildren, equalTo(2));
+
+			var firstChild:DisplayObjectContainer = _contextView.getChildAt(0) as DisplayObjectContainer;
+			assertThat(firstChild, equalTo(instance1));
+			assertThat(firstChild.numChildren, equalTo(1));
+			assertThat(firstChild.name, equalTo("1"));
+			assertThat(firstChild.getChildAt(0), isA(TestSprite));
+			assertThat(firstChild.getChildAt(0).name, equalTo("2"));
+
+			var secondChild:DisplayObjectContainer = _contextView.getChildAt(1) as DisplayObjectContainer;
+			assertThat(secondChild, equalTo(instance2));
+			assertThat(secondChild.numChildren, equalTo(1));
+			assertThat(secondChild.name, equalTo("3"));
+			assertThat(secondChild.getChildAt(0), isA(TestSprite));
+			assertThat(secondChild.getChildAt(0).name, equalTo("4"));
+
+		}
 	}
 }
 
 import flash.display.Sprite;
-
 
 class TestSprite extends Sprite {
 

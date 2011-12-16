@@ -33,15 +33,23 @@ package net.arneschroppe.displaytreebuilder.builder {
 		}
 
 		public function add(Type:Class):BuildInstructionOrNameOrBlockStart {
-			_currentObjectsStack.pop();
-			_currentObjectsStack.push([]);
-			loopOnContainers(addInternal, [Type]);
+			clearCurrentObjects();
+			loopOnContainers(addClassInternal, [Type]);
 			return this;
 		}
 
+		private function clearCurrentObjects():void {
+			_currentObjectsStack.pop();
+			_currentObjectsStack.push([]);
+		}
 
-		private function addInternal(container:DisplayObjectContainer, Type:Class):void {
+
+		private function addClassInternal(container:DisplayObjectContainer, Type:Class):void {
 			var instance:DisplayObject = new Type();
+			addInstanceInternal(container, instance);
+		}
+
+		private function addInstanceInternal(container:DisplayObjectContainer, instance:DisplayObject):void {
 			container.addChild(instance);
 			currentObjects.push(instance);
 		}
@@ -68,6 +76,11 @@ package net.arneschroppe.displaytreebuilder.builder {
 			return this;
 		}
 
+		public function addInstance(object:DisplayObject):BuildInstructionOrNameOrBlockStart {
+			clearCurrentObjects();
+			loopOnContainers(addInstanceInternal, [object]);
+			return this;
+		}
 
 		public function finish():void {
 		}
@@ -111,6 +124,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 				method.apply(this, actualArguments);
 			}
 		}
+
 
 	}
 }
