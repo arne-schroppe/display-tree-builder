@@ -82,9 +82,6 @@ package net.arneschroppe.displaytreebuilder.builder {
 			return this;
 		}
 
-		public function finish():void {
-		}
-
 
 		public function withName(name:String):BuildInstructionOrBlockStart {
 			applyToAllObjects(setName, name);
