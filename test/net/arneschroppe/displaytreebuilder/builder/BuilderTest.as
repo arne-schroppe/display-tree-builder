@@ -40,7 +40,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 
 			_displayTreeBuilder.startWith(_contextView).begin
 				.add(TestSprite)
-			.end.finish();
+			.end;
 
 			assertThat(_contextView.numChildren, equalTo(1));
 			assertThat(_contextView.getChildAt(0), isA(TestSprite));
@@ -51,7 +51,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 		public function should_add_a_name_to_an_object():void {
 			_displayTreeBuilder.startWith(_contextView).begin
 				.add(TestSprite).withName("testname")
-			.end.finish();
+			.end;
 
 			assertThat(_contextView.getChildAt(0).name, equalTo("testname"));
 		}
@@ -62,7 +62,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 				.add(Sprite).begin
 					.add(TestSprite)
 				.end
-			.end.finish();
+			.end;
 
 
 			assertThat(_contextView.numChildren, equalTo(1));
@@ -78,7 +78,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 				.add(Sprite)
 				.add(Sprite)
 				.add(Sprite)
-			.end.finish();
+			.end;
 
 			assertThat(_contextView.numChildren, equalTo(3));
 		}
@@ -94,7 +94,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 				.add(Sprite).withName("3").begin
 					.add(TestSprite).withName("4")
 				.end
-			.end.finish();
+			.end;
 
 
 			assertThat(_contextView.numChildren, equalTo(2));
@@ -119,7 +119,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 		public function should_add_multiple_objects_with_loop():void {
 			_displayTreeBuilder.startWith(_contextView).begin
 				.times(12).add(Sprite)
-			.end.finish();
+			.end;
 
 			assertThat(_contextView.numChildren, equalTo(12));
 		}

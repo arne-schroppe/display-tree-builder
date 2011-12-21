@@ -14,8 +14,6 @@ package net.arneschroppe.displaytreebuilder.builder {
 	import net.arneschroppe.displaytreebuilder.grammar.BuilderLang;
 	import net.arneschroppe.displaytreebuilder.grammar.FromField;
 
-	import org.as3commons.collections.framework.IIterable;
-
 	public class Builder implements FromField, BuildInstructionOrNameOrBlockStartOrFromField, BuildInstructionOrNameOrBlockStartOrSetProperty, AddObjects, BuildInstructionOrBlockStart, BuilderLang, Add,  BlockStart, BuildInstruction, BuildInstructionOrStop, BuildInstructionOrNameOrBlockStart {
 
 		private var _currentContainersStack:Array = [[]];
@@ -98,8 +96,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 		}
 
 
-		public function finish():void {
-		}
+
 
 
 		public function withName(name:String):BuildInstructionOrBlockStart {

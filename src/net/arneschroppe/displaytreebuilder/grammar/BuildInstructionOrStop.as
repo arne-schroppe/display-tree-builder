@@ -11,6 +11,5 @@ package net.arneschroppe.displaytreebuilder.grammar {
 
 		function get end():BuildInstructionOrStop;
 
-		function finish():void;
 	}
 }
