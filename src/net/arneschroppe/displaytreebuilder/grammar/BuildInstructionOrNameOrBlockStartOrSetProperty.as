@@ -13,6 +13,6 @@ package net.arneschroppe.displaytreebuilder.grammar {
 
 		function get begin():BuildInstruction;
 
-		function setProperty(propertyName:String):BuildInstructionOrNameOrBlockStartOrFromField;
+		function setProperty(propertyName:String):FromField;
 	}
 }
