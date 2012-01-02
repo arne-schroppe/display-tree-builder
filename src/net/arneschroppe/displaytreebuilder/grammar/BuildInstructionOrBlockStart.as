@@ -1,7 +1,7 @@
 package net.arneschroppe.displaytreebuilder.grammar {
 	public interface BuildInstructionOrBlockStart {
 
-		function add(type:Class):BuildInstructionOrNameOrBlockStart;
+		function add(type:Class):BuildInstructionOrNameOrStoreInstanceOrBlockStart;
 
 		function times(count:int):Add;
 

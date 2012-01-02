@@ -10,11 +10,12 @@ package net.arneschroppe.displaytreebuilder.builder {
 	import net.arneschroppe.displaytreebuilder.grammar.BuildInstructionOrNameOrBlockStart;
 	import net.arneschroppe.displaytreebuilder.grammar.BuildInstructionOrNameOrBlockStartOrFromField;
 	import net.arneschroppe.displaytreebuilder.grammar.BuildInstructionOrNameOrBlockStartOrSetProperty;
+	import net.arneschroppe.displaytreebuilder.grammar.BuildInstructionOrNameOrStoreInstanceOrBlockStart;
 	import net.arneschroppe.displaytreebuilder.grammar.BuildInstructionOrStop;
 	import net.arneschroppe.displaytreebuilder.grammar.BuilderLang;
 	import net.arneschroppe.displaytreebuilder.grammar.FromField;
 
-	public class Builder implements FromField, BuildInstructionOrNameOrBlockStartOrFromField, BuildInstructionOrNameOrBlockStartOrSetProperty, AddObjects, BuildInstructionOrBlockStart, BuilderLang, Add,  BlockStart, BuildInstruction, BuildInstructionOrStop, BuildInstructionOrNameOrBlockStart {
+	public class Builder implements FromField, BuildInstructionOrNameOrStoreInstanceOrBlockStart, BuildInstructionOrNameOrBlockStartOrFromField, BuildInstructionOrNameOrBlockStartOrSetProperty, AddObjects, BuildInstructionOrBlockStart, BuilderLang, Add,  BlockStart, BuildInstruction, BuildInstructionOrStop, BuildInstructionOrNameOrBlockStart {
 
 		private var _currentContainersStack:Array = [[]];
 		private var _currentObjectsStack:Array = [];
@@ -42,7 +43,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 		}
 
 
-		public function add(Type:Class):BuildInstructionOrNameOrBlockStart {
+		public function add(Type:Class):BuildInstructionOrNameOrStoreInstanceOrBlockStart {
 			clearCurrentObjects();
 			loopOnContainers(addClassInternal, [Type]);
 			return this;
@@ -173,10 +174,19 @@ package net.arneschroppe.displaytreebuilder.builder {
 			return this;
 		}
 
+		public function andStoreInstanceIn(instances:Array):BuildInstructionOrNameOrBlockStart {
+			for each(var instance:* in currentObjects) {
+				instances.push(instance);
+			}
+
+			return this;
+		}
 
 		private function setObjectProperty(object:Object, index:int, propertyName:String, dataFieldName:String):void {
 			var data:Object = _collection[index];
 			object[propertyName] = data[dataFieldName];
 		}
+
+
 	}
 }
