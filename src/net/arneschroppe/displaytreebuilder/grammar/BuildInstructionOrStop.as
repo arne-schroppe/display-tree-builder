@@ -5,7 +5,7 @@ package net.arneschroppe.displaytreebuilder.grammar {
 
 		function add(type:Class):BuildInstructionOrNameOrStoreInstanceOrBlockStart;
 
-		function addInstance(object:DisplayObject):BuildInstructionOrNameOrBlockStart
+		function addInstance(object:DisplayObject):BuildInstructionOrNameOrBlockStart;
 
 		function times(count:int):Add;
 

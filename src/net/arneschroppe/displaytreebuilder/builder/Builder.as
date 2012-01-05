@@ -15,6 +15,9 @@ package net.arneschroppe.displaytreebuilder.builder {
 	import net.arneschroppe.displaytreebuilder.grammar.BuilderLang;
 	import net.arneschroppe.displaytreebuilder.grammar.FromField;
 
+	import org.as3commons.collections.framework.IIterable;
+	import org.as3commons.collections.framework.IIterator;
+
 	public class Builder implements FromField, BuildInstructionOrNameOrStoreInstanceOrBlockStart, BuildInstructionOrNameOrBlockStartOrFromField, BuildInstructionOrNameOrBlockStartOrSetProperty, AddObjects, BuildInstructionOrBlockStart, BuilderLang, Add,  BlockStart, BuildInstruction, BuildInstructionOrStop, BuildInstructionOrNameOrBlockStart {
 
 		private var _currentContainersStack:Array = [[]];
@@ -148,8 +151,30 @@ package net.arneschroppe.displaytreebuilder.builder {
 
 
 		public function useElementsIn(collection:*):AddObjects {
-			_collection = collection;
+			if(collection is IIterable) {
+				storeCollectionInArray(collection);
+			}
+			else if(collection is IIterator) {
+				storeIteratorInArray(collection);
+			}
+			else {
+				_collection = collection;
+			}
+
 			return this;
+		}
+
+		private function storeCollectionInArray(collection:IIterable):void {
+			var iterator:IIterator = collection.iterator();
+			storeIteratorInArray(iterator);
+		}
+
+		private function storeIteratorInArray(iterator:IIterator):void {
+			var storage:Array = [];
+			while(iterator.hasNext()) {
+				storage.push(iterator.next());
+			}
+			_collection = storage;
 		}
 
 

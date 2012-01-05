@@ -285,31 +285,59 @@ package net.arneschroppe.displaytreebuilder.builder {
 
 
 
-//		[Test]
-//		public function should_initialize_from_collection():void {
-//
-//			var data:ArrayList = new ArrayList();
-//			data.add({"field":"1"});
-//			data.add({"field":"2"});
-//			data.add({"field":"3"});
-//
-//
-//			_displayTreeBuilder.startWith(_contextView).begin
-//				.usElementsIn(data).toAddObjectsOfType(TestSprite)
-//					.setProperty("name").fromDataField("field")
-//			.end;
-//
-//			assertThat(_contextView.numChildren, equalTo(3));
-//
-//			assertThat(_contextView.getChildAt(0), isA(TestSprite));
-//			assertThat(_contextView.getChildAt(1), isA(TestSprite));
-//			assertThat(_contextView.getChildAt(2), isA(TestSprite));
-//
-//			assertThat(_contextView.getChildAt(0).name, equalTo("1"));
-//			assertThat(_contextView.getChildAt(1).name, equalTo("2"));
-//			assertThat(_contextView.getChildAt(2).name, equalTo("3"));
-//
-//		}
+		[Test]
+		public function should_initialize_from_collection():void {
+
+			var data:ArrayList = new ArrayList();
+			data.add({"field":"1"});
+			data.add({"field":"2"});
+			data.add({"field":"3"});
+
+
+			_displayTreeBuilder.startWith(_contextView).begin
+				.useElementsIn(data).toAddObjectsOfType(TestSprite1)
+					.setProperty("name").fromDataField("field")
+			.end;
+
+			assertThat(_contextView.numChildren, equalTo(3));
+
+			assertThat(_contextView.getChildAt(0), isA(TestSprite1));
+			assertThat(_contextView.getChildAt(1), isA(TestSprite1));
+			assertThat(_contextView.getChildAt(2), isA(TestSprite1));
+
+			assertThat(_contextView.getChildAt(0).name, equalTo("1"));
+			assertThat(_contextView.getChildAt(1).name, equalTo("2"));
+			assertThat(_contextView.getChildAt(2).name, equalTo("3"));
+
+		}
+
+
+
+		[Test]
+		public function should_initialize_from_iterator():void {
+
+			var data:ArrayList = new ArrayList();
+			data.add({"field":"1"});
+			data.add({"field":"2"});
+			data.add({"field":"3"});
+
+
+			_displayTreeBuilder.startWith(_contextView).begin
+					.useElementsIn(data.iterator()).toAddObjectsOfType(TestSprite1)
+					.setProperty("name").fromDataField("field")
+					.end;
+
+			assertThat(_contextView.numChildren, equalTo(3));
+
+			assertThat(_contextView.getChildAt(0), isA(TestSprite1));
+			assertThat(_contextView.getChildAt(1), isA(TestSprite1));
+			assertThat(_contextView.getChildAt(2), isA(TestSprite1));
+
+			assertThat(_contextView.getChildAt(0).name, equalTo("1"));
+			assertThat(_contextView.getChildAt(1).name, equalTo("2"));
+			assertThat(_contextView.getChildAt(2).name, equalTo("3"));
+
+		}
 
 		//TODO (arneschroppe 21/12/11) also make it possible to set ctor arguments
 		/*
