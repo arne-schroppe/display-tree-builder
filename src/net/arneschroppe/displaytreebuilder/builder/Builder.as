@@ -149,7 +149,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 		}
 
 
-		public function usElementsIn(collection:*):AddObjects {
+		public function useElementsIn(collection:*):AddObjects {
 			_collection = collection;
 			return this;
 		}

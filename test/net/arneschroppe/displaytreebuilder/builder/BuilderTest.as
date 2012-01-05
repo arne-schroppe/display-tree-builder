@@ -266,7 +266,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 			];
 
 			_displayTreeBuilder.startWith(_contextView).begin
-				.usElementsIn(dataArray).toAddObjectsOfType(TestSprite1)
+				.useElementsIn(dataArray).toAddObjectsOfType(TestSprite1)
 					.setProperty("name").fromDataField("field")
 			.end;
 
