@@ -3,40 +3,55 @@ package net.arneschroppe.displaytreebuilder.builder {
 	import flash.display.DisplayObjectContainer;
 
 	import net.arneschroppe.displaytreebuilder.grammar.Add;
+	import net.arneschroppe.displaytreebuilder.grammar.AddObjects;
 	import net.arneschroppe.displaytreebuilder.grammar.BlockStart;
 	import net.arneschroppe.displaytreebuilder.grammar.BuildInstruction;
 	import net.arneschroppe.displaytreebuilder.grammar.BuildInstructionOrBlockStart;
 	import net.arneschroppe.displaytreebuilder.grammar.BuildInstructionOrNameOrBlockStart;
+	import net.arneschroppe.displaytreebuilder.grammar.BuildInstructionOrNameOrBlockStartOrFromField;
+	import net.arneschroppe.displaytreebuilder.grammar.BuildInstructionOrNameOrBlockStartOrSetProperty;
+	import net.arneschroppe.displaytreebuilder.grammar.BuildInstructionOrNameOrStoreInstanceOrBlockStart;
 	import net.arneschroppe.displaytreebuilder.grammar.BuildInstructionOrStop;
 	import net.arneschroppe.displaytreebuilder.grammar.BuilderLang;
+	import net.arneschroppe.displaytreebuilder.grammar.FromField;
 
-	public class Builder implements BuildInstructionOrBlockStart, BuilderLang, Add,  BlockStart, BuildInstruction, BuildInstructionOrStop, BuildInstructionOrNameOrBlockStart {
+	import org.as3commons.collections.framework.IIterable;
+	import org.as3commons.collections.framework.IIterator;
+
+	public class Builder implements FromField, BuildInstructionOrNameOrStoreInstanceOrBlockStart, BuildInstructionOrNameOrBlockStartOrFromField, BuildInstructionOrNameOrBlockStartOrSetProperty, AddObjects, BuildInstructionOrBlockStart, BuilderLang, Add,  BlockStart, BuildInstruction, BuildInstructionOrStop, BuildInstructionOrNameOrBlockStart {
 
 		private var _currentContainersStack:Array = [[]];
 		private var _currentObjectsStack:Array = [];
 
-		private var _nextCount:int;
+		private var _count:int;
+		private var _collection:*;
+		
+		private var _currentProperty:String;
 
 
 		public function startWith(object:DisplayObject):BlockStart {
 			_currentObjectsStack = [[object]];
-			_nextCount = 1;
+			_count = 1;
 			return this;
 		}
+
 
 		private function get currentContainers():Array {
 			return _currentContainersStack[_currentContainersStack.length - 1];
 		}
 
+
 		private function get currentObjects():Array {
 			return _currentObjectsStack[_currentObjectsStack.length - 1];
 		}
 
-		public function add(Type:Class):BuildInstructionOrNameOrBlockStart {
+
+		public function add(Type:Class):BuildInstructionOrNameOrStoreInstanceOrBlockStart {
 			clearCurrentObjects();
 			loopOnContainers(addClassInternal, [Type]);
 			return this;
 		}
+
 
 		private function clearCurrentObjects():void {
 			_currentObjectsStack.pop();
@@ -44,12 +59,13 @@ package net.arneschroppe.displaytreebuilder.builder {
 		}
 
 
-		private function addClassInternal(container:DisplayObjectContainer, Type:Class):void {
+		private function addClassInternal(container:DisplayObjectContainer, index:int, Type:Class):void {
 			var instance:DisplayObject = new Type();
-			addInstanceInternal(container, instance);
+			addInstanceInternal(container, index, instance);
 		}
 
-		private function addInstanceInternal(container:DisplayObjectContainer, instance:DisplayObject):void {
+
+		private function addInstanceInternal(container:DisplayObjectContainer, index:int, instance:DisplayObject):void {
 			container.addChild(instance);
 			currentObjects.push(instance);
 		}
@@ -63,7 +79,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 
 
 		public function times(count:int):Add {
-			_nextCount = count;
+			_count = count;
 			return this;
 		}
 
@@ -76,11 +92,13 @@ package net.arneschroppe.displaytreebuilder.builder {
 			return this;
 		}
 
+
 		public function addInstance(object:DisplayObject):BuildInstructionOrNameOrBlockStart {
 			clearCurrentObjects();
 			loopOnContainers(addInstanceInternal, [object]);
 			return this;
 		}
+
 
 
 		public function withName(name:String):BuildInstructionOrBlockStart {
@@ -89,7 +107,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 		}
 
 
-		private function setName(object:DisplayObject, name:String):void {
+		private function setName(object:DisplayObject, index:int, name:String):void {
 			object.name = name;
 		}
 
@@ -98,30 +116,102 @@ package net.arneschroppe.displaytreebuilder.builder {
 
 			var args:Array = arguments.concat();
 			args.unshift(method);
-			for(var i:int = 0; i < _nextCount; ++i) {
+			for(var i:int = 0; i < _count; ++i) {
 				applyToAllContainers.apply(this, args);
 			}
 
-			_nextCount = 1;
+			_count = 1;
 		}
 
 
 		private function applyToAllObjects(method:Function, ...rest):void {
+			var counter:int = 0;
 			for each (var object:DisplayObject in currentObjects) {
 				var actualArguments:Array = rest.concat();
+				actualArguments.unshift(counter);
 				actualArguments.unshift(object);
 				method.apply(this, actualArguments);
+
+				++counter;
 			}
 		}
+
 
 		private function applyToAllContainers(method:Function, ...rest):void {
+			var counter:int = 0;
 			for each (var container:DisplayObjectContainer in currentContainers) {
 				var actualArguments:Array = rest.concat();
+				actualArguments.unshift(counter);
 				actualArguments.unshift(container);
 				method.apply(this, actualArguments);
+
+				++counter;
 			}
 		}
 
 
+		public function useElementsIn(collection:*):AddObjects {
+			if(collection is IIterable) {
+				storeCollectionInArray(collection);
+			}
+			else if(collection is IIterator) {
+				storeIteratorInArray(collection);
+			}
+			else {
+				_collection = collection;
+			}
+
+			return this;
+		}
+
+		private function storeCollectionInArray(collection:IIterable):void {
+			var iterator:IIterator = collection.iterator();
+			storeIteratorInArray(iterator);
+		}
+
+		private function storeIteratorInArray(iterator:IIterator):void {
+			var storage:Array = [];
+			while(iterator.hasNext()) {
+				storage.push(iterator.next());
+			}
+			_collection = storage;
+		}
+
+
+		public function toAddObjectsOfType(type:Class):BuildInstructionOrNameOrBlockStartOrSetProperty {
+			_count = _collection.length;
+			loopOnContainers(addClassInternal, [type]);
+
+			return this;
+		}
+
+
+		public function setProperty(propertyName:String):FromField {
+			_currentProperty = propertyName;
+			return this;
+		}
+
+
+		public function fromDataField(dataFieldName:String):BuildInstructionOrNameOrBlockStartOrSetProperty {
+			applyToAllObjects(setObjectProperty, _currentProperty, dataFieldName);
+			return this;
+		}
+
+		public function andStoreInstanceIn(instances:Array):BuildInstructionOrNameOrBlockStart {
+			for each(var instance:* in currentObjects) {
+				instances.push(instance);
+			}
+
+			return this;
+		}
+
+		private function setObjectProperty(object:Object, index:int, propertyName:String, dataFieldName:String):void {
+			var data:Object = _collection[index];
+			object[propertyName] = data[dataFieldName];
+		}
+
+
+		public function finish():void {
+		}
 	}
 }

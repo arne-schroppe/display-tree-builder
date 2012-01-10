@@ -1,10 +1,10 @@
 package net.arneschroppe.displaytreebuilder.grammar {
 	import flash.display.DisplayObject;
 
-	public interface BuildInstructionOrNameOrBlockStart {
+	public interface BuildInstructionOrNameOrStoreInstanceOrBlockStart {
 
 		function add(type:Class):BuildInstructionOrNameOrStoreInstanceOrBlockStart;
-		function addInstance(object:DisplayObject):BuildInstructionOrNameOrBlockStart
+		function addInstance(object:DisplayObject):BuildInstructionOrNameOrBlockStart;
 
 		function times(count:int):Add;
 
@@ -12,6 +12,7 @@ package net.arneschroppe.displaytreebuilder.grammar {
 		function finish():void;
 
 		function withName(name:String):BuildInstructionOrBlockStart;
+		function andStoreInstanceIn(instances:Array):BuildInstructionOrNameOrBlockStart;
 
 		function get begin():BuildInstruction;
 
