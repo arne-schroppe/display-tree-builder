@@ -40,7 +40,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 
 			_displayTreeBuilder.startWith(_contextView).begin
 				.add(TestSprite1)
-			.end;
+			.end.finish();
 
 			assertThat(_contextView.numChildren, equalTo(1));
 			assertThat(_contextView.getChildAt(0), isA(TestSprite1));
@@ -51,7 +51,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 		public function should_add_a_name_to_an_object():void {
 			_displayTreeBuilder.startWith(_contextView).begin
 				.add(TestSprite1).withName("testname")
-			.end;
+			.end.finish();
 
 			assertThat(_contextView.getChildAt(0).name, equalTo("testname"));
 		}
@@ -62,7 +62,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 				.add(Sprite).begin
 					.add(TestSprite1)
 				.end
-			.end;
+			.end.finish();
 
 
 			assertThat(_contextView.numChildren, equalTo(1));
@@ -78,7 +78,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 				.add(Sprite)
 				.add(Sprite)
 				.add(Sprite)
-			.end;
+			.end.finish();
 
 			assertThat(_contextView.numChildren, equalTo(3));
 		}
@@ -94,7 +94,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 				.add(Sprite).withName("3").begin
 					.add(TestSprite1).withName("4")
 				.end
-			.end;
+			.end.finish();
 
 
 			assertThat(_contextView.numChildren, equalTo(2));
@@ -119,7 +119,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 		public function should_add_multiple_objects_with_loop():void {
 			_displayTreeBuilder.startWith(_contextView).begin
 				.times(12).add(Sprite)
-			.end;
+			.end.finish();
 
 			assertThat(_contextView.numChildren, equalTo(12));
 		}
@@ -132,7 +132,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 				.times(3).add(Sprite).begin
 					.add(TestSprite1)
 				.end
-			.end;
+			.end.finish();
 
 
 			assertThat(_contextView.numChildren, equalTo(3));
@@ -163,7 +163,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 						.add(TestSprite3)
 					.end
 				.end
-			.end;
+			.end.finish();
 
 
 			assertThat(_contextView.numChildren, equalTo(2));
@@ -215,7 +215,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 			_displayTreeBuilder.startWith(_contextView).begin
 				.addInstance(instance1)
 				.addInstance(instance2)
-			.end;
+			.end.finish();
 
 			assertThat(_contextView.numChildren, equalTo(2));
 			assertThat(_contextView.getChildAt(0), equalTo(instance1));
@@ -235,7 +235,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 				.addInstance(instance2).withName("3").begin
 					.add(TestSprite1).withName("4")
 				.end
-			.end;
+			.end.finish();
 
 
 			assertThat(_contextView.numChildren, equalTo(2));
@@ -268,7 +268,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 			_displayTreeBuilder.startWith(_contextView).begin
 				.useElementsIn(dataArray).toAddObjectsOfType(TestSprite1)
 					.setProperty("name").fromDataField("field")
-			.end;
+			.end.finish();
 
 			assertThat(_contextView.numChildren, equalTo(3));
 
@@ -297,7 +297,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 			_displayTreeBuilder.startWith(_contextView).begin
 				.useElementsIn(data).toAddObjectsOfType(TestSprite1)
 					.setProperty("name").fromDataField("field")
-			.end;
+			.end.finish();
 
 			assertThat(_contextView.numChildren, equalTo(3));
 
@@ -325,7 +325,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 			_displayTreeBuilder.startWith(_contextView).begin
 					.useElementsIn(data.iterator()).toAddObjectsOfType(TestSprite1)
 					.setProperty("name").fromDataField("field")
-					.end;
+				.end.finish();
 
 			assertThat(_contextView.numChildren, equalTo(3));
 
@@ -344,7 +344,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 		 _displayTreeBuilder.startWith(_contextView).begin
 		 	.usElementsIn(dataArray).toAddObjectsOfType(Sprite)
 		 		.setConstructorArgument(1).fromDataField("field")
-		 .end;
+		 .end.finish();
 
 		* */
 
@@ -358,7 +358,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 				.add(TestSprite1).andStoreInstanceIn(instances)
 				.add(TestSprite2).andStoreInstanceIn(instances)
 				.add(TestSprite3).andStoreInstanceIn(instances)
-			.end;
+			.end.finish();
 
 
 			assertThat(instances.length, equalTo(3));

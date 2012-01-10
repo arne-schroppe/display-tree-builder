@@ -211,5 +211,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 		}
 
 
+		public function finish():void {
+		}
 	}
 }

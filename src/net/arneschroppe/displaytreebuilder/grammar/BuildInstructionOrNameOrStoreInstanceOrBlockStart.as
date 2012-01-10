@@ -9,6 +9,7 @@ package net.arneschroppe.displaytreebuilder.grammar {
 		function times(count:int):Add;
 
 		function get end():BuildInstructionOrStop;
+		function finish():void;
 
 		function withName(name:String):BuildInstructionOrBlockStart;
 		function andStoreInstanceIn(instances:Array):BuildInstructionOrNameOrBlockStart;
