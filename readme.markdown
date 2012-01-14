@@ -1,8 +1,7 @@
 
-
 #Display Tree Builder
 
-A simple Domain Specific Language to set up display trees. 
+A simple Domain Specific Language to set up trees of display objects. 
 
 ###Example
 
