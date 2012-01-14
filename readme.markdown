@@ -1,4 +1,3 @@
-
 #Display Tree Builder
 
 A simple Domain Specific Language to set up trees of display objects. 
@@ -7,14 +6,14 @@ A simple Domain Specific Language to set up trees of display objects.
 
     var displayTreeBuilder:DisplayTreeBuilder = new DisplayTreeBuilder();
     displayTreeBuilder.startWith(_contextView).begin
-    	//Adds a Sprite with name "Menu", containing one
+    	//Adds a Sprite with the name "Menu", containing one
     	//instance of each FullScreenButton and EditButton
     	.add(Sprite).withName("Menu").begin
     		.add(FullScreenButton)
     		.add(EditButton)
     	.end
-    	//Adds 3 instance of container, each with
-    	//a single instance of Content
+    	//Adds three instances of Container, each with a single 
+    	//instance of Content as their child element
     	.times(3).add(Container).begin
     		.add(Content)
     	.end
