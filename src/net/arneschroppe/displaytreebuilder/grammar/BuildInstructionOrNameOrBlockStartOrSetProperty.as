@@ -14,6 +14,7 @@ package net.arneschroppe.displaytreebuilder.grammar {
 
 		function get begin():BuildInstruction;
 
-		function setProperty(propertyName:String):FromField;
+		function setObjectProperty(propertyName:String):FromField;
+
 	}
 }

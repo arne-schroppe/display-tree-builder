@@ -9,6 +9,8 @@ package net.arneschroppe.displaytreebuilder.builder {
 
 	import org.hamcrest.assertThat;
 	import org.hamcrest.core.isA;
+	import org.hamcrest.core.not;
+	import org.hamcrest.core.throws;
 	import org.hamcrest.object.equalTo;
 
 	public class BuilderTest {
@@ -266,8 +268,8 @@ package net.arneschroppe.displaytreebuilder.builder {
 			];
 
 			_displayTreeBuilder.startWith(_contextView).begin
-				.useElementsIn(dataArray).toAddObjectsOfType(TestSprite1)
-					.setProperty("name").fromDataField("field")
+				.useItemsIn(dataArray).toAddObjectsOfType(TestSprite1)
+					.setObjectProperty("name").toItemField("field")
 			.end.finish();
 
 			assertThat(_contextView.numChildren, equalTo(3));
@@ -283,6 +285,29 @@ package net.arneschroppe.displaytreebuilder.builder {
 		}
 
 
+		[Test]
+		public function should_use_respective_collection_item_when_initializing_from_collection():void {
+			var dataArray:Array = [
+				"herp",
+				"derp",
+				"wat"
+			];
+
+			_displayTreeBuilder.startWith(_contextView).begin
+					.useItemsIn(dataArray).toAddObjectsOfType(TestSprite1)
+						.setObjectProperty("name").toRespectiveItem
+				.end.finish();
+
+			assertThat(_contextView.numChildren, equalTo(3));
+
+			assertThat(_contextView.getChildAt(0), isA(TestSprite1));
+			assertThat(_contextView.getChildAt(1), isA(TestSprite1));
+			assertThat(_contextView.getChildAt(2), isA(TestSprite1));
+
+			assertThat(_contextView.getChildAt(0).name, equalTo("herp"));
+			assertThat(_contextView.getChildAt(1).name, equalTo("derp"));
+			assertThat(_contextView.getChildAt(2).name, equalTo("wat"));
+		}
 
 
 		[Test]
@@ -295,8 +320,8 @@ package net.arneschroppe.displaytreebuilder.builder {
 
 
 			_displayTreeBuilder.startWith(_contextView).begin
-				.useElementsIn(data).toAddObjectsOfType(TestSprite1)
-					.setProperty("name").fromDataField("field")
+				.useItemsIn(data).toAddObjectsOfType(TestSprite1)
+					.setObjectProperty("name").toItemField("field")
 			.end.finish();
 
 			assertThat(_contextView.numChildren, equalTo(3));
@@ -323,8 +348,8 @@ package net.arneschroppe.displaytreebuilder.builder {
 
 
 			_displayTreeBuilder.startWith(_contextView).begin
-					.useElementsIn(data.iterator()).toAddObjectsOfType(TestSprite1)
-					.setProperty("name").fromDataField("field")
+					.useItemsIn(data.iterator()).toAddObjectsOfType(TestSprite1)
+						.setObjectProperty("name").toItemField("field")
 				.end.finish();
 
 			assertThat(_contextView.numChildren, equalTo(3));
@@ -369,13 +394,58 @@ package net.arneschroppe.displaytreebuilder.builder {
 		}
 
 
-		//TODO we also need the ability to store instances after generating them from data
+		[Test]
+		public function should_throw_exception_for_unfinished_invocations():void {
+
+			_displayTreeBuilder.startWith(_contextView).begin
+				.add(TestSprite1)
+			.end //not finished
+
+
+			assertThat(
+					function ():void {
+						_displayTreeBuilder.startWith(_contextView)
+					}, throws(isA(Error))
+			);
+		}
+
+
+		[Test]
+		public function should_unfinished_invocation_check_should_be_optional():void {
+
+			_displayTreeBuilder.startWith(_contextView).begin
+					.add(TestSprite1)
+					.end //not finished
+
+
+			assertThat(
+					function ():void {
+						_displayTreeBuilder.isCheckingUnfinishedStatements = false;
+						_displayTreeBuilder.startWith(_contextView)
+					}, not(throws(isA(Error)))
+			);
+		}
+
+		[Test]
+		public function should_throw_error_for_unaligned_begin_and_end():void {
+
+			assertThat(function():void {
+				_displayTreeBuilder.startWith(_contextView).begin
+						.add(TestSprite1).begin
+							.add(TestSprite2)
+						//missing 'end'
+					.end.finish()
+			}, throws(isA(Error)))
+
+
+		}
  	}
 }
 
 import flash.display.Sprite;
 
 class TestSprite1 extends Sprite {
+
 
 }
 
