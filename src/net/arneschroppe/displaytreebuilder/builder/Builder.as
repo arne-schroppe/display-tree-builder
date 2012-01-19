@@ -116,6 +116,9 @@ package net.arneschroppe.displaytreebuilder.builder {
 
 		public function addInstance(object:DisplayObject):BuildInstructionOrNameOrBlockStart {
 			clearCurrentObjects();
+			if(currentContainers.length > 1) {
+				throw new Error("Cannot add an instance to several containers");
+			}
 			loopOnContainers(addInstanceInternal, [object]);
 			return this;
 		}

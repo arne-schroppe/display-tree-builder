@@ -12,6 +12,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 	import org.hamcrest.core.not;
 	import org.hamcrest.core.throws;
 	import org.hamcrest.object.equalTo;
+	import org.mockito.integrations.times;
 
 	public class BuilderTest {
 
@@ -439,6 +440,36 @@ package net.arneschroppe.displaytreebuilder.builder {
 
 
 		}
+
+
+		[Test]
+		public function should_throw_an_exception_if_addInstance_is_used_in_subbranch_of_loop():void {
+
+			assertThat(function():void {
+				_displayTreeBuilder.startWith(_contextView).begin
+						.times(2).add(TestSprite1).begin
+							.addInstance(new TestSprite2())
+						.end
+					.end.finish()
+			}, throws(isA(Error)))
+
+		}
+
+
+
+		[Test]
+		public function should_not_throw_an_exception_if_addInstance_is_used_with_single_element_loop():void {
+
+			assertThat(function():void {
+				_displayTreeBuilder.startWith(_contextView).begin
+							.times(1).add(TestSprite1).begin
+								.addInstance(new TestSprite2())
+							.end
+						.end.finish()
+			}, not(throws(isA(Error))))
+
+		}
+
  	}
 }
 
