@@ -27,8 +27,18 @@ package net.arneschroppe.displaytreebuilder.builder {
 		
 		private var _currentProperty:String;
 
+		private var _isUnfinished:Boolean = false;
 
-		public function startWith(object:DisplayObject):BlockStart {
+		private var _openSubTrees:int;
+
+
+		public function startWith(object:DisplayObject, shouldCheckUnfinishedStatements:Boolean=true):BlockStart {
+			if(shouldCheckUnfinishedStatements && _isUnfinished) {
+				throw new Error("Previous expression was unfinished. Add the 'unfinished' keyword")
+			}
+			_openSubTrees = 0;
+			_isUnfinished = true;
+
 			_currentObjectsStack = [[object]];
 			_count = 1;
 			return this;
@@ -71,6 +81,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 
 
 		public function get begin():BuildInstruction {
+			_openSubTrees++;
 			_currentContainersStack.push(currentObjects.concat());
 			_currentObjectsStack.push([]);
 			return this;
@@ -84,7 +95,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 
 
 		public function get end():BuildInstructionOrStop {
-
+			_openSubTrees--;
 			_currentContainersStack.pop();
 			_currentObjectsStack.pop();
 
@@ -223,6 +234,11 @@ package net.arneschroppe.displaytreebuilder.builder {
 		}
 
 		public function finish():void {
+			if(_openSubTrees != 0) {
+				throw new Error("The numbers of begin's and end's are not matching");
+			}
+			
+			_isUnfinished = false;
 		}
 
 	}

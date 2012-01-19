@@ -9,6 +9,8 @@ package net.arneschroppe.displaytreebuilder.builder {
 
 	import org.hamcrest.assertThat;
 	import org.hamcrest.core.isA;
+	import org.hamcrest.core.not;
+	import org.hamcrest.core.throws;
 	import org.hamcrest.object.equalTo;
 
 	public class BuilderTest {
@@ -392,7 +394,50 @@ package net.arneschroppe.displaytreebuilder.builder {
 		}
 
 
-		
+		[Test]
+		public function should_throw_exception_for_unfinished_invocations():void {
+
+			_displayTreeBuilder.startWith(_contextView).begin
+				.add(TestSprite1)
+			.end //not finished
+
+
+			assertThat(
+					function ():void {
+						_displayTreeBuilder.startWith(_contextView)
+					}, throws(isA(Error))
+			);
+		}
+
+
+		[Test]
+		public function should_unfinished_invocation_check_should_be_optional():void {
+
+			_displayTreeBuilder.startWith(_contextView).begin
+					.add(TestSprite1)
+					.end //not finished
+
+
+			assertThat(
+					function ():void {
+						_displayTreeBuilder.startWith(_contextView, false)
+					}, not(throws(isA(Error)))
+			);
+		}
+
+		[Test]
+		public function should_throw_error_for_unaligned_begin_and_end():void {
+
+			assertThat(function():void {
+				_displayTreeBuilder.startWith(_contextView).begin
+						.add(TestSprite1).begin
+							.add(TestSprite2)
+						//missing 'end'
+					.end.finish()
+			}, throws(isA(Error)))
+
+
+		}
  	}
 }
 
