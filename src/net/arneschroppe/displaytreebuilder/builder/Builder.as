@@ -8,7 +8,6 @@ package net.arneschroppe.displaytreebuilder.builder {
 	import net.arneschroppe.displaytreebuilder.grammar.BuildInstruction;
 	import net.arneschroppe.displaytreebuilder.grammar.BuildInstructionOrBlockStart;
 	import net.arneschroppe.displaytreebuilder.grammar.BuildInstructionOrNameOrBlockStart;
-	import net.arneschroppe.displaytreebuilder.grammar.BuildInstructionOrNameOrBlockStartOrFromField;
 	import net.arneschroppe.displaytreebuilder.grammar.BuildInstructionOrNameOrBlockStartOrSetProperty;
 	import net.arneschroppe.displaytreebuilder.grammar.BuildInstructionOrNameOrStoreInstanceOrBlockStart;
 	import net.arneschroppe.displaytreebuilder.grammar.BuildInstructionOrStop;
@@ -18,7 +17,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 	import org.as3commons.collections.framework.IIterable;
 	import org.as3commons.collections.framework.IIterator;
 
-	public class Builder implements FromField, BuildInstructionOrNameOrStoreInstanceOrBlockStart, BuildInstructionOrNameOrBlockStartOrFromField, BuildInstructionOrNameOrBlockStartOrSetProperty, AddObjects, BuildInstructionOrBlockStart, BuilderLang, Add,  BlockStart, BuildInstruction, BuildInstructionOrStop, BuildInstructionOrNameOrBlockStart {
+	public class Builder implements FromField, BuildInstructionOrNameOrStoreInstanceOrBlockStart, BuildInstructionOrNameOrBlockStartOrSetProperty, AddObjects, BuildInstructionOrBlockStart, BuilderLang, Add,  BlockStart, BuildInstruction, BuildInstructionOrStop, BuildInstructionOrNameOrBlockStart {
 
 		private var _currentContainersStack:Array = [[]];
 		private var _currentObjectsStack:Array = [];
@@ -28,8 +27,29 @@ package net.arneschroppe.displaytreebuilder.builder {
 		
 		private var _currentProperty:String;
 
+		private var _isUnfinished:Boolean = false;
+
+		private var _openSubTrees:int;
+
+		private var _isCheckingUnfinishedStatements:Boolean = true;
+
+
+
+		public function set isCheckingUnfinishedStatements(value:Boolean):void {
+			_isCheckingUnfinishedStatements = value;
+		}
+
+		public function get isCheckingUnfinishedStatements():Boolean {
+			return _isCheckingUnfinishedStatements;
+		}
 
 		public function startWith(object:DisplayObject):BlockStart {
+			if(_isCheckingUnfinishedStatements && _isUnfinished) {
+				throw new Error("Previous expression was unfinished. Add the 'unfinished' keyword")
+			}
+			_openSubTrees = 0;
+			_isUnfinished = true;
+
 			_currentObjectsStack = [[object]];
 			_count = 1;
 			return this;
@@ -72,6 +92,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 
 
 		public function get begin():BuildInstruction {
+			_openSubTrees++;
 			_currentContainersStack.push(currentObjects.concat());
 			_currentObjectsStack.push([]);
 			return this;
@@ -85,7 +106,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 
 
 		public function get end():BuildInstructionOrStop {
-
+			_openSubTrees--;
 			_currentContainersStack.pop();
 			_currentObjectsStack.pop();
 
@@ -95,6 +116,9 @@ package net.arneschroppe.displaytreebuilder.builder {
 
 		public function addInstance(object:DisplayObject):BuildInstructionOrNameOrBlockStart {
 			clearCurrentObjects();
+			if(currentContainers.length > 1) {
+				throw new Error("Cannot add an instance to several containers");
+			}
 			loopOnContainers(addInstanceInternal, [object]);
 			return this;
 		}
@@ -150,7 +174,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 		}
 
 
-		public function useElementsIn(collection:*):AddObjects {
+		public function useItemsIn(collection:*):AddObjects {
 			if(collection is IIterable) {
 				storeCollectionInArray(collection);
 			}
@@ -186,16 +210,24 @@ package net.arneschroppe.displaytreebuilder.builder {
 		}
 
 
-		public function setProperty(propertyName:String):FromField {
+		public function setObjectProperty(propertyName:String):FromField {
 			_currentProperty = propertyName;
 			return this;
 		}
 
 
-		public function fromDataField(dataFieldName:String):BuildInstructionOrNameOrBlockStartOrSetProperty {
-			applyToAllObjects(setObjectProperty, _currentProperty, dataFieldName);
+		public function toItemField(dataFieldName:String):BuildInstructionOrNameOrBlockStartOrSetProperty {
+			applyToAllObjects(setFieldOnObject, _currentProperty, dataFieldName);
 			return this;
 		}
+
+
+
+		public function get toRespectiveItem():BuildInstructionOrNameOrBlockStartOrSetProperty {
+			applyToAllObjects(setFieldOnObjectToInstance, _currentProperty);
+			return this;
+		}
+
 
 		public function andStoreInstanceIn(instances:Array):BuildInstructionOrNameOrBlockStart {
 			for each(var instance:* in currentObjects) {
@@ -205,13 +237,23 @@ package net.arneschroppe.displaytreebuilder.builder {
 			return this;
 		}
 
-		private function setObjectProperty(object:Object, index:int, propertyName:String, dataFieldName:String):void {
+		private function setFieldOnObject(object:Object, index:int, propertyName:String, dataFieldName:String):void {
 			var data:Object = _collection[index];
 			object[propertyName] = data[dataFieldName];
 		}
 
+		private function setFieldOnObjectToInstance(object:Object, index:int, propertyName:String):void {
+			var data:Object = _collection[index];
+			object[propertyName] = data;
+		}
 
 		public function finish():void {
+			if(_openSubTrees != 0) {
+				throw new Error("The numbers of begin's and end's are not matching");
+			}
+			
+			_isUnfinished = false;
 		}
+
 	}
 }
