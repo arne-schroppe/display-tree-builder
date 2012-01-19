@@ -437,8 +437,6 @@ package net.arneschroppe.displaytreebuilder.builder {
 						//missing 'end'
 					.end.finish()
 			}, throws(isA(Error)))
-
-
 		}
 
 

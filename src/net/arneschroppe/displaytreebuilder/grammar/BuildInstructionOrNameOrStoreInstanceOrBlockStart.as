@@ -10,9 +10,12 @@ package net.arneschroppe.displaytreebuilder.grammar {
 
 		function get end():BuildInstructionOrStop;
 		function finish():void;
+		function useItemsIn(collection:*):AddObjects
 
 		function withName(name:String):BuildInstructionOrBlockStart;
 		function andStoreInstanceIn(instances:Array):BuildInstructionOrNameOrBlockStart;
+
+
 
 		function get begin():BuildInstruction;
 
