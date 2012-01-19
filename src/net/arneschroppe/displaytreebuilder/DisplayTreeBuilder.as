@@ -14,8 +14,8 @@ package net.arneschroppe.displaytreebuilder {
 		}
 
 
-		public function startWith(object:DisplayObject, shouldCheckUnfinishedStatements:Boolean=true):BlockStart {
-			return _builder.startWith(object, shouldCheckUnfinishedStatements);
+		public function startWith(object:DisplayObject):BlockStart {
+			return _builder.startWith(object);
 		}
 	}
 }

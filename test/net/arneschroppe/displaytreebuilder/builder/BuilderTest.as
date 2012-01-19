@@ -420,7 +420,8 @@ package net.arneschroppe.displaytreebuilder.builder {
 
 			assertThat(
 					function ():void {
-						_displayTreeBuilder.startWith(_contextView, false)
+						_displayTreeBuilder.isCheckingUnfinishedStatements = false;
+						_displayTreeBuilder.startWith(_contextView)
 					}, not(throws(isA(Error)))
 			);
 		}

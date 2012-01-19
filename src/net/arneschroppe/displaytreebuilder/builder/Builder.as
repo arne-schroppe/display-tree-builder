@@ -31,9 +31,20 @@ package net.arneschroppe.displaytreebuilder.builder {
 
 		private var _openSubTrees:int;
 
+		private var _isCheckingUnfinishedStatements:Boolean = true;
 
-		public function startWith(object:DisplayObject, shouldCheckUnfinishedStatements:Boolean=true):BlockStart {
-			if(shouldCheckUnfinishedStatements && _isUnfinished) {
+
+
+		public function set isCheckingUnfinishedStatements(value:Boolean):void {
+			_isCheckingUnfinishedStatements = value;
+		}
+
+		public function get isCheckingUnfinishedStatements():Boolean {
+			return _isCheckingUnfinishedStatements;
+		}
+
+		public function startWith(object:DisplayObject):BlockStart {
+			if(_isCheckingUnfinishedStatements && _isUnfinished) {
 				throw new Error("Previous expression was unfinished. Add the 'unfinished' keyword")
 			}
 			_openSubTrees = 0;
