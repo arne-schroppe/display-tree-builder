@@ -266,8 +266,8 @@ package net.arneschroppe.displaytreebuilder.builder {
 			];
 
 			_displayTreeBuilder.startWith(_contextView).begin
-				.useElementsIn(dataArray).toAddObjectsOfType(TestSprite1)
-					.setProperty("name").fromDataField("field")
+				.useItemsIn(dataArray).toAddObjectsOfType(TestSprite1)
+					.setObjectProperty("name").toItemField("field")
 			.end.finish();
 
 			assertThat(_contextView.numChildren, equalTo(3));
@@ -283,6 +283,29 @@ package net.arneschroppe.displaytreebuilder.builder {
 		}
 
 
+		[Test]
+		public function should_use_respective_collection_item_when_initializing_from_collection():void {
+			var dataArray:Array = [
+				"herp",
+				"derp",
+				"wat"
+			];
+
+			_displayTreeBuilder.startWith(_contextView).begin
+					.useItemsIn(dataArray).toAddObjectsOfType(TestSprite1)
+						.setObjectProperty("name").toRespectiveItem
+				.end.finish();
+
+			assertThat(_contextView.numChildren, equalTo(3));
+
+			assertThat(_contextView.getChildAt(0), isA(TestSprite1));
+			assertThat(_contextView.getChildAt(1), isA(TestSprite1));
+			assertThat(_contextView.getChildAt(2), isA(TestSprite1));
+
+			assertThat(_contextView.getChildAt(0).name, equalTo("herp"));
+			assertThat(_contextView.getChildAt(1).name, equalTo("derp"));
+			assertThat(_contextView.getChildAt(2).name, equalTo("wat"));
+		}
 
 
 		[Test]
@@ -295,8 +318,8 @@ package net.arneschroppe.displaytreebuilder.builder {
 
 
 			_displayTreeBuilder.startWith(_contextView).begin
-				.useElementsIn(data).toAddObjectsOfType(TestSprite1)
-					.setProperty("name").fromDataField("field")
+				.useItemsIn(data).toAddObjectsOfType(TestSprite1)
+					.setObjectProperty("name").toItemField("field")
 			.end.finish();
 
 			assertThat(_contextView.numChildren, equalTo(3));
@@ -323,8 +346,8 @@ package net.arneschroppe.displaytreebuilder.builder {
 
 
 			_displayTreeBuilder.startWith(_contextView).begin
-					.useElementsIn(data.iterator()).toAddObjectsOfType(TestSprite1)
-					.setProperty("name").fromDataField("field")
+					.useItemsIn(data.iterator()).toAddObjectsOfType(TestSprite1)
+						.setObjectProperty("name").toItemField("field")
 				.end.finish();
 
 			assertThat(_contextView.numChildren, equalTo(3));
@@ -369,13 +392,14 @@ package net.arneschroppe.displaytreebuilder.builder {
 		}
 
 
-		//TODO we also need the ability to store instances after generating them from data
+		
  	}
 }
 
 import flash.display.Sprite;
 
 class TestSprite1 extends Sprite {
+
 
 }
 

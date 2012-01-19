@@ -8,7 +8,6 @@ package net.arneschroppe.displaytreebuilder.builder {
 	import net.arneschroppe.displaytreebuilder.grammar.BuildInstruction;
 	import net.arneschroppe.displaytreebuilder.grammar.BuildInstructionOrBlockStart;
 	import net.arneschroppe.displaytreebuilder.grammar.BuildInstructionOrNameOrBlockStart;
-	import net.arneschroppe.displaytreebuilder.grammar.BuildInstructionOrNameOrBlockStartOrFromField;
 	import net.arneschroppe.displaytreebuilder.grammar.BuildInstructionOrNameOrBlockStartOrSetProperty;
 	import net.arneschroppe.displaytreebuilder.grammar.BuildInstructionOrNameOrStoreInstanceOrBlockStart;
 	import net.arneschroppe.displaytreebuilder.grammar.BuildInstructionOrStop;
@@ -18,7 +17,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 	import org.as3commons.collections.framework.IIterable;
 	import org.as3commons.collections.framework.IIterator;
 
-	public class Builder implements FromField, BuildInstructionOrNameOrStoreInstanceOrBlockStart, BuildInstructionOrNameOrBlockStartOrFromField, BuildInstructionOrNameOrBlockStartOrSetProperty, AddObjects, BuildInstructionOrBlockStart, BuilderLang, Add,  BlockStart, BuildInstruction, BuildInstructionOrStop, BuildInstructionOrNameOrBlockStart {
+	public class Builder implements FromField, BuildInstructionOrNameOrStoreInstanceOrBlockStart, BuildInstructionOrNameOrBlockStartOrSetProperty, AddObjects, BuildInstructionOrBlockStart, BuilderLang, Add,  BlockStart, BuildInstruction, BuildInstructionOrStop, BuildInstructionOrNameOrBlockStart {
 
 		private var _currentContainersStack:Array = [[]];
 		private var _currentObjectsStack:Array = [];
@@ -150,7 +149,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 		}
 
 
-		public function useElementsIn(collection:*):AddObjects {
+		public function useItemsIn(collection:*):AddObjects {
 			if(collection is IIterable) {
 				storeCollectionInArray(collection);
 			}
@@ -186,16 +185,24 @@ package net.arneschroppe.displaytreebuilder.builder {
 		}
 
 
-		public function setProperty(propertyName:String):FromField {
+		public function setObjectProperty(propertyName:String):FromField {
 			_currentProperty = propertyName;
 			return this;
 		}
 
 
-		public function fromDataField(dataFieldName:String):BuildInstructionOrNameOrBlockStartOrSetProperty {
-			applyToAllObjects(setObjectProperty, _currentProperty, dataFieldName);
+		public function toItemField(dataFieldName:String):BuildInstructionOrNameOrBlockStartOrSetProperty {
+			applyToAllObjects(setFieldOnObject, _currentProperty, dataFieldName);
 			return this;
 		}
+
+
+
+		public function get toRespectiveItem():BuildInstructionOrNameOrBlockStartOrSetProperty {
+			applyToAllObjects(setFieldOnObjectToInstance, _currentProperty);
+			return this;
+		}
+
 
 		public function andStoreInstanceIn(instances:Array):BuildInstructionOrNameOrBlockStart {
 			for each(var instance:* in currentObjects) {
@@ -205,13 +212,18 @@ package net.arneschroppe.displaytreebuilder.builder {
 			return this;
 		}
 
-		private function setObjectProperty(object:Object, index:int, propertyName:String, dataFieldName:String):void {
+		private function setFieldOnObject(object:Object, index:int, propertyName:String, dataFieldName:String):void {
 			var data:Object = _collection[index];
 			object[propertyName] = data[dataFieldName];
 		}
 
+		private function setFieldOnObjectToInstance(object:Object, index:int, propertyName:String):void {
+			var data:Object = _collection[index];
+			object[propertyName] = data;
+		}
 
 		public function finish():void {
 		}
+
 	}
 }

@@ -1,5 +1,6 @@
 package net.arneschroppe.displaytreebuilder.grammar {
 	public interface FromField {
-		function fromDataField(propertyName:String):BuildInstructionOrNameOrBlockStartOrSetProperty;
+		function toItemField(propertyName:String):BuildInstructionOrNameOrBlockStartOrSetProperty;
+		function get toRespectiveItem():BuildInstructionOrNameOrBlockStartOrSetProperty;
 	}
 }
