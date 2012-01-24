@@ -3,5 +3,6 @@ package net.arneschroppe.displaytreebuilder.grammar {
 
 	public interface BuilderLang {
 		function hasA(object:DisplayObject):BlockStart;
+		function hasAn(object:DisplayObject):BlockStart;
 	}
 }

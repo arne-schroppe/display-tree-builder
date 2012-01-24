@@ -17,7 +17,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 	import org.as3commons.collections.framework.IIterable;
 	import org.as3commons.collections.framework.IIterator;
 
-	public class Builder implements FromField, BuildInstructionOrNameOrStoreInstanceOrBlockStart, BuildInstructionOrNameOrBlockStartOrSetProperty, AddObjects, BuildInstructionOrBlockStart, BuilderLang, Add,  BlockStart, BuildInstruction, BuildInstructionOrStop, BuildInstructionOrNameOrBlockStart {
+	public class TreeBuilder implements FromField, BuildInstructionOrNameOrStoreInstanceOrBlockStart, BuildInstructionOrNameOrBlockStartOrSetProperty, AddObjects, BuildInstructionOrBlockStart, BuilderLang, Add,  BlockStart, BuildInstruction, BuildInstructionOrStop, BuildInstructionOrNameOrBlockStart {
 
 		private var _currentContainersStack:Array = [[]];
 		private var _currentObjectsStack:Array = [];
@@ -53,6 +53,10 @@ package net.arneschroppe.displaytreebuilder.builder {
 			_currentObjectsStack = [[object]];
 			_count = 1;
 			return this;
+		}
+
+		public function hasAn(object:DisplayObject):BlockStart {
+			return hasA(object);
 		}
 
 
@@ -205,7 +209,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 		}
 
 
-		public function whichAddObjectsOfType(type:Class):BuildInstructionOrNameOrBlockStartOrSetProperty {
+		public function whichBecomeObjectsOfType(type:Class):BuildInstructionOrNameOrBlockStartOrSetProperty {
 			_count = _collection.length;
 			loopOnContainers(addClassInternal, [type]);
 

@@ -18,7 +18,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 
 		private var _contextView:Sprite;
 
-		private var _displayTreeBuilder:Builder;
+		private var _displayTreeBuilder:TreeBuilder;
 
 
 		[Before]
@@ -26,7 +26,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 			_contextView = new Sprite();
 			FlexUnitUtils.stage.addChild(_contextView);
 
-			_displayTreeBuilder = new Builder();
+			_displayTreeBuilder = new TreeBuilder();
 		}
 
 
@@ -269,7 +269,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 			];
 
 			_displayTreeBuilder.hasA(_contextView).containing
-				.theItemsIn(dataArray).whichAddObjectsOfType(TestSprite1)
+				.theItemsIn(dataArray).whichBecomeObjectsOfType(TestSprite1)
 					.whereTheObjectProperty("name").isSetToItemField("field")
 			.end.finish();
 
@@ -295,7 +295,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 			];
 
 			_displayTreeBuilder.hasA(_contextView).containing
-					.theItemsIn(dataArray).whichAddObjectsOfType(TestSprite1)
+					.theItemsIn(dataArray).whichBecomeObjectsOfType(TestSprite1)
 						.whereTheObjectProperty("name").isSetToTheRespectiveItem
 				.end.finish();
 
@@ -321,7 +321,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 
 
 			_displayTreeBuilder.hasA(_contextView).containing
-				.theItemsIn(data).whichAddObjectsOfType(TestSprite1)
+				.theItemsIn(data).whichBecomeObjectsOfType(TestSprite1)
 					.whereTheObjectProperty("name").isSetToItemField("field")
 			.end.finish();
 
@@ -349,7 +349,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 
 
 			_displayTreeBuilder.hasA(_contextView).containing
-					.theItemsIn(data.iterator()).whichAddObjectsOfType(TestSprite1)
+					.theItemsIn(data.iterator()).whichBecomeObjectsOfType(TestSprite1)
 						.whereTheObjectProperty("name").isSetToItemField("field")
 				.end.finish();
 
