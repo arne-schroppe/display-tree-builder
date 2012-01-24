@@ -1,7 +1,7 @@
 package net.arneschroppe.displaytreebuilder.grammar {
 	public interface BlockStart {
 
-		function get begin():BuildInstruction;
+		function get containing():BuildInstruction;
 
 	}
 }

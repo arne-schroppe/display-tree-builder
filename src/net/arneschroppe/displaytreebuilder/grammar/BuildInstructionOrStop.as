@@ -3,9 +3,10 @@ package net.arneschroppe.displaytreebuilder.grammar {
 
 	public interface BuildInstructionOrStop {
 
-		function add(type:Class):BuildInstructionOrNameOrStoreInstanceOrBlockStart;
+		function a(type:Class):BuildInstructionOrNameOrStoreInstanceOrBlockStart;
+		function an(type:Class):BuildInstructionOrNameOrStoreInstanceOrBlockStart;
 
-		function addInstance(object:DisplayObject):BuildInstructionOrNameOrBlockStart;
+		function theInstance(object:DisplayObject):BuildInstructionOrNameOrBlockStart;
 
 		function times(count:int):Add;
 

@@ -14,8 +14,8 @@ package net.arneschroppe.displaytreebuilder {
 		}
 
 
-		public function startWith(object:DisplayObject):BlockStart {
-			return _builder.startWith(object);
+		public function hasA(object:DisplayObject):BlockStart {
+			return _builder.hasA(object);
 		}
 	}
 }

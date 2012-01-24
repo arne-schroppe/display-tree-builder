@@ -43,7 +43,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 			return _isCheckingUnfinishedStatements;
 		}
 
-		public function startWith(object:DisplayObject):BlockStart {
+		public function hasA(object:DisplayObject):BlockStart {
 			if(_isCheckingUnfinishedStatements && _isUnfinished) {
 				throw new Error("Previous expression was unfinished. Add the 'unfinished' keyword")
 			}
@@ -66,12 +66,15 @@ package net.arneschroppe.displaytreebuilder.builder {
 		}
 
 
-		public function add(Type:Class):BuildInstructionOrNameOrStoreInstanceOrBlockStart {
+		public function a(Type:Class):BuildInstructionOrNameOrStoreInstanceOrBlockStart {
 			clearCurrentObjects();
 			loopOnContainers(addClassInternal, [Type]);
 			return this;
 		}
 
+		public function an(Type:Class):BuildInstructionOrNameOrStoreInstanceOrBlockStart {
+			return a(Type);
+		}
 
 		private function clearCurrentObjects():void {
 			_currentObjectsStack.pop();
@@ -91,7 +94,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 		}
 
 
-		public function get begin():BuildInstruction {
+		public function get containing():BuildInstruction {
 			_openSubTrees++;
 			_currentContainersStack.push(currentObjects.concat());
 			_currentObjectsStack.push([]);
@@ -114,7 +117,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 		}
 
 
-		public function addInstance(object:DisplayObject):BuildInstructionOrNameOrBlockStart {
+		public function theInstance(object:DisplayObject):BuildInstructionOrNameOrBlockStart {
 			clearCurrentObjects();
 			if(currentContainers.length > 1) {
 				throw new Error("Cannot add an instance to several containers");
@@ -174,7 +177,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 		}
 
 
-		public function useItemsIn(collection:*):AddObjects {
+		public function theItemsIn(collection:*):AddObjects {
 			if(collection is IIterable) {
 				storeCollectionInArray(collection);
 			}
@@ -202,7 +205,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 		}
 
 
-		public function toAddObjectsOfType(type:Class):BuildInstructionOrNameOrBlockStartOrSetProperty {
+		public function whichAddObjectsOfType(type:Class):BuildInstructionOrNameOrBlockStartOrSetProperty {
 			_count = _collection.length;
 			loopOnContainers(addClassInternal, [type]);
 
@@ -210,26 +213,26 @@ package net.arneschroppe.displaytreebuilder.builder {
 		}
 
 
-		public function setObjectProperty(propertyName:String):FromField {
+		public function whereTheObjectProperty(propertyName:String):FromField {
 			_currentProperty = propertyName;
 			return this;
 		}
 
 
-		public function toItemField(dataFieldName:String):BuildInstructionOrNameOrBlockStartOrSetProperty {
+		public function isSetToItemField(dataFieldName:String):BuildInstructionOrNameOrBlockStartOrSetProperty {
 			applyToAllObjects(setFieldOnObject, _currentProperty, dataFieldName);
 			return this;
 		}
 
 
 
-		public function get toRespectiveItem():BuildInstructionOrNameOrBlockStartOrSetProperty {
+		public function get isSetToTheRespectiveItem():BuildInstructionOrNameOrBlockStartOrSetProperty {
 			applyToAllObjects(setFieldOnObjectToInstance, _currentProperty);
 			return this;
 		}
 
 
-		public function andStoreInstanceIn(instances:Array):BuildInstructionOrNameOrBlockStart {
+		public function whichWillBeStoredIn(instances:Array):BuildInstructionOrNameOrBlockStart {
 			for each(var instance:* in currentObjects) {
 				instances.push(instance);
 			}
