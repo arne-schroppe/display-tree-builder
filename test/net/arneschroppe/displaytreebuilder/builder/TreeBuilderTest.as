@@ -14,7 +14,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 	import org.hamcrest.object.equalTo;
 	import org.mockito.integrations.times;
 
-	public class BuilderTest {
+	public class TreeBuilderTest {
 
 		private var _contextView:Sprite;
 
@@ -270,7 +270,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 
 			_displayTreeBuilder.hasA(_contextView).containing
 				.theItemsIn(dataArray).whichBecomeObjectsOfType(TestSprite1)
-					.whereTheObjectProperty("name").isSetToItemField("field")
+					.where.theItemField("field").isUsedAsTheProperty("name")
 			.end.finish();
 
 			assertThat(_contextView.numChildren, equalTo(3));
@@ -296,7 +296,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 
 			_displayTreeBuilder.hasA(_contextView).containing
 					.theItemsIn(dataArray).whichBecomeObjectsOfType(TestSprite1)
-						.whereTheObjectProperty("name").isSetToTheRespectiveItem
+						.where.theRespectiveItem.isUsedAsTheProperty("name")
 				.end.finish();
 
 			assertThat(_contextView.numChildren, equalTo(3));
@@ -322,7 +322,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 
 			_displayTreeBuilder.hasA(_contextView).containing
 				.theItemsIn(data).whichBecomeObjectsOfType(TestSprite1)
-					.whereTheObjectProperty("name").isSetToItemField("field")
+					.where.theItemField("field").isUsedAsTheProperty("name")
 			.end.finish();
 
 			assertThat(_contextView.numChildren, equalTo(3));
@@ -350,7 +350,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 
 			_displayTreeBuilder.hasA(_contextView).containing
 					.theItemsIn(data.iterator()).whichBecomeObjectsOfType(TestSprite1)
-						.whereTheObjectProperty("name").isSetToItemField("field")
+						.where.theItemField("field").isUsedAsTheProperty("name")
 				.end.finish();
 
 			assertThat(_contextView.numChildren, equalTo(3));

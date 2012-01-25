@@ -1,7 +1,7 @@
 package net.arneschroppe.displaytreebuilder.grammar {
 	import flash.display.DisplayObject;
 
-	public interface BuildInstructionOrNameOrBlockStartOrSetProperty {
+	public interface BuildInstructionOrNameOrBlockStartOrSetAdditionalProperty {
 		function a(type:Class):BuildInstructionOrNameOrStoreInstanceOrBlockStart;
 		function an(type:Class):BuildInstructionOrNameOrStoreInstanceOrBlockStart;
 
@@ -16,7 +16,8 @@ package net.arneschroppe.displaytreebuilder.grammar {
 
 		function get containing():BuildInstruction;
 
-		function get where():PropertyDefinitions;
+		function theItemField(propertyName:String):ToField;
+		function get theRespectiveItem():ToField;
 
 	}
 }
