@@ -53,7 +53,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 		[Test]
 		public function should_add_a_name_to_an_object():void {
 			_displayTreeBuilder.hasA(_contextView).containing
-				.a(TestSprite1).withName("testname")
+				.a(TestSprite1).withTheName("testname")
 			.end.finish();
 
 			assertThat(_contextView.getChildAt(0).name, equalTo("testname"));
@@ -91,11 +91,11 @@ package net.arneschroppe.displaytreebuilder.builder {
 		public function should_add_multiple_structures():void {
 
 			_displayTreeBuilder.hasA(_contextView).containing
-				.a(Sprite).withName("1").containing
-					.a(TestSprite1).withName("2")
+				.a(Sprite).withTheName("1").containing
+					.a(TestSprite1).withTheName("2")
 				.end
-				.a(Sprite).withName("3").containing
-					.a(TestSprite1).withName("4")
+				.a(Sprite).withTheName("3").containing
+					.a(TestSprite1).withTheName("4")
 				.end
 			.end.finish();
 
@@ -232,11 +232,11 @@ package net.arneschroppe.displaytreebuilder.builder {
 			var instance2:DisplayObject = new TestSprite2();
 
 			_displayTreeBuilder.hasA(_contextView).containing
-				.theInstance(instance1).withName("1").containing
-					.a(TestSprite1).withName("2")
+				.theInstance(instance1).withTheName("1").containing
+					.a(TestSprite1).withTheName("2")
 				.end
-				.theInstance(instance2).withName("3").containing
-					.a(TestSprite1).withName("4")
+				.theInstance(instance2).withTheName("3").containing
+					.a(TestSprite1).withTheName("4")
 				.end
 			.end.finish();
 
@@ -440,8 +440,6 @@ package net.arneschroppe.displaytreebuilder.builder {
 						//missing 'end'
 					.end.finish()
 			}, throws(isA(Error)))
-
-
 		}
 
 

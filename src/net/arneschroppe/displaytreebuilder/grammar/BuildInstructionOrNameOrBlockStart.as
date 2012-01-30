@@ -13,7 +13,7 @@ package net.arneschroppe.displaytreebuilder.grammar {
 		function get end():BuildInstructionOrStop;
 		function finish():void;
 
-		function withName(name:String):BuildInstructionOrBlockStart;
+		function withTheName(name:String):BuildInstructionOrBlockStart;
 
 		function get containing():BuildInstruction;
 
