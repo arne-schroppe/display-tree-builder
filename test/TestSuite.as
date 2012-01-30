@@ -1,10 +1,10 @@
 package {
-	import net.arneschroppe.displaytreebuilder.builder.BuilderTest;
+	import net.arneschroppe.displaytreebuilder.builder.TreeBuilderTest;
 
 	[Suite]
 	[RunWith("org.flexunit.runners.Suite")]
 	public class TestSuite {
 
-		public var displayTreeBuilderTest:BuilderTest;
+		public var displayTreeBuilderTest:TreeBuilderTest;
 	}
 }

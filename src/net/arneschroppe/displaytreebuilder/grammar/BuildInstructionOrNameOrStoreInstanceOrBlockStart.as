@@ -3,21 +3,19 @@ package net.arneschroppe.displaytreebuilder.grammar {
 
 	public interface BuildInstructionOrNameOrStoreInstanceOrBlockStart {
 
-		function add(type:Class):BuildInstructionOrNameOrStoreInstanceOrBlockStart;
-		function addInstance(object:DisplayObject):BuildInstructionOrNameOrBlockStart;
+		function a(type:Class):BuildInstructionOrNameOrStoreInstanceOrBlockStart;
+		function an(type:Class):BuildInstructionOrNameOrStoreInstanceOrBlockStart;
+		function theInstance(object:DisplayObject):BuildInstructionOrNameOrBlockStart;
 
 		function times(count:int):Add;
 
 		function get end():BuildInstructionOrStop;
 		function finish():void;
-		function useItemsIn(collection:*):AddObjects
 
 		function withName(name:String):BuildInstructionOrBlockStart;
-		function andStoreInstanceIn(instances:Array):BuildInstructionOrNameOrBlockStart;
+		function whichWillBeStoredIn(instances:Array):BuildInstructionOrNameOrBlockStart;
 
-
-
-		function get begin():BuildInstruction;
+		function get containing():BuildInstruction;
 
 	}
 }

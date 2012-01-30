@@ -3,14 +3,14 @@ package net.arneschroppe.displaytreebuilder.grammar {
 
 	public interface BuildInstructionOrBlockStart {
 
-		function add(type:Class):BuildInstructionOrNameOrStoreInstanceOrBlockStart;
-		function addInstance(object:DisplayObject):BuildInstructionOrNameOrBlockStart;
+		function a(type:Class):BuildInstructionOrNameOrStoreInstanceOrBlockStart;
+		function theInstance(object:DisplayObject):BuildInstructionOrNameOrBlockStart;
 
 		function times(count:int):Add;
 
 		function get end():BuildInstructionOrStop;
 
-		function get begin():BuildInstruction;
+		function get containing():BuildInstruction;
 
 	}
 }
