@@ -32,6 +32,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 		private var _currentObjectsStack:Array = [];
 
 		private var _count:int;
+		private var _collectionLength:int;
 		
 		private var _collection:*;
 		private var _objectTypeCreatedFromData:Class;
@@ -194,13 +195,29 @@ package net.arneschroppe.displaytreebuilder.builder {
 				storeIteratorInArray(collection);
 			}
 			else {
-				_collection = collection;
+				storeCollection(collection);
 			}
 
-			_count = _collection.length;
-			loopOnContainers(addClassInternal, [_objectTypeCreatedFromData]);
+
+			loopOnContainers(loopOnCollection, [_objectTypeCreatedFromData]);
 
 			return this;
+		}
+
+
+		
+		
+		private function loopOnCollection(container:DisplayObjectContainer, index:int, type:Class):void {
+			for(var i:int = 0; i < _collectionLength; ++i) {
+				addClassInternal(container, index, type)
+			}
+
+		}
+
+
+		private function storeCollection(collection:*):void {
+			_collection = collection;
+			_collectionLength = collection.length;
 		}
 
 		private function storeCollectionInArray(collection:IIterable):void {
@@ -214,6 +231,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 				storage.push(iterator.next());
 			}
 			_collection = storage;
+			_collectionLength = storage.length;
 		}
 
 
@@ -239,7 +257,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 
 
 		public function get item():BlockContent$CollectionProperty {
-			applyToAllObjects(setFieldOnObjectToInstance, _instancePropertyName);
+			applyToAllObjects(setPropertyOnObjectToInstance, _instancePropertyName);
 			return this;
 		}
 
@@ -247,7 +265,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 
 
 		public function itemProperty(propertyName:String):BlockContent$CollectionProperty {
-			applyToAllObjects(setFieldOnObject,_instancePropertyName, propertyName);
+			applyToAllObjects(setPropertyOnObject, _instancePropertyName, propertyName);
 			return this;
 		}
 
@@ -260,13 +278,13 @@ package net.arneschroppe.displaytreebuilder.builder {
 			return this;
 		}
 
-		private function setFieldOnObject(object:Object, index:int, propertyName:String, dataFieldName:String):void {
-			var data:Object = _collection[index];
+		private function setPropertyOnObject(object:Object, index:int, propertyName:String, dataFieldName:String):void {
+			var data:Object = _collection[index % _collectionLength];
 			object[propertyName] = data[dataFieldName];
 		}
 
-		private function setFieldOnObjectToInstance(object:Object, index:int, propertyName:String):void {
-			var data:Object = _collection[index];
+		private function setPropertyOnObjectToInstance(object:Object, index:int, propertyName:String):void {
+			var data:Object = _collection[index % _collectionLength];
 			object[propertyName] = data;
 		}
 

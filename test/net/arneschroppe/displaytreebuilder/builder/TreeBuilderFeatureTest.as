@@ -371,26 +371,29 @@ package net.arneschroppe.displaytreebuilder.builder {
 		}
 
 
-//		[Test]
-//		public function should_initialize_from_collection_multiple_times():void {
-//			var data:ArrayList = new ArrayList();
-//			data.add({"field":"1"});
-//			data.add({"field":"2"});
-//
-//
-//			_displayTreeBuilder.hasA(_contextView).containing.
-//					times(2).anInstanceOf(TestSprite1).forEveryItemIn(data.iterator())
-//						.withThe.instanceProperty("name").setToThe.itemProperty("field")
-//				.end.finish();
-//
-//			assertThat(_contextView.numChildren, equalTo(4));
-//
-//			assertThat(_contextView.getChildAt(0), allOf(isA(TestSprite1), hasPropertyWithValue("name", "1")));
-//			assertThat(_contextView.getChildAt(1), allOf(isA(TestSprite1), hasPropertyWithValue("name", "2")));
-//			assertThat(_contextView.getChildAt(2), allOf(isA(TestSprite1), hasPropertyWithValue("name", "1")));
-//			assertThat(_contextView.getChildAt(3), allOf(isA(TestSprite1), hasPropertyWithValue("name", "2")));
-//
-//		}
+		[Test]
+		public function should_initialize_from_collection_multiple_times():void {
+
+
+			var data:Array = [
+				{"field":"1"},
+				{"field":"2"}
+			];
+
+			_displayTreeBuilder.hasA(_contextView).containing.
+					times(2).anInstanceOf(TestSprite1).forEveryItemIn(data)
+						.withThe.instanceProperty("name").setToThe.
+							itemProperty("field")
+				.end.finish();
+
+			assertThat(_contextView.numChildren, equalTo(4));
+
+			assertThat(_contextView.getChildAt(0), allOf(isA(TestSprite1), hasPropertyWithValue("name", "1")));
+			assertThat(_contextView.getChildAt(1), allOf(isA(TestSprite1), hasPropertyWithValue("name", "2")));
+			assertThat(_contextView.getChildAt(2), allOf(isA(TestSprite1), hasPropertyWithValue("name", "1")));
+			assertThat(_contextView.getChildAt(3), allOf(isA(TestSprite1), hasPropertyWithValue("name", "2")));
+
+		}
 
 
 		//TODO (arneschroppe 21/12/11) also make it possible to set ctor arguments
