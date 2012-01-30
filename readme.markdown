@@ -9,9 +9,9 @@ A declarative language to set up trees of display objects.
     
     displayTree. hasA(_contextView). containing.
 
-    	//Adds a Sprite with name "Menu", containing one
+    	//Adds a Sprite with the name "Menu", containing one
     	//instance of each FullScreenButton and EditButton
-    	a (Sprite). withName ("Menu"). containing.
+    	a (Sprite). withTheName ("Menu"). containing.
     		a (FullScreenButton).
     		an (EditButton).
     	end.
