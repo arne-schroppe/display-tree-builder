@@ -269,8 +269,9 @@ package net.arneschroppe.displaytreebuilder.builder {
 			];
 
 			_displayTreeBuilder.hasA(_contextView).containing
-				.theItemsIn(dataArray).whichBecomeObjectsOfType(TestSprite1)
-					.where.theItemField("field").isUsedAsTheProperty("name")
+				.anInstanceOf(TestSprite1).forEveryItemIn(dataArray)
+					.withThe.instanceProperty("name").setToThe.itemProperty("field")
+
 			.end.finish();
 
 			assertThat(_contextView.numChildren, equalTo(3));
@@ -295,8 +296,9 @@ package net.arneschroppe.displaytreebuilder.builder {
 			];
 
 			_displayTreeBuilder.hasA(_contextView).containing
-					.theItemsIn(dataArray).whichBecomeObjectsOfType(TestSprite1)
-						.where.theRespectiveItem.isUsedAsTheProperty("name")
+					.anInstanceOf(TestSprite1).forEveryItemIn(dataArray)
+						.withThe.instanceProperty("name").setToThe.item
+
 				.end.finish();
 
 			assertThat(_contextView.numChildren, equalTo(3));
@@ -321,8 +323,9 @@ package net.arneschroppe.displaytreebuilder.builder {
 
 
 			_displayTreeBuilder.hasA(_contextView).containing
-				.theItemsIn(data).whichBecomeObjectsOfType(TestSprite1)
-					.where.theItemField("field").isUsedAsTheProperty("name")
+					.anInstanceOf(TestSprite1).forEveryItemIn(data)
+						.withThe.instanceProperty("name").setToThe.itemProperty("field")
+
 			.end.finish();
 
 			assertThat(_contextView.numChildren, equalTo(3));
@@ -349,8 +352,8 @@ package net.arneschroppe.displaytreebuilder.builder {
 
 
 			_displayTreeBuilder.hasA(_contextView).containing
-					.theItemsIn(data.iterator()).whichBecomeObjectsOfType(TestSprite1)
-						.where.theItemField("field").isUsedAsTheProperty("name")
+					.anInstanceOf(TestSprite1).forEveryItemIn(data.iterator())
+						.withThe.instanceProperty("name").setToThe.itemProperty("field")
 				.end.finish();
 
 			assertThat(_contextView.numChildren, equalTo(3));
@@ -367,9 +370,9 @@ package net.arneschroppe.displaytreebuilder.builder {
 
 		//TODO (arneschroppe 21/12/11) also make it possible to set ctor arguments
 		/*
-		 _displayTreeBuilder.startWith(_contextView).begin
-		 	.usElementsIn(dataArray).toAddObjectsOfType(Sprite)
-		 		.setConstructorArgument(1).fromDataField("field")
+		 _displayTreeBuilder.hasA(_contextView).containing
+		 	.anInstanceOf(Sprite).forEveryItemIn(dataArray)
+		 		.withThe.constructorArgumentAtPosition(1).setToThe.itemProperty("field")
 		 .end.finish();
 
 		* */
@@ -412,7 +415,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 
 
 		[Test]
-		public function should_unfinished_invocation_check_should_be_optional():void {
+		public function check_for_unfinished_invocation_should_be_optional():void {
 
 			_displayTreeBuilder.hasA(_contextView).containing
 					.a(TestSprite1)

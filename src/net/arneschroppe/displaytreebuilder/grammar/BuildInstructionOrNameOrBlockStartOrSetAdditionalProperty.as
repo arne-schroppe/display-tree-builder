@@ -16,8 +16,7 @@ package net.arneschroppe.displaytreebuilder.grammar {
 
 		function get containing():BuildInstruction;
 
-		function theItemField(propertyName:String):ToField;
-		function get theRespectiveItem():ToField;
+		function instanceProperty(propertyName:String):ToField;
 
 	}
 }

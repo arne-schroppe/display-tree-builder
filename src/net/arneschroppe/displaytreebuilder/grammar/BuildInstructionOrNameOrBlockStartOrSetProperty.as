@@ -16,7 +16,7 @@ package net.arneschroppe.displaytreebuilder.grammar {
 
 		function get containing():BuildInstruction;
 
-		function get where():PropertyDefinitions;
+		function get withThe():PropertyDefinitions;
 
 	}
 }
