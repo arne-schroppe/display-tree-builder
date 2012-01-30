@@ -8,13 +8,15 @@ package net.arneschroppe.displaytreebuilder.builder {
 	import org.as3commons.collections.ArrayList;
 
 	import org.hamcrest.assertThat;
+	import org.hamcrest.core.allOf;
 	import org.hamcrest.core.isA;
 	import org.hamcrest.core.not;
 	import org.hamcrest.core.throws;
 	import org.hamcrest.object.equalTo;
+	import org.hamcrest.object.hasPropertyWithValue;
 	import org.mockito.integrations.times;
 
-	public class TreeBuilderTest {
+	public class TreeBuilderFeatureTest {
 
 		private var _contextView:Sprite;
 
@@ -399,78 +401,20 @@ package net.arneschroppe.displaytreebuilder.builder {
 
 
 		[Test]
-		public function should_throw_exception_for_unfinished_invocations():void {
+		public function should_allow_to_set_a_property_on_created_objects():void {
 
 			_displayTreeBuilder.hasA(_contextView).containing
-				.a(TestSprite1)
-			.end //not finished
+					.a(TestSprite2).withTheProperty("testProperty").setTo("foo")
+					.a(TestSprite2).withTheProperty("testProperty2").setTo("bar")
+					.a(TestSprite2)
+				.end.finish();
 
-
-			assertThat(
-					function ():void {
-						_displayTreeBuilder.hasA(_contextView)
-					}, throws(isA(Error))
-			);
-		}
-
-
-		[Test]
-		public function check_for_unfinished_invocation_should_be_optional():void {
-
-			_displayTreeBuilder.hasA(_contextView).containing
-					.a(TestSprite1)
-					.end //not finished
-
-
-			assertThat(
-					function ():void {
-						_displayTreeBuilder.isCheckingUnfinishedStatements = false;
-						_displayTreeBuilder.hasA(_contextView)
-					}, not(throws(isA(Error)))
-			);
-		}
-
-		[Test]
-		public function should_throw_error_for_unaligned_begin_and_end():void {
-
-			assertThat(function():void {
-				_displayTreeBuilder.hasA(_contextView).containing
-						.a(TestSprite1).containing
-							.a(TestSprite2)
-						//missing 'end'
-					.end.finish()
-			}, throws(isA(Error)))
-		}
-
-
-		[Test]
-		public function should_throw_an_exception_if_addInstance_is_used_in_subbranch_of_loop():void {
-
-			assertThat(function():void {
-				_displayTreeBuilder.hasA(_contextView).containing
-						.times(2).a(TestSprite1).containing
-							.theInstance(new TestSprite2())
-						.end
-					.end.finish()
-			}, throws(isA(Error)))
+			assertThat(_contextView.numChildren, equalTo(3));
+			assertThat(_contextView.getChildAt(0), allOf(hasPropertyWithValue("testProperty", "foo"), hasPropertyWithValue("testProperty2", "")));
+			assertThat(_contextView.getChildAt(1), allOf(hasPropertyWithValue("testProperty", ""), hasPropertyWithValue("testProperty2", "bar")));
+			assertThat(_contextView.getChildAt(2), allOf(hasPropertyWithValue("testProperty", ""), hasPropertyWithValue("testProperty2", "")));
 
 		}
-
-
-
-		[Test]
-		public function should_not_throw_an_exception_if_addInstance_is_used_with_single_element_loop():void {
-
-			assertThat(function():void {
-				_displayTreeBuilder.hasA(_contextView).containing
-							.times(1).a(TestSprite1).containing
-								.theInstance(new TestSprite2())
-							.end
-						.end.finish()
-			}, not(throws(isA(Error))))
-
-		}
-
  	}
 }
 
@@ -482,6 +426,9 @@ class TestSprite1 extends Sprite {
 }
 
 class TestSprite2 extends Sprite {
+
+	public var testProperty:String = "";
+	public var testProperty2:String = "";
 
 }
 

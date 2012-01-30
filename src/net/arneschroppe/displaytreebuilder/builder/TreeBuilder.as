@@ -15,12 +15,13 @@ package net.arneschroppe.displaytreebuilder.builder {
 	import net.arneschroppe.displaytreebuilder.grammar.BuilderLang;
 	import net.arneschroppe.displaytreebuilder.grammar.DataPropertyDefinitions;
 	import net.arneschroppe.displaytreebuilder.grammar.PropertyDefinitions;
+	import net.arneschroppe.displaytreebuilder.grammar.PropertyValue;
 	import net.arneschroppe.displaytreebuilder.grammar.ToField;
 
 	import org.as3commons.collections.framework.IIterable;
 	import org.as3commons.collections.framework.IIterator;
 
-	public class TreeBuilder implements DataPropertyDefinitions, BuildInstructionOrNameOrBlockStartOrSetAdditionalProperty, PropertyDefinitions, ToField, BuildInstructionOrNameOrStoreInstanceOrBlockStart, BuildInstructionOrNameOrBlockStartOrSetProperty, DataSourceDefinition, BuildInstructionOrBlockStart, BuilderLang, Add,  BlockStart, BuildInstruction, BuildInstructionOrStop, BuildInstructionOrNameOrBlockStart {
+	public class TreeBuilder implements PropertyValue, DataPropertyDefinitions, BuildInstructionOrNameOrBlockStartOrSetAdditionalProperty, PropertyDefinitions, ToField, BuildInstructionOrNameOrStoreInstanceOrBlockStart, BuildInstructionOrNameOrBlockStartOrSetProperty, DataSourceDefinition, BuildInstructionOrBlockStart, BuilderLang, Add,  BlockStart, BuildInstruction, BuildInstructionOrStop, BuildInstructionOrNameOrBlockStart {
 
 		private var _currentContainersStack:Array = [[]];
 		private var _currentObjectsStack:Array = [];
@@ -37,6 +38,8 @@ package net.arneschroppe.displaytreebuilder.builder {
 		private var _openSubTrees:int;
 
 		private var _isCheckingUnfinishedStatements:Boolean = true;
+		
+		private var _setPropertyName:String = "";
 
 
 
@@ -137,15 +140,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 
 
 
-		public function withTheName(name:String):BuildInstructionOrBlockStart {
-			applyToAllObjects(setName, name);
-			return this;
-		}
-
-
-		private function setName(object:DisplayObject, index:int, name:String):void {
-			object.name = name;
-		}
+		
 
 
 		private function loopOnContainers(method:Function, arguments:Array):void {
@@ -282,6 +277,29 @@ package net.arneschroppe.displaytreebuilder.builder {
 
 		public function get setToThe():DataPropertyDefinitions {
 			return this;
+		}
+
+		
+
+		public function withTheProperty(propertyName:String):PropertyValue {
+			_setPropertyName = propertyName;
+			return this;
+		}
+
+		public function setTo(value:*):BuildInstructionOrNameOrStoreInstanceOrBlockStart {
+			applyToAllObjects(setProperty, _setPropertyName, value);
+			return this;
+		}
+
+
+		public function withTheName(name:String):BuildInstructionOrBlockStart {
+			applyToAllObjects(setProperty, "name", name);
+			return this;
+		}
+
+
+		private function setProperty(object:DisplayObject, index:int, propertyName:String, value:*):void {
+			object[propertyName] = value;
 		}
 
 

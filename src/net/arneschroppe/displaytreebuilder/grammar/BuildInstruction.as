@@ -9,7 +9,7 @@ package net.arneschroppe.displaytreebuilder.grammar {
 
 		function times(count:int):Add;
 
-		function anInstanceOf(type:Class):DataSourceDefinition
+		function anInstanceOf(type:Class):DataSourceDefinition;
 
 
 		function get end():BuildInstructionOrStop;

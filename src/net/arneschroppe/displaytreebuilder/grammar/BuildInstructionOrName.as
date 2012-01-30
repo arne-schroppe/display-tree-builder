@@ -12,5 +12,7 @@ package net.arneschroppe.displaytreebuilder.grammar {
 		function finish():void;
 
 		function withTheName(name:String):BuildInstructionOrBlockStart;
+		function withTheProperty(propertyName:String):PropertyValue;
+
 	}
 }
