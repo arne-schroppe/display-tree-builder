@@ -6,8 +6,8 @@ A declarative language to set up trees of display objects.
 ###Example
 
     var displayTree:DisplayTree = new DisplayTree();
-    
-    displayTree. hasA(_contextView). containing.
+
+    displayTree. hasA(rootView). containing.
 
     	//Adds a Sprite with the name "Menu", containing one
     	//instance of each FullScreenButton and EditButton
@@ -22,7 +22,25 @@ A declarative language to set up trees of display objects.
     		an (Icon).
     	end.
     end.finish();
-    
+
 The DSL only allows terms where they make sense (e.g. you can not place
-`withName` after `times(x)`). This is especially useful in IDEs with 
+`withName` after `times(x)`). This is especially useful in IDEs with
 code completion.
+
+
+####Creating display objects from data
+
+It is also possible to create a display object for every item in a collection, using
+the item to initialize the object.
+
+    _displayTreeBuilder. hasA (rootView). containing.
+    
+	    anInstanceOf (Sprite). forEveryItemIn (["Spades", "Hearts", "Diamonds", "Clubs"]).
+		    withThe. instanceProperty ("name"). setToThe. item
+		    
+    end.finish();
+    
+The collection can be an `Array`, an `IIterable` or an `IIterator` (the last two from the
+[AS3Commons Collections library](http://www.as3commons.org/as3-commons-collections/index.html "AS3Commons Collections"))
+
+

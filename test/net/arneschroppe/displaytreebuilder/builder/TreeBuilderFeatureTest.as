@@ -382,8 +382,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 
 			_displayTreeBuilder.hasA(_contextView).containing.
 					times(2).anInstanceOf(TestSprite1).forEveryItemIn(data)
-						.withThe.instanceProperty("name").setToThe.
-							itemProperty("field")
+						.withThe.instanceProperty("name").setToThe.itemProperty("field")
 				.end.finish();
 
 			assertThat(_contextView.numChildren, equalTo(4));
@@ -404,6 +403,8 @@ package net.arneschroppe.displaytreebuilder.builder {
 		 .end.finish();
 
 		* */
+
+		//TODO (arneschroppe 31/1/12) also allow using dictionaries, maps and objects ??
 
 
 		[Test]
