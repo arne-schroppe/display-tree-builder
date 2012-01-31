@@ -236,7 +236,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 
 
 		public function anInstanceOf(type:Class):DataDefinition {
-
+			clearCurrentObjects();
 			_objectTypeCreatedFromData = type;
 
 			return this;

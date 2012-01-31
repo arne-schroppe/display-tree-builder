@@ -56,8 +56,8 @@ package net.arneschroppe.displaytreebuilder.builder {
 			assertThat(_contextView.getChildAt(0).name, equalTo("1"));
 			assertThat(_contextView.getChildAt(1).name, equalTo("2"));
 			assertThat(_contextView.getChildAt(2).name, equalTo("3"));
-			assertThat(_contextView.getChildAt(4).name, equalTo("4"));
-			assertThat(_contextView.getChildAt(5).name, equalTo("5"));
+			assertThat(_contextView.getChildAt(3).name, equalTo("4"));
+			assertThat(_contextView.getChildAt(4).name, equalTo("5"));
 
 
 		}
