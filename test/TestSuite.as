@@ -1,4 +1,5 @@
 package {
+	import net.arneschroppe.displaytreebuilder.builder.TreeBuilderBugsTest;
 	import net.arneschroppe.displaytreebuilder.builder.TreeBuilderErrorsTest;
 	import net.arneschroppe.displaytreebuilder.builder.TreeBuilderFeatureTest;
 
@@ -8,5 +9,6 @@ package {
 
 		public var displayTreeBuilderFeatureTest:TreeBuilderFeatureTest;
 		public var displayTreeBuilderErrorsTest:TreeBuilderErrorsTest;
+		public var treeBuilderBugsTest:TreeBuilderBugsTest;
 	}
 }
