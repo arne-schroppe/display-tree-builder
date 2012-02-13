@@ -3,9 +3,11 @@ package net.arneschroppe.displaytreebuilder {
 
 	import net.arneschroppe.displaytreebuilder.builder.TreeBuilder;
 	import net.arneschroppe.displaytreebuilder.grammar.BlockStart;
-	import net.arneschroppe.displaytreebuilder.grammar.BuilderLang;
 
-	public class DisplayTree implements BuilderLang {
+	import net.arneschroppe.displaytreebuilder.grammar.DisplayTree;
+
+
+	public class DisplayTree implements net.arneschroppe.displaytreebuilder.grammar.DisplayTree {
 
 		private var _builder:TreeBuilder;
 
