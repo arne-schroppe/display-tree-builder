@@ -4,10 +4,10 @@ package net.arneschroppe.displaytreebuilder {
 	import net.arneschroppe.displaytreebuilder.builder.TreeBuilder;
 	import net.arneschroppe.displaytreebuilder.grammar.BlockStart;
 
-	import net.arneschroppe.displaytreebuilder.grammar.DisplayTree;
+	import net.arneschroppe.displaytreebuilder.grammar.DisplayTreeStart;
 
 
-	public class DisplayTree implements net.arneschroppe.displaytreebuilder.grammar.DisplayTree {
+	public class DisplayTree implements DisplayTreeStart {
 
 		private var _builder:TreeBuilder;
 
