@@ -4,9 +4,9 @@ A declarative language to set up trees of display objects.
 
 ###Example
 
-    var displayTree:DisplayTree = new DisplayTree();
+    var treeBuilder:TreeBuilder = new TreeBuilder();
 
-    displayTree. hasA(rootView). containing.
+    treeBuilder. hasA(rootView). containing.
 
     	//Adds a Sprite with the name "Menu", containing one
     	//instance of each FullScreenButton and EditButton
@@ -32,13 +32,13 @@ code completion.
 It is also possible to create a display object for every item in a collection, using
 the item to initialize the object.
 
-    displayTree. hasA (rootView). containing.
-    
+    treeBuilder. hasA (rootView). containing.
+
 	    anInstanceOf (Sprite). forEveryItemIn (["Spades", "Hearts", "Diamonds", "Clubs"]).
 		    withThe. instanceProperty ("name"). setToThe. item
-		    
+
     end.finish();
-    
+
 The collection can be an `Array`, an `IIterable` or an `IIterator` (the last two from the
 [AS3Commons Collections library](http://www.as3commons.org/as3-commons-collections/index.html "AS3Commons Collections"))
 
