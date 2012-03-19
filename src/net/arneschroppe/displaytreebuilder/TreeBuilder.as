@@ -90,6 +90,15 @@ package net.arneschroppe.displaytreebuilder {
 			return this;
 		}
 
+
+		public function anInstanceOf(type:Class):DataDefinition {
+			clearCurrentObjects();
+			_objectTypeCreatedFromData = type;
+
+			return this;
+		}
+		
+
 		public function an(Type:Class):InstanceModification {
 			return a(Type);
 		}
@@ -235,12 +244,7 @@ package net.arneschroppe.displaytreebuilder {
 		}
 
 
-		public function anInstanceOf(type:Class):DataDefinition {
-			clearCurrentObjects();
-			_objectTypeCreatedFromData = type;
 
-			return this;
-		}
 
 		public function get withThe():_instanceProperty {
 			return this;
