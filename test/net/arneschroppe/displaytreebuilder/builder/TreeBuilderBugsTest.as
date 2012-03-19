@@ -1,19 +1,17 @@
 package net.arneschroppe.displaytreebuilder.builder {
 	import flash.display.Sprite;
 
+	import net.arneschroppe.displaytreebuilder.DisplayTree;
 	import net.wooga.utils.flexunit.FlexUnitUtils;
-
-	import org.as3commons.collections.ArrayList;
 
 	import org.hamcrest.assertThat;
 	import org.hamcrest.core.isA;
-
 	import org.hamcrest.object.equalTo;
 
 	public class TreeBuilderBugsTest {
 		private var _contextView:Sprite;
 
-		private var _displayTreeBuilder:TreeBuilder;
+		private var _displayTreeBuilder:DisplayTree;
 
 
 		[Before]
@@ -21,7 +19,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 			_contextView = new Sprite();
 			FlexUnitUtils.stage.addChild(_contextView);
 
-			_displayTreeBuilder = new TreeBuilder();
+			_displayTreeBuilder = new DisplayTree();
 		}
 
 
@@ -65,7 +63,6 @@ package net.arneschroppe.displaytreebuilder.builder {
 }
 
 import flash.display.Sprite;
-
 
 class TestSprite1 extends Sprite {
 

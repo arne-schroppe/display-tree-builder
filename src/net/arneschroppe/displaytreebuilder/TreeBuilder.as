@@ -1,4 +1,4 @@
-package net.arneschroppe.displaytreebuilder.builder {
+package net.arneschroppe.displaytreebuilder {
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 
@@ -14,7 +14,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 	import net.arneschroppe.displaytreebuilder.grammar.BlockContent$InstanceModification;
 	import net.arneschroppe.displaytreebuilder.grammar.BlockStart;
 	import net.arneschroppe.displaytreebuilder.grammar.DataDefinition;
-	import net.arneschroppe.displaytreebuilder.grammar.DisplayTreeStart;
+	import net.arneschroppe.displaytreebuilder.grammar.TreeStart;
 	import net.arneschroppe.displaytreebuilder.grammar.Instantiation;
 	import net.arneschroppe.displaytreebuilder.grammar.Property;
 	import net.arneschroppe.displaytreebuilder.grammar.Storage;
@@ -26,7 +26,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 	import org.as3commons.collections.framework.IIterable;
 	import org.as3commons.collections.framework.IIterator;
 
-	public class TreeBuilder implements BlockContent$Property, _finish, _instanceProperty, ItemToUse, _setToThe, BlockContent$CollectionProperty, BlockContent$Finish, BlockContent$InstanceModification, BlockStart, DataDefinition, DisplayTreeStart, Instantiation, Property, PropertyValue, Storage {
+	internal class TreeBuilder implements BlockContent$Property, _finish, _instanceProperty, ItemToUse, _setToThe, BlockContent$CollectionProperty, BlockContent$Finish, BlockContent$InstanceModification, BlockStart, DataDefinition, TreeStart, Instantiation, Property, PropertyValue, Storage {
 
 		private var _currentContainersStack:Array = [[]];
 		private var _currentObjectsStack:Array = [];

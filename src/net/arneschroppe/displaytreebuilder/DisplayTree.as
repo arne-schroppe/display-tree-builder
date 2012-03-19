@@ -1,13 +1,13 @@
 package net.arneschroppe.displaytreebuilder {
 	import flash.display.DisplayObject;
 
-	import net.arneschroppe.displaytreebuilder.builder.TreeBuilder;
+	import net.arneschroppe.displaytreebuilder.TreeBuilder;
 	import net.arneschroppe.displaytreebuilder.grammar.BlockStart;
 
-	import net.arneschroppe.displaytreebuilder.grammar.DisplayTreeStart;
+	import net.arneschroppe.displaytreebuilder.grammar.TreeStart;
 
 
-	public class DisplayTree implements DisplayTreeStart {
+	public class DisplayTree implements TreeStart {
 
 		private var _builder:TreeBuilder;
 
@@ -22,6 +22,15 @@ package net.arneschroppe.displaytreebuilder {
 
 		public function hasAn(object:DisplayObject):BlockStart {
 			return hasA(object);
+		}
+
+
+		public function set isCheckingUnfinishedStatements(value:Boolean):void {
+			_builder.isCheckingUnfinishedStatements = value;
+		}
+
+		public function get isCheckingUnfinishedStatements():Boolean {
+			return _builder.isCheckingUnfinishedStatements;
 		}
 	}
 }

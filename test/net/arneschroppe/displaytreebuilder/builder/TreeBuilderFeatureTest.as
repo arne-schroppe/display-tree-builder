@@ -3,6 +3,8 @@ package net.arneschroppe.displaytreebuilder.builder {
 	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
 
+	import net.arneschroppe.displaytreebuilder.DisplayTree;
+
 	import net.wooga.utils.flexunit.FlexUnitUtils;
 
 	import org.as3commons.collections.ArrayList;
@@ -20,7 +22,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 
 		private var _contextView:Sprite;
 
-		private var _displayTreeBuilder:TreeBuilder;
+		private var _displayTreeBuilder:DisplayTree;
 
 
 		[Before]
@@ -28,7 +30,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 			_contextView = new Sprite();
 			FlexUnitUtils.stage.addChild(_contextView);
 
-			_displayTreeBuilder = new TreeBuilder();
+			_displayTreeBuilder = new DisplayTree();
 		}
 
 
