@@ -3,24 +3,21 @@ package net.arneschroppe.displaytreebuilder {
 	import flash.display.DisplayObjectContainer;
 
 	import net.arneschroppe.displaytreebuilder.grammar.BlockContent;
-	import net.arneschroppe.displaytreebuilder.grammar.BlockContent$Property;
-
-	import net.arneschroppe.displaytreebuilder.grammar.InstanceModification;
-
-	import net.arneschroppe.displaytreebuilder.grammar.PropertyValue;
-
 	import net.arneschroppe.displaytreebuilder.grammar.BlockContent$CollectionProperty;
 	import net.arneschroppe.displaytreebuilder.grammar.BlockContent$Finish;
 	import net.arneschroppe.displaytreebuilder.grammar.BlockContent$InstanceModification;
+	import net.arneschroppe.displaytreebuilder.grammar.BlockContent$Property;
 	import net.arneschroppe.displaytreebuilder.grammar.BlockStart;
 	import net.arneschroppe.displaytreebuilder.grammar.DataDefinition;
-	import net.arneschroppe.displaytreebuilder.grammar.TreeStart;
+	import net.arneschroppe.displaytreebuilder.grammar.InstanceModification;
 	import net.arneschroppe.displaytreebuilder.grammar.Instantiation;
+	import net.arneschroppe.displaytreebuilder.grammar.ItemToUse;
 	import net.arneschroppe.displaytreebuilder.grammar.Property;
+	import net.arneschroppe.displaytreebuilder.grammar.PropertyValue;
 	import net.arneschroppe.displaytreebuilder.grammar.Storage;
+	import net.arneschroppe.displaytreebuilder.grammar.TreeStart;
 	import net.arneschroppe.displaytreebuilder.grammar._finish;
 	import net.arneschroppe.displaytreebuilder.grammar._instanceProperty;
-	import net.arneschroppe.displaytreebuilder.grammar.ItemToUse;
 	import net.arneschroppe.displaytreebuilder.grammar._setToThe;
 
 	import org.as3commons.collections.framework.IIterable;
@@ -28,15 +25,17 @@ package net.arneschroppe.displaytreebuilder {
 
 	internal class TreeBuilder implements BlockContent$Property, _finish, _instanceProperty, ItemToUse, _setToThe, BlockContent$CollectionProperty, BlockContent$Finish, BlockContent$InstanceModification, BlockStart, DataDefinition, TreeStart, Instantiation, Property, PropertyValue, Storage {
 
-		private var _currentContainersStack:Array = [[]];
+		private var _currentContainersStack:Array = [
+			[]
+		];
 		private var _currentObjectsStack:Array = [];
 
 		private var _count:int;
 		private var _collectionLength:int;
-		
+
 		private var _collection:*;
 		private var _objectTypeCreatedFromData:Class;
-		
+
 		private var _instancePropertyName:String;
 
 		private var _isUnfinished:Boolean = false;
@@ -44,9 +43,8 @@ package net.arneschroppe.displaytreebuilder {
 		private var _openSubTrees:int;
 
 		private var _isCheckingUnfinishedStatements:Boolean = true;
-		
-		private var _setPropertyName:String = "";
 
+		private var _setPropertyName:String = "";
 
 
 		public function set isCheckingUnfinishedStatements(value:Boolean):void {
@@ -64,7 +62,9 @@ package net.arneschroppe.displaytreebuilder {
 			_openSubTrees = 0;
 			_isUnfinished = true;
 
-			_currentObjectsStack = [[object]];
+			_currentObjectsStack = [
+				[object]
+			];
 			_count = 1;
 			return this;
 		}
@@ -97,7 +97,7 @@ package net.arneschroppe.displaytreebuilder {
 
 			return this;
 		}
-		
+
 
 		public function an(Type:Class):InstanceModification {
 			return a(Type);
@@ -152,10 +152,6 @@ package net.arneschroppe.displaytreebuilder {
 			loopOnContainers(addInstanceInternal, [object]);
 			return this;
 		}
-
-
-
-		
 
 
 		private function loopOnContainers(method:Function, arguments:Array):void {
@@ -214,8 +210,6 @@ package net.arneschroppe.displaytreebuilder {
 		}
 
 
-		
-		
 		private function loopOnCollection(container:DisplayObjectContainer, index:int, type:Class):void {
 			for(var i:int = 0; i < _collectionLength; ++i) {
 				addClassInternal(container, index, type)
@@ -244,13 +238,9 @@ package net.arneschroppe.displaytreebuilder {
 		}
 
 
-
-
 		public function get withThe():_instanceProperty {
 			return this;
 		}
-
-
 
 
 		public function instanceProperty(instancePropertyName:String):_setToThe {
@@ -259,13 +249,10 @@ package net.arneschroppe.displaytreebuilder {
 		}
 
 
-
 		public function get item():BlockContent$CollectionProperty {
 			applyToAllObjects(setPropertyOnObjectToInstance, _instancePropertyName);
 			return this;
 		}
-
-
 
 
 		public function itemProperty(propertyName:String):BlockContent$CollectionProperty {
@@ -296,17 +283,15 @@ package net.arneschroppe.displaytreebuilder {
 			if(_openSubTrees != 0) {
 				throw new Error("The numbers of begin's and end's are not matching");
 			}
-			
+
 			_isUnfinished = false;
 		}
-
 
 
 		public function get setToThe():ItemToUse {
 			return this;
 		}
 
-		
 
 		public function withTheProperty(propertyName:String):PropertyValue {
 			_setPropertyName = propertyName;
