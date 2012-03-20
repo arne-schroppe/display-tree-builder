@@ -352,6 +352,32 @@ package net.arneschroppe.displaytreebuilder.builder {
 
 
 		[Test]
+		public function should_use_arbitrary_value_when_initializing_from_collection():void {
+			var dataArray:Array = [
+				"herp",
+				"derp",
+				"wat"
+			];
+
+			_displayTreeBuilder.uses(_contextView).containing
+					.a(TestSprite1).forEveryItemIn(dataArray)
+						.withTheProperty("name").setToThe.value("SUCCESS")
+					.end.finish();
+
+			assertThat(_contextView.numChildren, equalTo(3));
+
+			assertThat(_contextView.getChildAt(0), isA(TestSprite1));
+			assertThat(_contextView.getChildAt(1), isA(TestSprite1));
+			assertThat(_contextView.getChildAt(2), isA(TestSprite1));
+
+			assertThat(_contextView.getChildAt(0).name, equalTo("SUCCESS"));
+			assertThat(_contextView.getChildAt(1).name, equalTo("SUCCESS"));
+			assertThat(_contextView.getChildAt(2).name, equalTo("SUCCESS"));
+		}
+
+
+
+		[Test]
 		public function should_initialize_from_collection():void {
 
 			var data:ArrayList = new ArrayList();
