@@ -1,5 +1,7 @@
 package net.arneschroppe.displaytreebuilder.grammar {
-	public interface InstanceModification extends BlockStart, Property, Storage, BlockEnd, BlockContent, DataDefinition {
+	import net.arneschroppe.displaytreebuilder.grammar.NameProperty;
+
+	public interface InstanceModification extends BlockStart, NameProperty, CollectionProperty, Storage, BlockEnd, BlockContent, DataDefinition {
 		
 	}
 }
