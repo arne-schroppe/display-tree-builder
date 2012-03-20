@@ -34,7 +34,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 		public function should_correctly_add_several_types_from_data():void {
 
 
-			_displayTreeBuilder.hasA(_contextView).containing
+			_displayTreeBuilder.uses(_contextView).containing
 					.anInstanceOf(TestSprite1).forEveryItemIn(["1", "2", "3"])
 						.withThe.instanceProperty("name").setToThe.item
 

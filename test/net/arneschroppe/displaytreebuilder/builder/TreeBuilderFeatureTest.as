@@ -45,7 +45,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 		[Test]
 		public function should_add_a_simple_object():void {
 
-			_displayTreeBuilder.hasA(_contextView).containing
+			_displayTreeBuilder.uses(_contextView).containing
 				.a(TestSprite1)
 			.end.finish();
 
@@ -56,7 +56,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 
 		[Test]
 		public function should_add_a_name_to_an_object():void {
-			_displayTreeBuilder.hasA(_contextView).containing
+			_displayTreeBuilder.uses(_contextView).containing
 				.a(TestSprite1).withTheName("testname")
 			.end.finish();
 
@@ -65,7 +65,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 
 		[Test]
 		public function should_allow_sub_objects():void {
-			_displayTreeBuilder.hasA(_contextView).containing
+			_displayTreeBuilder.uses(_contextView).containing
 				.a(Sprite).containing
 					.a(TestSprite1)
 				.end
@@ -80,8 +80,47 @@ package net.arneschroppe.displaytreebuilder.builder {
 
 
 		[Test]
+		public function should_allow_containing_after_data_generated_items():void {
+
+			var data:Array = [1]
+
+			_displayTreeBuilder.uses(_contextView).containing
+				.anInstanceOf(Sprite).forEveryItemIn(data) .containing
+					.a(TestSprite1)
+				.end
+			.end.finish();
+
+
+			assertThat(_contextView.numChildren, equalTo(1));
+			assertThat((_contextView.getChildAt(0) as DisplayObjectContainer).numChildren, equalTo(1));
+			assertThat((_contextView.getChildAt(0) as DisplayObjectContainer).getChildAt(0), isA(TestSprite1));
+		}
+
+
+
+		[Test]
+		public function should_allow_containing_after_data_generated_items_with_set_properties():void {
+
+			var data:Array = [1]
+
+			_displayTreeBuilder.uses(_contextView).containing
+					.anInstanceOf(Sprite).forEveryItemIn(data)
+						.withThe.instanceProperty("name").setToThe.item
+						.containing
+							.a(TestSprite1)
+						.end
+				.end.finish();
+
+
+			assertThat(_contextView.numChildren, equalTo(1));
+			assertThat((_contextView.getChildAt(0) as DisplayObjectContainer).numChildren, equalTo(1));
+			assertThat((_contextView.getChildAt(0) as DisplayObjectContainer).getChildAt(0), isA(TestSprite1));
+		}
+
+
+		[Test]
 		public function should_add_multiple_objects():void {
-			_displayTreeBuilder.hasA(_contextView).containing
+			_displayTreeBuilder.uses(_contextView).containing
 				.a(Sprite)
 				.a(Sprite)
 				.a(Sprite)
@@ -94,7 +133,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 		[Test]
 		public function should_add_multiple_structures():void {
 
-			_displayTreeBuilder.hasA(_contextView).containing
+			_displayTreeBuilder.uses(_contextView).containing
 				.a(Sprite).withTheName("1").containing
 					.a(TestSprite1).withTheName("2")
 				.end
@@ -124,7 +163,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 
 		[Test]
 		public function should_add_multiple_objects_with_loop():void {
-			_displayTreeBuilder.hasA(_contextView).containing
+			_displayTreeBuilder.uses(_contextView).containing
 				.times(12).a(Sprite)
 			.end.finish();
 
@@ -135,7 +174,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 
 		[Test]
 		public function should_add_multiple_sub_structures_with_loop():void {
-			_displayTreeBuilder.hasA(_contextView).containing
+			_displayTreeBuilder.uses(_contextView).containing
 				.times(3).a(Sprite).containing
 					.a(TestSprite1)
 				.end
@@ -163,7 +202,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 
 		[Test]
 		public function should_add_multiple_nested_sub_structures_with_loop():void {
-			_displayTreeBuilder.hasA(_contextView).containing
+			_displayTreeBuilder.uses(_contextView).containing
 				.times(2).a(Sprite).containing
 					.times(2).a(TestSprite1).containing
 						.a(TestSprite2)
@@ -219,7 +258,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 			var instance1:DisplayObject = new TestSprite1();
 			var instance2:DisplayObject = new TestSprite2();
 
-			_displayTreeBuilder.hasA(_contextView).containing
+			_displayTreeBuilder.uses(_contextView).containing
 				.theInstance(instance1)
 				.theInstance(instance2)
 			.end.finish();
@@ -235,7 +274,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 			var instance1:DisplayObject = new TestSprite1();
 			var instance2:DisplayObject = new TestSprite2();
 
-			_displayTreeBuilder.hasA(_contextView).containing
+			_displayTreeBuilder.uses(_contextView).containing
 				.theInstance(instance1).withTheName("1").containing
 					.a(TestSprite1).withTheName("2")
 				.end
@@ -272,7 +311,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 				{"field": "3"}
 			];
 
-			_displayTreeBuilder.hasA(_contextView).containing
+			_displayTreeBuilder.uses(_contextView).containing
 				.anInstanceOf(TestSprite1).forEveryItemIn(dataArray)
 					.withThe.instanceProperty("name").setToThe.itemProperty("field")
 
@@ -299,7 +338,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 				"wat"
 			];
 
-			_displayTreeBuilder.hasA(_contextView).containing
+			_displayTreeBuilder.uses(_contextView).containing
 					.anInstanceOf(TestSprite1).forEveryItemIn(dataArray)
 						.withThe.instanceProperty("name").setToThe.item
 
@@ -326,7 +365,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 			data.add({"field":"3"});
 
 
-			_displayTreeBuilder.hasA(_contextView).containing
+			_displayTreeBuilder.uses(_contextView).containing
 					.anInstanceOf(TestSprite1).forEveryItemIn(data)
 						.withThe.instanceProperty("name").setToThe.itemProperty("field")
 
@@ -355,7 +394,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 			data.add({"field":"3"});
 
 
-			_displayTreeBuilder.hasA(_contextView).containing
+			_displayTreeBuilder.uses(_contextView).containing
 					.anInstanceOf(TestSprite1).forEveryItemIn(data.iterator())
 						.withThe.instanceProperty("name").setToThe.itemProperty("field")
 				.end.finish()
@@ -382,7 +421,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 				{"field":"2"}
 			];
 
-			_displayTreeBuilder.hasA(_contextView).containing.
+			_displayTreeBuilder.uses(_contextView).containing.
 					times(2).anInstanceOf(TestSprite1).forEveryItemIn(data)
 						.withThe.instanceProperty("name").setToThe.itemProperty("field")
 				.end.finish();
@@ -414,7 +453,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 
 			var instances:Array = [];
 
-			_displayTreeBuilder.hasA(_contextView).containing
+			_displayTreeBuilder.uses(_contextView).containing
 				.a(TestSprite1).whichWillBeStoredIn(instances)
 				.a(TestSprite2).whichWillBeStoredIn(instances)
 				.a(TestSprite3).whichWillBeStoredIn(instances)
@@ -432,7 +471,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 		[Test]
 		public function should_allow_to_set_a_property_on_created_objects():void {
 
-			_displayTreeBuilder.hasA(_contextView).containing
+			_displayTreeBuilder.uses(_contextView).containing
 					.a(TestSprite2).withTheProperty("testProperty").setTo("foo")
 					.a(TestSprite2).withTheProperty("testProperty2").setTo("bar")
 					.a(TestSprite2)

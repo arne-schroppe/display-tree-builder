@@ -3,7 +3,7 @@ package net.arneschroppe.displaytreebuilder {
 	import flash.display.DisplayObjectContainer;
 
 	import net.arneschroppe.displaytreebuilder.grammar.BlockContent;
-	import net.arneschroppe.displaytreebuilder.grammar.BlockContent$CollectionProperty;
+	import net.arneschroppe.displaytreebuilder.grammar.BlockContent$CollectionProperty$BlockStart;
 	import net.arneschroppe.displaytreebuilder.grammar.BlockContent$Finish;
 	import net.arneschroppe.displaytreebuilder.grammar.BlockContent$InstanceModification;
 	import net.arneschroppe.displaytreebuilder.grammar.BlockContent$Property;
@@ -23,7 +23,7 @@ package net.arneschroppe.displaytreebuilder {
 	import org.as3commons.collections.framework.IIterable;
 	import org.as3commons.collections.framework.IIterator;
 
-	internal class TreeBuilder implements BlockContent$Property, _finish, _instanceProperty, ItemToUse, _setToThe, BlockContent$CollectionProperty, BlockContent$Finish, BlockContent$InstanceModification, BlockStart, DataDefinition, TreeStart, Instantiation, Property, PropertyValue, Storage {
+	internal class TreeBuilder implements BlockContent$Property, _finish, _instanceProperty, ItemToUse, _setToThe, BlockContent$CollectionProperty$BlockStart, BlockContent$Finish, BlockContent$InstanceModification, BlockStart, DataDefinition, TreeStart, Instantiation, Property, PropertyValue, Storage {
 
 		private var _currentContainersStack:Array = [
 			[]
@@ -55,7 +55,7 @@ package net.arneschroppe.displaytreebuilder {
 			return _isCheckingUnfinishedStatements;
 		}
 
-		public function hasA(object:DisplayObject):BlockStart {
+		public function uses(object:DisplayObject):BlockStart {
 			if(_isCheckingUnfinishedStatements && _isUnfinished) {
 				throw new Error("Previous expression was unfinished. Add the 'unfinished' keyword")
 			}
@@ -67,10 +67,6 @@ package net.arneschroppe.displaytreebuilder {
 			];
 			_count = 1;
 			return this;
-		}
-
-		public function hasAn(object:DisplayObject):BlockStart {
-			return hasA(object);
 		}
 
 
@@ -192,7 +188,7 @@ package net.arneschroppe.displaytreebuilder {
 		}
 
 
-		public function forEveryItemIn(collection:*):BlockContent$CollectionProperty {
+		public function forEveryItemIn(collection:*):BlockContent$CollectionProperty$BlockStart {
 			if(collection is IIterable) {
 				storeCollectionInArray(collection);
 			}
@@ -249,13 +245,13 @@ package net.arneschroppe.displaytreebuilder {
 		}
 
 
-		public function get item():BlockContent$CollectionProperty {
+		public function get item():BlockContent$CollectionProperty$BlockStart {
 			applyToAllObjects(setPropertyOnObjectToInstance, _instancePropertyName);
 			return this;
 		}
 
 
-		public function itemProperty(propertyName:String):BlockContent$CollectionProperty {
+		public function itemProperty(propertyName:String):BlockContent$CollectionProperty$BlockStart {
 			applyToAllObjects(setPropertyOnObject, _instancePropertyName, propertyName);
 			return this;
 		}

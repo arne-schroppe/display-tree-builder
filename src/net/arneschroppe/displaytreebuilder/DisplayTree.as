@@ -16,14 +16,9 @@ package net.arneschroppe.displaytreebuilder {
 		}
 
 
-		public function hasA(object:DisplayObject):BlockStart {
-			return _builder.hasA(object);
+		public function uses(object:DisplayObject):BlockStart {
+			return _builder.uses(object);
 		}
-
-		public function hasAn(object:DisplayObject):BlockStart {
-			return hasA(object);
-		}
-
 
 		public function set isCheckingUnfinishedStatements(value:Boolean):void {
 			_builder.isCheckingUnfinishedStatements = value;

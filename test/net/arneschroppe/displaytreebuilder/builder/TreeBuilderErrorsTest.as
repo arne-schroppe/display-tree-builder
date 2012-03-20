@@ -40,14 +40,14 @@ package net.arneschroppe.displaytreebuilder.builder {
 		[Test]
 		public function should_throw_exception_for_unfinished_invocations():void {
 
-			_displayTreeBuilder.hasA(_contextView).containing
+			_displayTreeBuilder.uses(_contextView).containing
 					.a(TestSprite1)
 				.end //not finished
 
 
 			assertThat(
 					function ():void {
-						_displayTreeBuilder.hasA(_contextView)
+						_displayTreeBuilder.uses(_contextView)
 					}, throws(isA(Error))
 			);
 		}
@@ -56,7 +56,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 		[Test]
 		public function check_for_unfinished_invocation_should_be_optional():void {
 
-			_displayTreeBuilder.hasA(_contextView).containing
+			_displayTreeBuilder.uses(_contextView).containing
 				.a(TestSprite1)
 			.end //not finished
 
@@ -64,7 +64,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 			assertThat(
 					function ():void {
 						_displayTreeBuilder.isCheckingUnfinishedStatements = false;
-						_displayTreeBuilder.hasA(_contextView)
+						_displayTreeBuilder.uses(_contextView)
 					}, not(throws(isA(Error)))
 			);
 		}
@@ -73,7 +73,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 		public function should_throw_error_for_unaligned_begin_and_end():void {
 
 			assertThat(function():void {
-				_displayTreeBuilder.hasA(_contextView).containing
+				_displayTreeBuilder.uses(_contextView).containing
 					.a(TestSprite1).containing
 						.a(TestSprite2)
 					//missing 'end'
@@ -86,7 +86,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 		public function should_throw_an_exception_if_addInstance_is_used_in_subbranch_of_loop():void {
 
 			assertThat(function():void {
-				_displayTreeBuilder.hasA(_contextView).containing
+				_displayTreeBuilder.uses(_contextView).containing
 					.times(2).a(TestSprite1).containing
 						.theInstance(new TestSprite2())
 					.end
@@ -101,7 +101,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 		public function should_not_throw_an_exception_if_addInstance_is_used_with_single_element_loop():void {
 
 			assertThat(function():void {
-				_displayTreeBuilder.hasA(_contextView).containing
+				_displayTreeBuilder.uses(_contextView).containing
 					.times(1).a(TestSprite1).containing
 						.theInstance(new TestSprite2())
 					.end
