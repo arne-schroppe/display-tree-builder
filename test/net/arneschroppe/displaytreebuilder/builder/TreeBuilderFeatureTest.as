@@ -85,7 +85,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 			var data:Array = [1]
 
 			_displayTreeBuilder.uses(_contextView).containing
-				.anInstanceOf(Sprite).forEveryItemIn(data) .containing
+				.a(Sprite).forEveryItemIn(data) .containing
 					.a(TestSprite1)
 				.end
 			.end.finish();
@@ -104,7 +104,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 			var data:Array = [1]
 
 			_displayTreeBuilder.uses(_contextView).containing
-					.anInstanceOf(Sprite).forEveryItemIn(data)
+					.a(Sprite).forEveryItemIn(data)
 						.withThe.instanceProperty("name").setToThe.item
 						.containing
 							.a(TestSprite1)
@@ -312,7 +312,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 			];
 
 			_displayTreeBuilder.uses(_contextView).containing
-				.anInstanceOf(TestSprite1).forEveryItemIn(dataArray)
+				.a(TestSprite1).forEveryItemIn(dataArray)
 					.withThe.instanceProperty("name").setToThe.itemProperty("field")
 
 			.end.finish();
@@ -339,7 +339,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 			];
 
 			_displayTreeBuilder.uses(_contextView).containing
-					.anInstanceOf(TestSprite1).forEveryItemIn(dataArray)
+					.a(TestSprite1).forEveryItemIn(dataArray)
 						.withThe.instanceProperty("name").setToThe.item
 
 				.end.finish();
@@ -366,7 +366,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 
 
 			_displayTreeBuilder.uses(_contextView).containing
-					.anInstanceOf(TestSprite1).forEveryItemIn(data)
+					.a(TestSprite1).forEveryItemIn(data)
 						.withThe.instanceProperty("name").setToThe.itemProperty("field")
 
 			.end.finish();
@@ -395,7 +395,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 
 
 			_displayTreeBuilder.uses(_contextView).containing
-					.anInstanceOf(TestSprite1).forEveryItemIn(data.iterator())
+					.a(TestSprite1).forEveryItemIn(data.iterator())
 						.withThe.instanceProperty("name").setToThe.itemProperty("field")
 				.end.finish()
 
@@ -422,7 +422,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 			];
 
 			_displayTreeBuilder.uses(_contextView).containing.
-					times(2).anInstanceOf(TestSprite1).forEveryItemIn(data)
+					times(2).a(TestSprite1).forEveryItemIn(data)
 						.withThe.instanceProperty("name").setToThe.itemProperty("field")
 				.end.finish();
 
@@ -439,7 +439,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 		//TODO (arneschroppe 21/12/11) also make it possible to set ctor arguments
 		/*
 		 _displayTreeBuilder.hasA(_contextView).containing
-		 	.anInstanceOf(Sprite).forEveryItemIn(dataArray)
+		 	.a(Sprite).forEveryItemIn(dataArray)
 		 		.withThe.constructorArgumentAtPosition(1).setToThe.itemProperty("field")
 		 .end.finish();
 

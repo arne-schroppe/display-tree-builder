@@ -6,6 +6,5 @@ package net.arneschroppe.displaytreebuilder.grammar {
 		function times(count:int):Instantiation;
 		function theInstance(instance:DisplayObject):BlockContent$Property;
 
-
 	}
 }

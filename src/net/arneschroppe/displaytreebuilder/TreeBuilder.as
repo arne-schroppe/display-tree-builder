@@ -34,7 +34,7 @@ package net.arneschroppe.displaytreebuilder {
 		private var _collectionLength:int;
 
 		private var _collection:*;
-		private var _objectTypeCreatedFromData:Class;
+		private var _currentDataType:Class;
 
 		private var _instancePropertyName:String;
 
@@ -45,6 +45,7 @@ package net.arneschroppe.displaytreebuilder {
 		private var _isCheckingUnfinishedStatements:Boolean = true;
 
 		private var _setPropertyName:String = "";
+		private var _delayedInstanceCreation:Boolean;
 
 
 		public function set isCheckingUnfinishedStatements(value:Boolean):void {
@@ -81,16 +82,10 @@ package net.arneschroppe.displaytreebuilder {
 
 
 		public function a(Type:Class):InstanceModification {
+			createDelayedInstanceIfNeeded();
 			clearCurrentObjects();
-			loopOnContainers(addClassInternal, [Type]);
-			return this;
-		}
-
-
-		public function anInstanceOf(type:Class):DataDefinition {
-			clearCurrentObjects();
-			_objectTypeCreatedFromData = type;
-
+			_currentDataType = Type;
+			_delayedInstanceCreation = true;
 			return this;
 		}
 
@@ -118,20 +113,31 @@ package net.arneschroppe.displaytreebuilder {
 
 
 		public function get containing():BlockContent {
+			createDelayedInstanceIfNeeded();
 			_openSubTrees++;
 			_currentContainersStack.push(currentObjects.concat());
 			_currentObjectsStack.push([]);
 			return this;
 		}
 
+		private function createDelayedInstanceIfNeeded():void {
+			if(!_delayedInstanceCreation) {
+				return;
+			}
+			_delayedInstanceCreation = false;
+			loopOnContainers(addClassInternal, [_currentDataType]);
+		}
+
 
 		public function times(count:int):Instantiation {
+			createDelayedInstanceIfNeeded();
 			_count = count;
 			return this;
 		}
 
 
 		public function get end():BlockContent$Finish {
+			createDelayedInstanceIfNeeded();
 			_openSubTrees--;
 			_currentContainersStack.pop();
 			_currentObjectsStack.pop();
@@ -141,6 +147,7 @@ package net.arneschroppe.displaytreebuilder {
 
 
 		public function theInstance(object:DisplayObject):BlockContent$Property {
+			createDelayedInstanceIfNeeded();
 			clearCurrentObjects();
 			if(currentContainers.length > 1) {
 				throw new Error("Cannot add an instance to several containers");
@@ -189,6 +196,8 @@ package net.arneschroppe.displaytreebuilder {
 
 
 		public function forEveryItemIn(collection:*):BlockContent$CollectionProperty$BlockStart {
+			_delayedInstanceCreation = false;
+
 			if(collection is IIterable) {
 				storeCollectionInArray(collection);
 			}
@@ -200,7 +209,7 @@ package net.arneschroppe.displaytreebuilder {
 			}
 
 
-			loopOnContainers(loopOnCollection, [_objectTypeCreatedFromData]);
+			loopOnContainers(loopOnCollection, [_currentDataType]);
 
 			return this;
 		}
@@ -258,6 +267,7 @@ package net.arneschroppe.displaytreebuilder {
 
 
 		public function whichWillBeStoredIn(instances:Array):BlockContent$InstanceModification {
+			createDelayedInstanceIfNeeded();
 			for each(var instance:* in currentObjects) {
 				instances.push(instance);
 			}
@@ -290,6 +300,7 @@ package net.arneschroppe.displaytreebuilder {
 
 
 		public function withTheProperty(propertyName:String):PropertyValue {
+			createDelayedInstanceIfNeeded();
 			_setPropertyName = propertyName;
 			return this;
 		}
@@ -301,6 +312,7 @@ package net.arneschroppe.displaytreebuilder {
 
 
 		public function withTheName(name:String):BlockContent$InstanceModification {
+			createDelayedInstanceIfNeeded();
 			applyToAllObjects(setProperty, "name", name);
 			return this;
 		}
