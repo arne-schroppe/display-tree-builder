@@ -4,6 +4,7 @@ package net.arneschroppe.displaytreebuilder {
 
 	import net.arneschroppe.displaytreebuilder.grammar.BlockContent;
 	import net.arneschroppe.displaytreebuilder.grammar.BlockContent$CollectionProperty$BlockStart;
+	import net.arneschroppe.displaytreebuilder.grammar.datadefinition.BlockContent$CollectionProperty__DataDef$BlockStart;
 	import net.arneschroppe.displaytreebuilder.grammar.BlockContent$Finish;
 	import net.arneschroppe.displaytreebuilder.grammar.BlockContent$InstanceModification;
 	import net.arneschroppe.displaytreebuilder.grammar.BlockContent$Property;
@@ -12,18 +13,16 @@ package net.arneschroppe.displaytreebuilder {
 	import net.arneschroppe.displaytreebuilder.grammar.InstanceModification;
 	import net.arneschroppe.displaytreebuilder.grammar.Instantiation;
 	import net.arneschroppe.displaytreebuilder.grammar.ItemToUse;
-	import net.arneschroppe.displaytreebuilder.grammar.Property;
-	import net.arneschroppe.displaytreebuilder.grammar.PropertyValue;
+	import net.arneschroppe.displaytreebuilder.grammar.NameProperty;
 	import net.arneschroppe.displaytreebuilder.grammar.Storage;
 	import net.arneschroppe.displaytreebuilder.grammar.TreeStart;
 	import net.arneschroppe.displaytreebuilder.grammar._finish;
-	import net.arneschroppe.displaytreebuilder.grammar._instanceProperty;
 	import net.arneschroppe.displaytreebuilder.grammar._setToThe;
 
 	import org.as3commons.collections.framework.IIterable;
 	import org.as3commons.collections.framework.IIterator;
 
-	internal class TreeBuilder implements BlockContent$Property, _finish, _instanceProperty, ItemToUse, _setToThe, BlockContent$CollectionProperty$BlockStart, BlockContent$Finish, BlockContent$InstanceModification, BlockStart, DataDefinition, TreeStart, Instantiation, Property, PropertyValue, Storage {
+	internal class TreeBuilder implements BlockContent$Property, _finish, ItemToUse, _setToThe, BlockContent$CollectionProperty$BlockStart, BlockContent$Finish, BlockContent$InstanceModification, BlockStart, DataDefinition, TreeStart, Instantiation, NameProperty, Storage {
 
 		private var _currentContainersStack:Array = [
 			[]
@@ -120,7 +119,7 @@ package net.arneschroppe.displaytreebuilder {
 			return this;
 		}
 
-		private function createDelayedInstanceIfNeeded():void {
+		internal function createDelayedInstanceIfNeeded():void {
 			if(!_delayedInstanceCreation) {
 				return;
 			}
@@ -195,7 +194,7 @@ package net.arneschroppe.displaytreebuilder {
 		}
 
 
-		public function forEveryItemIn(collection:*):BlockContent$CollectionProperty$BlockStart {
+		public function forEveryItemIn(collection:*):BlockContent$CollectionProperty__DataDef$BlockStart {
 			_delayedInstanceCreation = false;
 
 			if(collection is IIterable) {
@@ -211,7 +210,7 @@ package net.arneschroppe.displaytreebuilder {
 
 			loopOnContainers(loopOnCollection, [_currentDataType]);
 
-			return this;
+			return new DataDefinitionBranch(this);
 		}
 
 
@@ -243,25 +242,22 @@ package net.arneschroppe.displaytreebuilder {
 		}
 
 
-		public function get withThe():_instanceProperty {
-			return this;
-		}
 
-
-		public function instanceProperty(instancePropertyName:String):_setToThe {
+		public function withTheProperty(instancePropertyName:String):_setToThe {
+			createDelayedInstanceIfNeeded();
 			_instancePropertyName = instancePropertyName;
 			return this;
 		}
 
 
 		public function get item():BlockContent$CollectionProperty$BlockStart {
-			applyToAllObjects(setPropertyOnObjectToInstance, _instancePropertyName);
+
 			return this;
 		}
 
 
 		public function itemProperty(propertyName:String):BlockContent$CollectionProperty$BlockStart {
-			applyToAllObjects(setPropertyOnObject, _instancePropertyName, propertyName);
+
 			return this;
 		}
 
@@ -299,14 +295,8 @@ package net.arneschroppe.displaytreebuilder {
 		}
 
 
-		public function withTheProperty(propertyName:String):PropertyValue {
-			createDelayedInstanceIfNeeded();
-			_setPropertyName = propertyName;
-			return this;
-		}
-
-		public function setTo(value:*):BlockContent$InstanceModification {
-			applyToAllObjects(setProperty, _setPropertyName, value);
+		public function value(value:*):BlockContent$InstanceModification {
+			applyToAllObjects(setProperty, _instancePropertyName, value);
 			return this;
 		}
 
@@ -323,5 +313,16 @@ package net.arneschroppe.displaytreebuilder {
 		}
 
 
+		internal function set instancePropertyName(value:String):void {
+			_instancePropertyName = value;
+		}
+
+		internal function itemPropertyExternal(propertyName:String):void {
+			applyToAllObjects(setPropertyOnObject, _instancePropertyName, propertyName);
+		}
+
+		internal function itemExternal():void {
+			applyToAllObjects(setPropertyOnObjectToInstance, _instancePropertyName);
+		}
 	}
 }

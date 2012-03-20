@@ -36,10 +36,10 @@ package net.arneschroppe.displaytreebuilder.builder {
 
 			_displayTreeBuilder.uses(_contextView).containing
 					.a(TestSprite1).forEveryItemIn(["1", "2", "3"])
-						.withThe.instanceProperty("name").setToThe.item
+						.withTheProperty("name").setToThe.item
 
 					.a(TestSprite2).forEveryItemIn(["4", "5"])
-						.withThe.instanceProperty("name").setToThe.item
+						.withTheProperty("name").setToThe.item
 
 					.end.finish()
 

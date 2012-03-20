@@ -4,19 +4,14 @@ package net.arneschroppe.displaytreebuilder.builder {
 	import flash.display.Sprite;
 
 	import net.arneschroppe.displaytreebuilder.DisplayTree;
-
 	import net.wooga.utils.flexunit.FlexUnitUtils;
 
 	import org.as3commons.collections.ArrayList;
-
 	import org.hamcrest.assertThat;
 	import org.hamcrest.core.allOf;
 	import org.hamcrest.core.isA;
-	import org.hamcrest.core.not;
-	import org.hamcrest.core.throws;
 	import org.hamcrest.object.equalTo;
 	import org.hamcrest.object.hasPropertyWithValue;
-	import org.mockito.integrations.times;
 
 	public class TreeBuilderFeatureTest {
 
@@ -105,7 +100,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 
 			_displayTreeBuilder.uses(_contextView).containing
 					.a(Sprite).forEveryItemIn(data)
-						.withThe.instanceProperty("name").setToThe.item
+						.withTheProperty("name").setToThe.item
 						.containing
 							.a(TestSprite1)
 						.end
@@ -313,7 +308,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 
 			_displayTreeBuilder.uses(_contextView).containing
 				.a(TestSprite1).forEveryItemIn(dataArray)
-					.withThe.instanceProperty("name").setToThe.itemProperty("field")
+					.withTheProperty("name").setToThe.itemProperty("field")
 
 			.end.finish();
 
@@ -340,7 +335,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 
 			_displayTreeBuilder.uses(_contextView).containing
 					.a(TestSprite1).forEveryItemIn(dataArray)
-						.withThe.instanceProperty("name").setToThe.item
+						.withTheProperty("name").setToThe.item
 
 				.end.finish();
 
@@ -357,6 +352,32 @@ package net.arneschroppe.displaytreebuilder.builder {
 
 
 		[Test]
+		public function should_use_arbitrary_value_when_initializing_from_collection():void {
+			var dataArray:Array = [
+				"herp",
+				"derp",
+				"wat"
+			];
+
+			_displayTreeBuilder.uses(_contextView).containing
+					.a(TestSprite1).forEveryItemIn(dataArray)
+						.withTheProperty("name").setToThe.value("SUCCESS")
+					.end.finish();
+
+			assertThat(_contextView.numChildren, equalTo(3));
+
+			assertThat(_contextView.getChildAt(0), isA(TestSprite1));
+			assertThat(_contextView.getChildAt(1), isA(TestSprite1));
+			assertThat(_contextView.getChildAt(2), isA(TestSprite1));
+
+			assertThat(_contextView.getChildAt(0).name, equalTo("SUCCESS"));
+			assertThat(_contextView.getChildAt(1).name, equalTo("SUCCESS"));
+			assertThat(_contextView.getChildAt(2).name, equalTo("SUCCESS"));
+		}
+
+
+
+		[Test]
 		public function should_initialize_from_collection():void {
 
 			var data:ArrayList = new ArrayList();
@@ -367,7 +388,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 
 			_displayTreeBuilder.uses(_contextView).containing
 					.a(TestSprite1).forEveryItemIn(data)
-						.withThe.instanceProperty("name").setToThe.itemProperty("field")
+						.withTheProperty("name").setToThe.itemProperty("field")
 
 			.end.finish();
 
@@ -396,7 +417,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 
 			_displayTreeBuilder.uses(_contextView).containing
 					.a(TestSprite1).forEveryItemIn(data.iterator())
-						.withThe.instanceProperty("name").setToThe.itemProperty("field")
+						.withTheProperty("name").setToThe.itemProperty("field")
 				.end.finish()
 
 			assertThat(_contextView.numChildren, equalTo(3));
@@ -423,7 +444,7 @@ package net.arneschroppe.displaytreebuilder.builder {
 
 			_displayTreeBuilder.uses(_contextView).containing.
 					times(2).a(TestSprite1).forEveryItemIn(data)
-						.withThe.instanceProperty("name").setToThe.itemProperty("field")
+						.withTheProperty("name").setToThe.itemProperty("field")
 				.end.finish();
 
 			assertThat(_contextView.numChildren, equalTo(4));
@@ -472,8 +493,8 @@ package net.arneschroppe.displaytreebuilder.builder {
 		public function should_allow_to_set_a_property_on_created_objects():void {
 
 			_displayTreeBuilder.uses(_contextView).containing
-					.a(TestSprite2).withTheProperty("testProperty").setTo("foo")
-					.a(TestSprite2).withTheProperty("testProperty2").setTo("bar")
+					.a(TestSprite2).withTheProperty("testProperty").setToThe.value("foo")
+					.a(TestSprite2).withTheProperty("testProperty2").setToThe.value("bar")
 					.a(TestSprite2)
 				.end.finish();
 
