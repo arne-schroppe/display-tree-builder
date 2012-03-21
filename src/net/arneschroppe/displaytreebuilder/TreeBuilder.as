@@ -249,16 +249,6 @@ package net.arneschroppe.displaytreebuilder {
 		}
 
 
-		public function get item():BlockContent$CollectionProperty$BlockStart {
-
-			return this;
-		}
-
-
-		public function itemProperty(propertyName:String):BlockContent$CollectionProperty$BlockStart {
-
-			return this;
-		}
 
 
 		public function whichWillBeStoredIn(instances:Array):BlockContent$InstanceModification {

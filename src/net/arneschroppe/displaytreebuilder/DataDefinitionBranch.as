@@ -42,7 +42,7 @@ package net.arneschroppe.displaytreebuilder {
 		}
 
 		public function value(value:*):BlockContent$InstanceModification {
-			return _originalObject.value(value);;
+			return _originalObject.value(value);
 		}
 
 
