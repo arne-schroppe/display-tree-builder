@@ -43,7 +43,6 @@ package net.arneschroppe.displaytreebuilder {
 
 		private var _isCheckingUnfinishedStatements:Boolean = true;
 
-		private var _setPropertyName:String = "";
 		private var _delayedInstanceCreation:Boolean;
 
 
@@ -57,7 +56,7 @@ package net.arneschroppe.displaytreebuilder {
 
 		public function uses(object:DisplayObject):BlockStart {
 			if(_isCheckingUnfinishedStatements && _isUnfinished) {
-				throw new Error("Previous expression was unfinished. Add the 'unfinished' keyword")
+				throw new Error("Previous expression was unfinished. Add the 'finished' keyword")
 			}
 			_openSubTrees = 0;
 			_isUnfinished = true;
