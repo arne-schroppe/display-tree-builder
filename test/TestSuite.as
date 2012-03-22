@@ -1,7 +1,7 @@
 package {
-	import net.arneschroppe.displaytreebuilder.builder.TreeBuilderBugsTest;
-	import net.arneschroppe.displaytreebuilder.builder.TreeBuilderErrorsTest;
-	import net.arneschroppe.displaytreebuilder.builder.TreeBuilderFeatureTest;
+	import net.wooga.displaytreebuilder.builder.TreeBuilderBugsTest;
+	import net.wooga.displaytreebuilder.builder.TreeBuilderErrorsTest;
+	import net.wooga.displaytreebuilder.builder.TreeBuilderFeatureTest;
 
 	[Suite]
 	[RunWith("org.flexunit.runners.Suite")]
