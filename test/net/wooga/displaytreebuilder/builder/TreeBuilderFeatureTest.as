@@ -325,6 +325,36 @@ package net.wooga.displaytreebuilder.builder {
 		}
 
 
+
+
+		[Test]
+		public function should_initialize_from_data_vector():void {
+
+			var data:Vector.<String> = new <String>[
+				"1",
+				"2",
+				"3"
+
+			];
+
+			_displayTreeBuilder.uses(_contextView).containing
+					.a(TestSprite1).forEveryItemIn(data)
+					.withTheProperty("name").setToThe.item
+					.end.finish();
+
+			assertThat(_contextView.numChildren, equalTo(3));
+
+			assertThat(_contextView.getChildAt(0), isA(TestSprite1));
+			assertThat(_contextView.getChildAt(1), isA(TestSprite1));
+			assertThat(_contextView.getChildAt(2), isA(TestSprite1));
+
+			assertThat(_contextView.getChildAt(0).name, equalTo("1"));
+			assertThat(_contextView.getChildAt(1).name, equalTo("2"));
+			assertThat(_contextView.getChildAt(2).name, equalTo("3"));
+
+		}
+
+
 		[Test]
 		public function should_use_respective_collection_item_when_initializing_from_collection():void {
 			var dataArray:Array = [

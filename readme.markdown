@@ -39,7 +39,7 @@ the item to initialize the object.
 
     end.finish();
 
-The collection can be an `Array`, an `IIterable` or an `IIterator` (the last two from the
+The collection can be an `Array`, a `Vector`, an `IIterable` or an `IIterator` (the last two from the
 [AS3Commons Collections library](http://www.as3commons.org/as3-commons-collections/index.html "AS3Commons Collections"))
 
 
