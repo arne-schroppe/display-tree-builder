@@ -1,10 +1,10 @@
-#Display Tree
+#Display Tree Builder
 
 A declarative language to set up trees of display objects.
 
 ###Example
 
-    var treeBuilder:TreeBuilder = new TreeBuilder();
+    var displayTree:DisplayTree = new DisplayTree();
 
     treeBuilder. uses(rootView). containing.
 
@@ -32,7 +32,7 @@ code completion.
 It is also possible to create a display object for every item in a collection, using
 the item to initialize the object.
 
-    treeBuilder. uses (rootView). containing.
+    displayTree. uses (rootView). containing.
 
 	    a (Sprite). forEveryItemIn (["Spades", "Hearts", "Diamonds", "Clubs"]).
 		    withTheProperty ("name"). setToThe. item
