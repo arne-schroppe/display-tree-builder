@@ -56,7 +56,7 @@ package net.wooga.displaytreebuilder {
 
 		public function uses(object:DisplayObject):BlockStart {
 			if(_isCheckingUnfinishedStatements && _isUnfinished) {
-				throw new Error("Previous expression was unfinished. Add the 'finished' keyword")
+				throw new Error("Previous expression was unfinished. Add the 'finish()' keyword")
 			}
 			_openSubTrees = 0;
 			_isUnfinished = true;
@@ -272,7 +272,7 @@ package net.wooga.displaytreebuilder {
 
 		public function finish():void {
 			if(_openSubTrees != 0) {
-				throw new Error("The numbers of begin's and end's are not matching");
+				throw new Error("The number of calls to 'containing' and 'end' do not match");
 			}
 
 			_isUnfinished = false;

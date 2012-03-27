@@ -70,7 +70,7 @@ package net.wooga.displaytreebuilder.builder {
 		}
 
 		[Test]
-		public function should_throw_error_for_unaligned_begin_and_end():void {
+		public function should_throw_error_for_unaligned_containing_and_end():void {
 
 			assertThat(function():void {
 				_displayTreeBuilder.uses(_contextView).containing
