@@ -6,7 +6,7 @@ A declarative language to set up trees of display objects.
 
     var displayTree:DisplayTree = new DisplayTree();
 
-    treeBuilder. uses(rootView). containing.
+    displayTree. uses(rootView). containing.
 
     	//Adds a Sprite with the name "Menu", containing one
     	//instance of each FullScreenButton and EditButton
