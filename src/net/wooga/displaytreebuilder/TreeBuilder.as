@@ -301,6 +301,9 @@ package net.wooga.displaytreebuilder {
 			object[propertyName] = value;
 		}
 
+		internal function valueExternal(value:*):void {
+			applyToAllObjects(setProperty, _instancePropertyName, value);
+		}
 
 		internal function set instancePropertyName(value:String):void {
 			_instancePropertyName = value;

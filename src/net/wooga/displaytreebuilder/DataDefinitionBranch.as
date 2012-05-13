@@ -2,13 +2,11 @@ package net.wooga.displaytreebuilder {
 	import flash.display.DisplayObject;
 
 	import net.wooga.displaytreebuilder.grammar.BlockContent;
-
-	import net.wooga.displaytreebuilder.grammar.datadefinition.BlockContent$CollectionProperty__DataDef$BlockStart;
 	import net.wooga.displaytreebuilder.grammar.BlockContent$Finish;
-	import net.wooga.displaytreebuilder.grammar.BlockContent$InstanceModification;
 	import net.wooga.displaytreebuilder.grammar.BlockContent$Property;
 	import net.wooga.displaytreebuilder.grammar.InstanceModification;
 	import net.wooga.displaytreebuilder.grammar.Instantiation;
+	import net.wooga.displaytreebuilder.grammar.datadefinition.BlockContent$CollectionProperty__DataDef$BlockStart;
 	import net.wooga.displaytreebuilder.grammar.datadefinition.ItemToUse__DataDef;
 	import net.wooga.displaytreebuilder.grammar.datadefinition._setToThe__DataDef;
 
@@ -41,8 +39,9 @@ package net.wooga.displaytreebuilder {
 			return this;
 		}
 
-		public function value(value:*):BlockContent$InstanceModification {
-			return _originalObject.value(value);
+		public function value(value:*):BlockContent$CollectionProperty__DataDef$BlockStart {
+			_originalObject.valueExternal(value);
+			return this;
 		}
 
 

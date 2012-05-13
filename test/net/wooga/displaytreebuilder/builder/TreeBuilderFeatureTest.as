@@ -487,6 +487,25 @@ package net.wooga.displaytreebuilder.builder {
 		}
 
 
+		[Test]
+		public function should_allow_setting_item_property_after_setting_value():void {
+
+			var dataArray:Array = [
+				100,
+				200,
+				300
+			];
+
+
+			_displayTreeBuilder.uses(_contextView).containing
+					.a(TestSprite1).forEveryItemIn(dataArray)
+						.withTheProperty("name").setToThe.value("Some name")
+						.withTheProperty("x").setToThe.item
+
+					.end.finish();
+		}
+
+
 		//TODO (arneschroppe 21/12/11) also make it possible to set ctor arguments
 		/*
 		 _displayTreeBuilder.hasA(_contextView).containing
