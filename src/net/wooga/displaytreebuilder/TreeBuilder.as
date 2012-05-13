@@ -1,5 +1,6 @@
 package net.wooga.displaytreebuilder {
 	import flash.display.DisplayObject;
+	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 
 	import net.wooga.displaytreebuilder.grammar.BlockContent;
@@ -18,6 +19,7 @@ package net.wooga.displaytreebuilder {
 	import net.wooga.displaytreebuilder.grammar.TreeStart;
 	import net.wooga.displaytreebuilder.grammar._finish;
 	import net.wooga.displaytreebuilder.grammar._setToThe;
+	import net.wooga.displaytreebuilder.tools.InstantiationTool;
 
 	import org.as3commons.collections.framework.IIterable;
 	import org.as3commons.collections.framework.IIterator;
@@ -44,6 +46,7 @@ package net.wooga.displaytreebuilder {
 		private var _isCheckingUnfinishedStatements:Boolean = true;
 
 		private var _delayedInstanceCreation:Boolean;
+		private var _constructorArgs:Array;
 
 
 		public function set isCheckingUnfinishedStatements(value:Boolean):void {
@@ -99,7 +102,7 @@ package net.wooga.displaytreebuilder {
 
 
 		private function addClassInternal(container:DisplayObjectContainer, index:int, Type:Class):void {
-			var instance:DisplayObject = new Type();
+			var instance:DisplayObject = DisplayObject(InstantiationTool.instantiate(Type, _constructorArgs));
 			addInstanceInternal(container, index, instance);
 		}
 
@@ -143,6 +146,13 @@ package net.wooga.displaytreebuilder {
 			return this;
 		}
 
+		public function withTheConstructorArguments(...args):BlockContent {
+
+			_constructorArgs = args;
+			createDelayedInstanceIfNeeded();
+			_constructorArgs = null;
+			return this;
+		}
 
 		public function theInstance(object:DisplayObject):BlockContent$Property {
 			createDelayedInstanceIfNeeded();
@@ -316,5 +326,7 @@ package net.wooga.displaytreebuilder {
 		internal function itemExternal():void {
 			applyToAllObjects(setPropertyOnObjectToInstance, _instancePropertyName);
 		}
+
+
 	}
 }

@@ -488,6 +488,20 @@ package net.wooga.displaytreebuilder.builder {
 
 
 		[Test]
+		public function should_allow_setting_of_constructor_arguments():void {
+
+
+			_displayTreeBuilder.uses(_contextView).containing
+					.a(CtorTestSprite)
+						.withTheConstructorArguments("testprop", -129873)
+				.end.finish();
+
+			assertThat(_contextView.numChildren, equalTo(1));
+			assertThat(_contextView.getChildAt(0), allOf(isA(CtorTestSprite), hasPropertyWithValue("prop1", "testprop"), hasPropertyWithValue("prop2", -129873)));
+		}
+
+
+		[Test]
 		public function should_allow_setting_item_property_after_setting_value():void {
 
 			var dataArray:Array = [
@@ -499,10 +513,15 @@ package net.wooga.displaytreebuilder.builder {
 
 			_displayTreeBuilder.uses(_contextView).containing
 					.a(TestSprite1).forEveryItemIn(dataArray)
-						.withTheProperty("name").setToThe.value("Some name")
+						.withTheProperty("name").setToThe.value("Some Name")
 						.withTheProperty("x").setToThe.item
 
 					.end.finish();
+
+			assertThat(_contextView.numChildren, equalTo(3));
+			assertThat(_contextView.getChildAt(0), allOf(isA(TestSprite1), hasPropertyWithValue("name", "Some Name"), hasPropertyWithValue("x", 100)));
+			assertThat(_contextView.getChildAt(1), allOf(isA(TestSprite1), hasPropertyWithValue("name", "Some Name"), hasPropertyWithValue("x", 200)));
+			assertThat(_contextView.getChildAt(2), allOf(isA(TestSprite1), hasPropertyWithValue("name", "Some Name"), hasPropertyWithValue("x", 300)));
 		}
 
 
@@ -571,5 +590,30 @@ class TestSprite2 extends Sprite {
 }
 
 class TestSprite3 extends Sprite {
+
+}
+
+
+
+class CtorTestSprite extends Sprite {
+
+	private var _prop1:String;
+	private var _prop2:int;
+
+
+	public function CtorTestSprite(prop1:String, prop2:int) {
+		_prop1 = prop1;
+		_prop2 = prop2;
+	}
+
+
+	public function get prop1():String {
+		return _prop1;
+	}
+
+	public function get prop2():int {
+		return _prop2;
+	}
+
 
 }
