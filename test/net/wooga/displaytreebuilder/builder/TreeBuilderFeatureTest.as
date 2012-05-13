@@ -501,6 +501,30 @@ package net.wooga.displaytreebuilder.builder {
 		}
 
 
+
+
+		[Test]
+		public function should_allow_setting_of_constructor_arguments_with_collection():void {
+
+			var data:Array = ["a", "b", "c"];
+
+			_displayTreeBuilder.uses(_contextView).containing
+					.a(CtorTestSprite).withTheConstructorArguments("testprop", -129873)
+						.forEveryItemIn(data)
+							.withTheProperty("name").setToThe.item
+					.end.finish();
+
+			assertThat(_contextView.numChildren, equalTo(3));
+			assertThat(_contextView.getChildAt(0), allOf(isA(CtorTestSprite), hasPropertyWithValue("name", "a"), hasPropertyWithValue("prop1", "testprop"), hasPropertyWithValue("prop2", -129873)));
+			assertThat(_contextView.getChildAt(1), allOf(isA(CtorTestSprite), hasPropertyWithValue("name", "b"), hasPropertyWithValue("prop1", "testprop"), hasPropertyWithValue("prop2", -129873)));
+			assertThat(_contextView.getChildAt(2), allOf(isA(CtorTestSprite), hasPropertyWithValue("name", "c"), hasPropertyWithValue("prop1", "testprop"), hasPropertyWithValue("prop2", -129873)));
+		}
+
+
+
+		//TODO (arneschroppe 13/05/2012) we should also be able to set a specific constructor arg to the item or item-property
+
+
 		[Test]
 		public function should_allow_setting_item_property_after_setting_value():void {
 

@@ -1,11 +1,9 @@
 package net.wooga.displaytreebuilder {
 	import flash.display.DisplayObject;
-	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 
 	import net.wooga.displaytreebuilder.grammar.BlockContent;
 	import net.wooga.displaytreebuilder.grammar.BlockContent$CollectionProperty$BlockStart;
-	import net.wooga.displaytreebuilder.grammar.datadefinition.BlockContent$CollectionProperty__DataDef$BlockStart;
 	import net.wooga.displaytreebuilder.grammar.BlockContent$Finish;
 	import net.wooga.displaytreebuilder.grammar.BlockContent$InstanceModification;
 	import net.wooga.displaytreebuilder.grammar.BlockContent$Property;
@@ -19,6 +17,7 @@ package net.wooga.displaytreebuilder {
 	import net.wooga.displaytreebuilder.grammar.TreeStart;
 	import net.wooga.displaytreebuilder.grammar._finish;
 	import net.wooga.displaytreebuilder.grammar._setToThe;
+	import net.wooga.displaytreebuilder.grammar.datadefinition.BlockContent$CollectionProperty__DataDef$BlockStart;
 	import net.wooga.displaytreebuilder.tools.InstantiationTool;
 
 	import org.as3commons.collections.framework.IIterable;
@@ -127,6 +126,7 @@ package net.wooga.displaytreebuilder {
 			}
 			_delayedInstanceCreation = false;
 			loopOnContainers(addClassInternal, [_currentDataType]);
+			_constructorArgs = null;
 		}
 
 
@@ -146,11 +146,8 @@ package net.wooga.displaytreebuilder {
 			return this;
 		}
 
-		public function withTheConstructorArguments(...args):BlockContent {
-
+		public function withTheConstructorArguments(...args):BlockContent$InstanceModification {
 			_constructorArgs = args;
-			createDelayedInstanceIfNeeded();
-			_constructorArgs = null;
 			return this;
 		}
 
@@ -326,7 +323,6 @@ package net.wooga.displaytreebuilder {
 		internal function itemExternal():void {
 			applyToAllObjects(setPropertyOnObjectToInstance, _instancePropertyName);
 		}
-
 
 	}
 }
