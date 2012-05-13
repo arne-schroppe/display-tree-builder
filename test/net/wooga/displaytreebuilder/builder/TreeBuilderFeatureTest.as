@@ -522,6 +522,66 @@ package net.wooga.displaytreebuilder.builder {
 
 
 
+		[Test]
+		public function should_allow_setting_of_constructor_arguments_with_content():void {
+
+			_displayTreeBuilder.uses(_contextView).containing
+				.a(CtorTestSprite).withTheConstructorArguments("test2", -78686).containing
+					.a(TestSprite1)
+				.end
+			.end.finish();
+
+
+			assertThat(_contextView.numChildren, equalTo(1));
+			assertThat(_contextView.getChildAt(0), allOf(isA(CtorTestSprite), hasPropertyWithValue("prop1", "test2"), hasPropertyWithValue("prop2", -78686)));
+
+			assertThat(Sprite(_contextView.getChildAt(0)).numChildren, equalTo(1));
+			assertThat(Sprite(_contextView.getChildAt(0)).getChildAt(0), isA(TestSprite1));
+		}
+
+
+
+		[Test]
+		public function should_allow_nesting_of_constructor_arguments():void {
+
+			_displayTreeBuilder.uses(_contextView).containing
+					.a(CtorTestSprite).withTheConstructorArguments("test2", -78686).containing
+						.a(CtorTestSprite).withTheConstructorArguments("nested", 1233243)
+					.end
+				.end.finish();
+
+
+			assertThat(_contextView.numChildren, equalTo(1));
+			assertThat(_contextView.getChildAt(0), allOf(isA(CtorTestSprite), hasPropertyWithValue("prop1", "test2"), hasPropertyWithValue("prop2", -78686)));
+
+			assertThat(Sprite(_contextView.getChildAt(0)).numChildren, equalTo(1));
+			assertThat(Sprite(_contextView.getChildAt(0)).getChildAt(0), allOf(isA(CtorTestSprite), hasPropertyWithValue("prop1", "nested"), hasPropertyWithValue("prop2", 1233243)));
+		}
+
+
+
+
+		[Test]
+		public function should_allow_nesting_of_constructor_arguments_with_another_ctor_afterwards():void {
+
+			_displayTreeBuilder.uses(_contextView).containing
+					.a(CtorTestSprite).withTheConstructorArguments("test2", -78686).containing
+						.a(CtorTestSprite).withTheConstructorArguments("nested", 1233243)
+					.end
+					.a(CtorTestSprite).withTheConstructorArguments("sequence", 3746)
+				.end.finish();
+
+
+			assertThat(_contextView.numChildren, equalTo(2));
+			assertThat(_contextView.getChildAt(0), allOf(isA(CtorTestSprite), hasPropertyWithValue("prop1", "test2"), hasPropertyWithValue("prop2", -78686)));
+			assertThat(_contextView.getChildAt(1), allOf(isA(CtorTestSprite), hasPropertyWithValue("prop1", "sequence"), hasPropertyWithValue("prop2", 3746)));
+
+			assertThat(Sprite(_contextView.getChildAt(0)).numChildren, equalTo(1));
+			assertThat(Sprite(_contextView.getChildAt(0)).getChildAt(0), allOf(isA(CtorTestSprite), hasPropertyWithValue("prop1", "nested"), hasPropertyWithValue("prop2", 1233243)));
+		}
+
+
+
 		//TODO (arneschroppe 13/05/2012) we should also be able to set a specific constructor arg to the item or item-property
 
 
