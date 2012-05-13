@@ -297,6 +297,8 @@ package net.wooga.displaytreebuilder.builder {
 		}
 
 
+		//TODO (arneschroppe 31/1/12) also allow using dictionaries, maps and objects ??
+
 		[Test]
 		public function should_initialize_from_data_array():void {
 
@@ -609,16 +611,7 @@ package net.wooga.displaytreebuilder.builder {
 		}
 
 
-		//TODO (arneschroppe 21/12/11) also make it possible to set ctor arguments
-		/*
-		 _displayTreeBuilder.hasA(_contextView).containing
-		 	.a(Sprite).forEveryItemIn(dataArray)
-		 		.withThe.constructorArgumentAtPosition(1).setToThe.itemProperty("field")
-		 .end.finish();
-
-		* */
-
-		//TODO (arneschroppe 31/1/12) also allow using dictionaries, maps and objects ??
+		
 
 
 		[Test]
