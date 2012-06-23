@@ -611,20 +611,20 @@ package net.wooga.displaytreebuilder.builder {
 		}
 
 
-		[Test]
-		public function should_allow_calling_of_methods():void {
-
-			_displayTreeBuilder.uses(_contextView).containing
-					.a(InitTestSprite)
-						.withTheMethod("init").calledWith.param("test string").param(3294).theItem.param(-1)
-						.withTheMethod("init").calledWith("test string", 3294, theItem())
-						.withTheMethod("init").calledWithArgs("test string", 3294).theItem().args(-1, "abcde")
-					.end.finish();
-
-			assertThat(_contextView.numChildren, equalTo(1));
-			assertThat(_contextView.getChildAt(0), allOf(isA(CtorTestSprite), hasPropertyWithValue("prop1", "test string"), hasPropertyWithValue("prop2", 3294)));
-
-		}
+//		[Test]
+//		public function should_allow_calling_of_methods():void {
+//
+//			_displayTreeBuilder.uses(_contextView).containing
+//					.a(InitTestSprite)
+//						.withTheMethod("init").calledWith.param("test string").param(3294).theItem.param(-1)
+//						.withTheMethod("init").calledWith("test string", 3294, theItem())
+//						.withTheMethod("init").calledWithArgs("test string", 3294).theItem().args(-1, "abcde")
+//					.end.finish();
+//
+//			assertThat(_contextView.numChildren, equalTo(1));
+//			assertThat(_contextView.getChildAt(0), allOf(isA(CtorTestSprite), hasPropertyWithValue("prop1", "test string"), hasPropertyWithValue("prop2", 3294)));
+//
+//		}
 
 
 		[Test]
