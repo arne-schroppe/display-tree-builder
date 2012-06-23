@@ -1,5 +1,7 @@
 package net.wooga.displaytreebuilder.grammar {
-	public interface InstanceModification extends BlockStart, NameProperty, CollectionProperty, Storage, BlockEnd, BlockContent, DataDefinition {
+	import net.wooga.displaytreebuilder.grammar.ClassAndId;
+
+	public interface InstanceModification extends BlockStart, ClassAndId, NameProperty, CollectionProperty, Storage, BlockEnd, BlockContent, DataDefinition {
 		
 	}
 }

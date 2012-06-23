@@ -19,6 +19,7 @@ package net.wooga.displaytreebuilder {
 	import net.wooga.displaytreebuilder.grammar._setToThe;
 	import net.wooga.displaytreebuilder.grammar.datadefinition.BlockContent$CollectionProperty__DataDef$BlockStart;
 	import net.wooga.displaytreebuilder.tools.InstantiationTool;
+	import net.wooga.selectors.selectoradapter.SelectorEvent;
 
 	import org.as3commons.collections.framework.IIterable;
 	import org.as3commons.collections.framework.IIterator;
@@ -303,6 +304,22 @@ package net.wooga.displaytreebuilder {
 			return this;
 		}
 
+
+		public function withTheId(id:String):BlockContent$InstanceModification {
+			loopOnContainers(setIdInternal, [id]);
+			return this;
+		}
+
+
+		private function setIdInternal(container:DisplayObjectContainer, index:int, id:String):void {
+			container.dispatchEvent(new SelectorEvent(SelectorEvent.SET_ID, id));
+		}
+
+
+		public function withTheClasses(...classes:Array):BlockContent$InstanceModification {
+
+			return this;
+		}
 
 		private function setProperty(object:DisplayObject, index:int, propertyName:String, value:*):void {
 			object[propertyName] = value;
