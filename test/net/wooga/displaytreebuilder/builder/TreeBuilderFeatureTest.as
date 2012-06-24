@@ -8,7 +8,9 @@ package net.wooga.displaytreebuilder.builder {
 	import net.wooga.fixtures.TestSprite1;
 	import net.wooga.fixtures.TestSprite2;
 	import net.wooga.fixtures.TestSprite3;
+	import net.wooga.selectors.AbstractSelectorFactory;
 	import net.wooga.selectors.displaylist.DisplayListSelectorFactory;
+	import net.wooga.selectors.displaylist.DisplayObjectSelectorAdapter;
 	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 	import net.wooga.utils.flexunit.FlexUnitUtils;
 
@@ -18,13 +20,14 @@ package net.wooga.displaytreebuilder.builder {
 	import org.hamcrest.core.isA;
 	import org.hamcrest.object.equalTo;
 	import org.hamcrest.object.hasPropertyWithValue;
+	import org.hamcrest.object.notNullValue;
 
 	public class TreeBuilderFeatureTest {
 
 		private var _contextView:Sprite;
 
 		private var _displayTreeBuilder:DisplayTree;
-		private var _selectorFactory:DisplayListSelectorFactory;
+		private var _selectorFactory:AbstractSelectorFactory;
 
 
 		[Before]
@@ -32,8 +35,9 @@ package net.wooga.displaytreebuilder.builder {
 			_contextView = new Sprite();
 			FlexUnitUtils.stage.addChild(_contextView);
 
-			_selectorFactory = new DisplayListSelectorFactory();
+			_selectorFactory = new DisplayListSelectorFactory(false);
 			_selectorFactory.initializeWith(_contextView);
+			_selectorFactory.setDefaultSelectorAdapter(DisplayObjectSelectorAdapter)
 
 			_displayTreeBuilder = new DisplayTree();
 		}
@@ -675,6 +679,24 @@ package net.wooga.displaytreebuilder.builder {
 
 
 		[Test]
+		public function should_create_selector_adapter():void {
+
+
+			var instances:Array = [];
+
+			_displayTreeBuilder.uses(_contextView).containing
+					.a(TestSprite2)
+					.a(TestSprite1).whichWillBeStoredIn(instances).withASelectorAdapterFrom(_selectorFactory)
+					.a(TestSprite2)
+				.end.finish();
+
+
+			var adapter:SelectorAdapter = _selectorFactory.getSelectorAdapterOf(instances[0]);
+			assertThat(adapter, notNullValue());
+		}
+
+
+		[Test]
 		public function should_set_selector_id():void {
 
 
@@ -683,7 +705,9 @@ package net.wooga.displaytreebuilder.builder {
 			var testId:String = "testId12q34";
 
 			_displayTreeBuilder.uses(_contextView).containing
-					.a(TestSprite1).withTheId(testId).whichWillBeStoredIn(instances)
+					.a(TestSprite2)
+					.a(TestSprite1).withASelectorAdapterFrom(_selectorFactory).withTheId(testId).whichWillBeStoredIn(instances)
+					.a(TestSprite2)
 				.end.finish();
 
 
@@ -704,7 +728,9 @@ package net.wooga.displaytreebuilder.builder {
 			var className3:String = "className_q9youi";
 
 			_displayTreeBuilder.uses(_contextView).containing
-					.a(TestSprite1).withTheClasses(className1, className2, className3).whichWillBeStoredIn(instances)
+					.a(TestSprite2)
+					.a(TestSprite1).withASelectorAdapterFrom(_selectorFactory).withTheClasses(className1, className2, className3).whichWillBeStoredIn(instances)
+					.a(TestSprite2)
 				.end.finish();
 
 

@@ -19,6 +19,7 @@ package net.wooga.displaytreebuilder {
 	import net.wooga.displaytreebuilder.grammar._setToThe;
 	import net.wooga.displaytreebuilder.grammar.datadefinition.BlockContent$CollectionProperty__DataDef$BlockStart;
 	import net.wooga.displaytreebuilder.tools.InstantiationTool;
+	import net.wooga.selectors.AbstractSelectorFactory;
 	import net.wooga.selectors.selectoradapter.SelectorEvent;
 
 	import org.as3commons.collections.framework.IIterable;
@@ -307,7 +308,7 @@ package net.wooga.displaytreebuilder {
 
 		public function withTheId(id:String):BlockContent$InstanceModification {
 			createDelayedInstanceIfNeeded();
-			applyToAllObjects(setIdInternal, [id]);
+			applyToAllObjects(setIdInternal, id);
 			return this;
 		}
 
@@ -319,17 +320,26 @@ package net.wooga.displaytreebuilder {
 
 		public function withTheClasses(...classes:Array):BlockContent$InstanceModification {
 			createDelayedInstanceIfNeeded();
-			applyToAllObjects(addClassesInternal, [classes]);
+			applyToAllObjects(addClassesInternal, classes);
 			return this;
 		}
 
 		private function addClassesInternal(object:DisplayObject, index:int, classes:Array):void {
-			//Note for strange reasons that I don't understand, we have to use classes[0] instead of classes, otherwise we get a comma separated string of the content (asc 2012/06/24)
-			for each(var className:String in classes[0]) {
+			for each(var className:String in classes) {
 				object.dispatchEvent(new SelectorEvent(SelectorEvent.ADD_CLASS, className));
 			}
 		}
 
+
+		public function withASelectorAdapterFrom(selectorFactory:AbstractSelectorFactory):BlockContent$InstanceModification {
+			createDelayedInstanceIfNeeded();
+			applyToAllObjects(setAdapterInternal, selectorFactory);
+			return this;
+		}
+
+		private function setAdapterInternal(object:DisplayObject, index:int, selectorFactory:AbstractSelectorFactory):void {
+			selectorFactory.createSelectorAdapterFor(object);
+		}
 
 		private function setProperty(object:DisplayObject, index:int, propertyName:String, value:*):void {
 			object[propertyName] = value;
