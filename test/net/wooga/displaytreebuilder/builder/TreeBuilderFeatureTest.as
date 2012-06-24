@@ -4,6 +4,12 @@ package net.wooga.displaytreebuilder.builder {
 	import flash.display.Sprite;
 
 	import net.wooga.displaytreebuilder.DisplayTree;
+	import net.wooga.fixtures.CtorTestSprite;
+	import net.wooga.fixtures.TestSprite1;
+	import net.wooga.fixtures.TestSprite2;
+	import net.wooga.fixtures.TestSprite3;
+	import net.wooga.selectors.displaylist.DisplayListSelectorFactory;
+	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 	import net.wooga.utils.flexunit.FlexUnitUtils;
 
 	import org.as3commons.collections.ArrayList;
@@ -18,12 +24,16 @@ package net.wooga.displaytreebuilder.builder {
 		private var _contextView:Sprite;
 
 		private var _displayTreeBuilder:DisplayTree;
+		private var _selectorFactory:DisplayListSelectorFactory;
 
 
 		[Before]
 		public function setUp():void {
 			_contextView = new Sprite();
 			FlexUnitUtils.stage.addChild(_contextView);
+
+			_selectorFactory = new DisplayListSelectorFactory();
+			_selectorFactory.initializeWith(_contextView);
 
 			_displayTreeBuilder = new DisplayTree();
 		}
@@ -662,73 +672,46 @@ package net.wooga.displaytreebuilder.builder {
 			assertThat(_contextView.getChildAt(2), allOf(hasPropertyWithValue("testProperty", ""), hasPropertyWithValue("testProperty2", "")));
 
 		}
+
+
+		[Test]
+		public function should_set_selector_id():void {
+
+
+			var instances:Array = [];
+
+			var testId:String = "testId12q34";
+
+			_displayTreeBuilder.uses(_contextView).containing
+					.a(TestSprite1).withTheId(testId).whichWillBeStoredIn(instances)
+				.end.finish();
+
+
+			var adapter:SelectorAdapter = _selectorFactory.getSelectorAdapterOf(instances[0]);
+			assertThat(adapter.getId(), equalTo(testId));
+		}
+
+
+
+
+		[Test]
+		public function should_add_selector_classes():void {
+
+			var instances:Array = [];
+
+			var className1:String = "className_1239283";
+			var className2:String = "className_o9a8wyh";
+			var className3:String = "className_q9youi";
+
+			_displayTreeBuilder.uses(_contextView).containing
+					.a(TestSprite1).withTheClasses(className1, className2, className3).whichWillBeStoredIn(instances)
+				.end.finish();
+
+
+			var adapter:SelectorAdapter = _selectorFactory.getSelectorAdapterOf(instances[0]);
+			assertThat(adapter.hasClass(className1), equalTo(true));
+			assertThat(adapter.hasClass(className2), equalTo(true));
+			assertThat(adapter.hasClass(className3), equalTo(true));
+		}
  	}
-}
-
-import flash.display.Sprite;
-
-class TestSprite1 extends Sprite {
-
-
-}
-
-class TestSprite2 extends Sprite {
-
-	public var testProperty:String = "";
-	public var testProperty2:String = "";
-
-}
-
-class TestSprite3 extends Sprite {
-
-}
-
-
-
-class CtorTestSprite extends Sprite {
-
-	private var _prop1:String;
-	private var _prop2:int;
-
-
-	public function CtorTestSprite(prop1:String, prop2:int) {
-		_prop1 = prop1;
-		_prop2 = prop2;
-	}
-
-
-	public function get prop1():String {
-		return _prop1;
-	}
-
-	public function get prop2():int {
-		return _prop2;
-	}
-
-
-}
-
-
-
-class InitTestSprite extends Sprite {
-
-	private var _prop1:String;
-	private var _prop2:int;
-
-
-	public function init(prop1:String, prop2:int):void {
-		_prop1 = prop1;
-		_prop2 = prop2;
-	}
-
-
-	public function get prop1():String {
-		return _prop1;
-	}
-
-	public function get prop2():int {
-		return _prop2;
-	}
-
-
 }

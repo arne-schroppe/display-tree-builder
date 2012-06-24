@@ -306,20 +306,30 @@ package net.wooga.displaytreebuilder {
 
 
 		public function withTheId(id:String):BlockContent$InstanceModification {
-			loopOnContainers(setIdInternal, [id]);
+			createDelayedInstanceIfNeeded();
+			applyToAllObjects(setIdInternal, [id]);
 			return this;
 		}
 
 
-		private function setIdInternal(container:DisplayObjectContainer, index:int, id:String):void {
-			container.dispatchEvent(new SelectorEvent(SelectorEvent.SET_ID, id));
+		private function setIdInternal(object:DisplayObject, index:int, id:String):void {
+			object.dispatchEvent(new SelectorEvent(SelectorEvent.SET_ID, id));
 		}
 
 
 		public function withTheClasses(...classes:Array):BlockContent$InstanceModification {
-
+			createDelayedInstanceIfNeeded();
+			applyToAllObjects(addClassesInternal, [classes]);
 			return this;
 		}
+
+		private function addClassesInternal(object:DisplayObject, index:int, classes:Array):void {
+			//Note for strange reasons that I don't understand, we have to use classes[0] instead of classes, otherwise we get a comma separated string of the content (asc 2012/06/24)
+			for each(var className:String in classes[0]) {
+				object.dispatchEvent(new SelectorEvent(SelectorEvent.ADD_CLASS, className));
+			}
+		}
+
 
 		private function setProperty(object:DisplayObject, index:int, propertyName:String, value:*):void {
 			object[propertyName] = value;
