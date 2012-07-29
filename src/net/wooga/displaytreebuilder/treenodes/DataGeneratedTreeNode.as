@@ -8,7 +8,7 @@ package net.wooga.displaytreebuilder.treenodes {
 		private var _multipliedTreeNode:ITreeNode;
 
 
-		public function DataGeneratedTreeNode(key:String, data:*) {
+		public function DataGeneratedTreeNode(data:*) {
 			_data = data;
 		}
 
