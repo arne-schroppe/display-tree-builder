@@ -1,11 +1,11 @@
-package net.wooga.displaytreebuilder {
+package net.wooga.displaytreebuilder.treenodes {
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
 	import flash.utils.Dictionary;
 
 	import net.wooga.displaytreebuilder.tools.InstantiationTool;
 
-	internal class TreeNode {
+	public class SingleTreeNode implements ITreeNode {
 
 		private var _type:Class;
 
@@ -14,14 +14,13 @@ package net.wooga.displaytreebuilder {
 
 		private var _initFunction:Function;
 
-		private var _children:Vector.<TreeNode> = new <TreeNode>[];
+		private var _children:Vector.<SingleTreeNode> = new <SingleTreeNode>[];
 
 
 		private var _container:DisplayObjectContainer;
 
 		//Only available after a call to build
 		private var _instance:DisplayObject;
-
 
 
 		public function buildSelfAndChildren():void {
@@ -59,7 +58,7 @@ package net.wooga.displaytreebuilder {
 
 
 		private function buildChildren():void {
-			for each(var child:TreeNode in _children) {
+			for each(var child:SingleTreeNode in _children) {
 				child.container = DisplayObjectContainer(_instance);
 				child.buildSelfAndChildren();
 			}
@@ -83,7 +82,7 @@ package net.wooga.displaytreebuilder {
 		}
 
 
-		public function addChild(child:TreeNode):void {
+		public function addChild(child:SingleTreeNode):void {
 			_children.push(child);
 		}
 

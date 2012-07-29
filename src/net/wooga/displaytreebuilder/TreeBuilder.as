@@ -142,6 +142,8 @@ package net.wooga.displaytreebuilder {
 
 			createDelayedInstanceIfNeeded();
 			initializePreviousElement();
+
+			//TODO (arneschroppe 30/07/2012) count must be positive
 			_count = count;
 			return this;
 		}
