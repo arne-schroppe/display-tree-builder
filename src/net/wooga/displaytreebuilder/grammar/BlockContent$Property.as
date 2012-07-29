@@ -1,4 +1,4 @@
 package net.wooga.displaytreebuilder.grammar {
-	public interface BlockContent$Property extends BlockContent, NameProperty, SelectorFeatures {
+	public interface BlockContent$Property extends BlockContent, NameProperty, InitializationFunction {
 	}
 }

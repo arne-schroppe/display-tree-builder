@@ -19,12 +19,12 @@ package net.wooga.displaytreebuilder {
 	import net.wooga.displaytreebuilder.grammar._setToThe;
 	import net.wooga.displaytreebuilder.grammar.datadefinition.BlockContent$CollectionProperty__DataDef$BlockStart;
 	import net.wooga.displaytreebuilder.tools.InstantiationTool;
-	import net.wooga.selectors.AbstractSelectorFactory;
-	import net.wooga.selectors.selectoradapter.SelectorEvent;
 
 	import org.as3commons.collections.framework.IIterable;
 	import org.as3commons.collections.framework.IIterator;
 
+
+	//TODO (arneschroppe 29/07/2012) instead of creating all elements on the fly, create a data structure internally and build tree on finish
 	internal class TreeBuilder implements BlockContent$Property, _finish, ItemToUse, _setToThe, BlockContent$CollectionProperty$BlockStart, BlockContent$Finish, BlockContent$InstanceModification, BlockStart, DataDefinition, TreeStart, Instantiation, NameProperty, Storage {
 
 		private var _currentContainersStack:Array = [
@@ -48,6 +48,8 @@ package net.wooga.displaytreebuilder {
 
 		private var _delayedInstanceCreation:Boolean;
 		private var _constructorArgs:Array;
+
+		private var _initFunction:Function;
 
 
 		public function set isCheckingUnfinishedStatements(value:Boolean):void {
@@ -85,6 +87,8 @@ package net.wooga.displaytreebuilder {
 
 		public function a(Type:Class):InstanceModification {
 			createDelayedInstanceIfNeeded();
+			initializePreviousElement();
+
 			clearCurrentObjects();
 			_currentDataType = Type;
 			_delayedInstanceCreation = true;
@@ -116,6 +120,8 @@ package net.wooga.displaytreebuilder {
 
 		public function get containing():BlockContent {
 			createDelayedInstanceIfNeeded();
+			initializePreviousElement();
+
 			_openSubTrees++;
 			_currentContainersStack.push(currentObjects.concat());
 			_currentObjectsStack.push([]);
@@ -133,14 +139,19 @@ package net.wooga.displaytreebuilder {
 
 
 		public function times(count:int):Instantiation {
+
 			createDelayedInstanceIfNeeded();
+			initializePreviousElement();
 			_count = count;
 			return this;
 		}
 
 
 		public function get end():BlockContent$Finish {
+
 			createDelayedInstanceIfNeeded();
+			initializePreviousElement();
+
 			_openSubTrees--;
 			_currentContainersStack.pop();
 			_currentObjectsStack.pop();
@@ -154,7 +165,10 @@ package net.wooga.displaytreebuilder {
 		}
 
 		public function theInstance(object:DisplayObject):BlockContent$Property {
+
 			createDelayedInstanceIfNeeded();
+			initializePreviousElement();
+
 			clearCurrentObjects();
 			if(currentContainers.length > 1) {
 				throw new Error("Cannot add an instance to several containers");
@@ -306,41 +320,6 @@ package net.wooga.displaytreebuilder {
 		}
 
 
-		public function withTheId(id:String):BlockContent$InstanceModification {
-			createDelayedInstanceIfNeeded();
-			applyToAllObjects(setIdInternal, id);
-			return this;
-		}
-
-
-		private function setIdInternal(object:DisplayObject, index:int, id:String):void {
-			object.dispatchEvent(new SelectorEvent(SelectorEvent.SET_ID, id));
-		}
-
-
-		public function withTheClasses(...classes:Array):BlockContent$InstanceModification {
-			createDelayedInstanceIfNeeded();
-			applyToAllObjects(addClassesInternal, classes);
-			return this;
-		}
-
-		private function addClassesInternal(object:DisplayObject, index:int, classes:Array):void {
-			for each(var className:String in classes) {
-				object.dispatchEvent(new SelectorEvent(SelectorEvent.ADD_CLASS, className));
-			}
-		}
-
-
-		public function withASelectorAdapterFrom(selectorFactory:AbstractSelectorFactory):BlockContent$InstanceModification {
-			createDelayedInstanceIfNeeded();
-			applyToAllObjects(setAdapterInternal, selectorFactory);
-			return this;
-		}
-
-		private function setAdapterInternal(object:DisplayObject, index:int, selectorFactory:AbstractSelectorFactory):void {
-			selectorFactory.createSelectorAdapterFor(object);
-		}
-
 		private function setProperty(object:DisplayObject, index:int, propertyName:String, value:*):void {
 			object[propertyName] = value;
 		}
@@ -361,5 +340,23 @@ package net.wooga.displaytreebuilder {
 			applyToAllObjects(setPropertyOnObjectToInstance, _instancePropertyName);
 		}
 
+
+		private function initializePreviousElement():void {
+			if(_initFunction == null) {
+				return;
+			}
+			applyToAllObjects(executeInitFunction, _initFunction);
+			_initFunction = null;
+		}
+
+
+		private function executeInitFunction(element:DisplayObject, index:int, initFunc:Function):void {
+			initFunc.call(element, element);
+		}
+
+		public function withTheInitializationFunction(initFunction:Function):InstanceModification {
+			_initFunction = initFunction;
+			return this;
+		}
 	}
 }

@@ -8,36 +8,29 @@ package net.wooga.displaytreebuilder.builder {
 	import net.wooga.fixtures.TestSprite1;
 	import net.wooga.fixtures.TestSprite2;
 	import net.wooga.fixtures.TestSprite3;
-	import net.wooga.selectors.AbstractSelectorFactory;
-	import net.wooga.selectors.displaylist.DisplayListSelectorFactory;
-	import net.wooga.selectors.displaylist.DisplayObjectSelectorAdapter;
-	import net.wooga.selectors.selectoradapter.SelectorAdapter;
 	import net.wooga.utils.flexunit.FlexUnitUtils;
 
 	import org.as3commons.collections.ArrayList;
+	import org.flexunit.asserts.assertEquals;
 	import org.hamcrest.assertThat;
 	import org.hamcrest.core.allOf;
 	import org.hamcrest.core.isA;
 	import org.hamcrest.object.equalTo;
 	import org.hamcrest.object.hasPropertyWithValue;
 	import org.hamcrest.object.notNullValue;
+	import org.hamcrest.object.strictlyEqualTo;
 
 	public class TreeBuilderFeatureTest {
 
 		private var _contextView:Sprite;
 
 		private var _displayTreeBuilder:DisplayTree;
-		private var _selectorFactory:AbstractSelectorFactory;
 
 
 		[Before]
 		public function setUp():void {
 			_contextView = new Sprite();
 			FlexUnitUtils.stage.addChild(_contextView);
-
-			_selectorFactory = new DisplayListSelectorFactory(false);
-			_selectorFactory.initializeWith(_contextView);
-			_selectorFactory.setDefaultSelectorAdapter(DisplayObjectSelectorAdapter)
 
 			_displayTreeBuilder = new DisplayTree();
 		}
@@ -661,6 +654,9 @@ package net.wooga.displaytreebuilder.builder {
 		}
 
 
+
+
+
 		[Test]
 		public function should_allow_to_set_a_property_on_created_objects():void {
 
@@ -679,65 +675,57 @@ package net.wooga.displaytreebuilder.builder {
 
 
 		[Test]
-		public function should_create_selector_adapter():void {
-
-
+		public function should_provide_post_construct_functions():void {
 			var instances:Array = [];
+
+			var initializedElement:DisplayObject = null;
 
 			_displayTreeBuilder.uses(_contextView).containing
 					.a(TestSprite2)
-					.a(TestSprite1).whichWillBeStoredIn(instances).withASelectorAdapterFrom(_selectorFactory)
+					.a(TestSprite1).whichWillBeStoredIn(instances).withTheInitializationFunction(function(element:DisplayObject):void{ initializedElement = element })
 					.a(TestSprite2)
 				.end.finish();
 
-
-			var adapter:SelectorAdapter = _selectorFactory.getSelectorAdapterOf(instances[0]);
-			assertThat(adapter, notNullValue());
-		}
-
-
-		[Test]
-		public function should_set_selector_id():void {
-
-
-			var instances:Array = [];
-
-			var testId:String = "testId12q34";
-
-			_displayTreeBuilder.uses(_contextView).containing
-					.a(TestSprite2)
-					.a(TestSprite1).withASelectorAdapterFrom(_selectorFactory).withTheId(testId).whichWillBeStoredIn(instances)
-					.a(TestSprite2)
-				.end.finish();
-
-
-			var adapter:SelectorAdapter = _selectorFactory.getSelectorAdapterOf(instances[0]);
-			assertThat(adapter.getId(), equalTo(testId));
+			assertThat(initializedElement, notNullValue());
+			assertThat(initializedElement, strictlyEqualTo(instances[0]));
 		}
 
 
 
 
 		[Test]
-		public function should_add_selector_classes():void {
+		public function should_call_init_function_after_the_element_was_added_to_stage():void {
 
-			var instances:Array = [];
-
-			var className1:String = "className_1239283";
-			var className2:String = "className_o9a8wyh";
-			var className3:String = "className_q9youi";
+			var wasAddedToStage:Boolean = false;
 
 			_displayTreeBuilder.uses(_contextView).containing
 					.a(TestSprite2)
-					.a(TestSprite1).withASelectorAdapterFrom(_selectorFactory).withTheClasses(className1, className2, className3).whichWillBeStoredIn(instances)
+					.a(TestSprite1).withTheInitializationFunction(function(element:DisplayObject):void{ wasAddedToStage = element.parent !== null })
 					.a(TestSprite2)
-				.end.finish();
+					.end.finish();
 
-
-			var adapter:SelectorAdapter = _selectorFactory.getSelectorAdapterOf(instances[0]);
-			assertThat(adapter.hasClass(className1), equalTo(true));
-			assertThat(adapter.hasClass(className2), equalTo(true));
-			assertThat(adapter.hasClass(className3), equalTo(true));
+			assertThat(wasAddedToStage, equalTo(true));
 		}
+
+
+
+
+
+		[Test]
+		public function should_execute_init_function_after_all_other_properties_have_been_set():void {
+
+			var data:Array = ["1", "2", "3", "4"];
+			var pointer:int = 0;
+
+			_displayTreeBuilder.uses(_contextView).containing
+					.a(TestSprite2)
+					.a(TestSprite2) .forEveryItemIn(data)
+						.withTheProperty("testProperty").setToThe.item
+						.withTheInitializationFunction(function(element:TestSprite2):void{ assertThat(element.testProperty, equalTo(data[pointer])); ++pointer })
+					.a(TestSprite2)
+					.end.finish();
+
+		}
+
  	}
 }

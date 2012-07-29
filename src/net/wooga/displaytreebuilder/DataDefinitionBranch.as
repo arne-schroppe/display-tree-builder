@@ -71,5 +71,9 @@ package net.wooga.displaytreebuilder {
 		}
 
 
+		public function withTheInitializationFunction(initFunction:Function):InstanceModification {
+
+			return _originalObject.withTheInitializationFunction(initFunction);
+		}
 	}
 }
