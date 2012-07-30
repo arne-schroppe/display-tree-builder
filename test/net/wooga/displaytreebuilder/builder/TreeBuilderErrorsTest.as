@@ -42,7 +42,7 @@ package net.wooga.displaytreebuilder.builder {
 
 			_displayTreeBuilder.uses(_contextView).containing
 					.a(TestSprite1)
-				.end //not finished
+				.end.finish() //not finished
 
 
 			assertThat(
@@ -58,7 +58,7 @@ package net.wooga.displaytreebuilder.builder {
 
 			_displayTreeBuilder.uses(_contextView).containing
 				.a(TestSprite1)
-			.end //not finished
+			.end.finish() //not finished
 
 
 			assertThat(

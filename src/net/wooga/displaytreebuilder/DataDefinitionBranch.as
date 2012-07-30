@@ -19,8 +19,7 @@ package net.wooga.displaytreebuilder {
 
 
 		public function withTheProperty(propertyName:String):_setToThe__DataDef {
-			_originalObject.createDelayedInstanceIfNeeded();
-			_originalObject.instancePropertyName = propertyName;
+
 			return this;
 		}
 
@@ -30,17 +29,14 @@ package net.wooga.displaytreebuilder {
 		}
 
 		public function itemProperty(propertyName:String):BlockContent$CollectionProperty__DataDef$BlockStart {
-			_originalObject.itemPropertyExternal(propertyName);
 			return this;
 		}
 
 		public function get item():BlockContent$CollectionProperty__DataDef$BlockStart {
-			_originalObject.itemExternal();
 			return this;
 		}
 
 		public function value(value:*):BlockContent$CollectionProperty__DataDef$BlockStart {
-			_originalObject.valueExternal(value);
 			return this;
 		}
 
@@ -70,9 +66,7 @@ package net.wooga.displaytreebuilder {
 			return _originalObject.containing;
 		}
 
-
 		public function withTheInitializationFunction(initFunction:Function):InstanceModification {
-
 			return _originalObject.withTheInitializationFunction(initFunction);
 		}
 	}

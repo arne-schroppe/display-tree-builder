@@ -725,6 +725,9 @@ package net.wooga.displaytreebuilder.builder {
 					.a(TestSprite2)
 					.end.finish();
 
+
+			assertThat(pointer, equalTo(data.length));
+
 		}
 
  	}

@@ -82,12 +82,16 @@ package net.wooga.displaytreebuilder.treenodes {
 		}
 
 
-		public function addChild(child:SingleTreeNode):void {
+		public function addChild(child:ITreeNode):void {
 			_children.push(child);
 		}
 
 		public function set container(value:DisplayObjectContainer):void {
 			_container = value;
+		}
+
+		public function get parent():ITreeNode {
+			return null;
 		}
 	}
 }

@@ -21,10 +21,6 @@ package net.wooga.displaytreebuilder.treenodes {
 			}
 		}
 
-		public function set type(value:Class):void {
-			_multipliedNode.type = value;
-		}
-
 		public function set constructorArgs(value:Array):void {
 			_multipliedNode.constructorArgs = value;
 		}
@@ -37,7 +33,7 @@ package net.wooga.displaytreebuilder.treenodes {
 			_multipliedNode.initFunction = value;
 		}
 
-		public function addChild(child:SingleTreeNode):void {
+		public function addChild(child:ITreeNode):void {
 			_multipliedNode.addChild(child);
 		}
 
@@ -46,5 +42,8 @@ package net.wooga.displaytreebuilder.treenodes {
 		}
 
 
+		public function get parent():ITreeNode {
+			return null;
+		}
 	}
 }
