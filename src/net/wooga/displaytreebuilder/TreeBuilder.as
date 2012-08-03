@@ -25,8 +25,11 @@ package net.wooga.displaytreebuilder {
 	internal class TreeBuilder implements BlockContent$Property, _finish, ItemToUse, _setToThe, BlockContent$CollectionProperty$BlockStart, BlockContent$Finish, BlockContent$InstanceModification, BlockStart, DataDefinition, TreeStart, Instantiation, NameProperty, Storage {
 
 
-		private var _rootTreeNode:RootTreeNode = new RootTreeNode();
-		private var _currentNode:ITreeNode;
+		private var _rootTreeNode:RootTreeNode;
+		private var _currentContainer:ITreeNode;
+		private var _lastAddedNode:ITreeNode;
+
+		private var _parkedMultipleTreeNode:MultipleTreeNode;
 
 
 		private var _isCheckingUnfinishedStatements:Boolean = true;
@@ -42,8 +45,9 @@ package net.wooga.displaytreebuilder {
 		}
 
 		public function uses(object:DisplayObject):BlockStart {
-			_currentNode = _rootTreeNode;
+			_rootTreeNode = new RootTreeNode();
 			_rootTreeNode.root = object;
+			_lastAddedNode = _rootTreeNode;
 
 			return this;
 		}
@@ -54,13 +58,19 @@ package net.wooga.displaytreebuilder {
 			var node:SingleTreeNode = new SingleTreeNode();
 			node.type = Type;
 
-			if(_currentNode is MultipleTreeNode) {
-				MultipleTreeNode(_currentNode).multipliedNode = node;
+			var addedNode:ITreeNode;
+			if(_parkedMultipleTreeNode) {
+				_parkedMultipleTreeNode.multipliedNode = node;
+				addedNode = _parkedMultipleTreeNode;
+				_parkedMultipleTreeNode = null;
 			}
 			else {
-				_currentNode.addChild(node);
-				_currentNode = node;
+				addedNode = node;
 			}
+
+			_currentContainer.addChild(addedNode);
+
+			_lastAddedNode = addedNode;
 
 			return this;
 		}
@@ -72,38 +82,36 @@ package net.wooga.displaytreebuilder {
 
 
 		public function get containing():BlockContent {
-
+			_currentContainer = _lastAddedNode;
+			_lastAddedNode = null;
 			return this;
 		}
 
 
 
 		public function times(count:int):Instantiation {
-
+			_parkedMultipleTreeNode = new MultipleTreeNode(count);
 
 			return this;
 		}
 
 
 		public function get end():BlockContent$Finish {
-
-
-
+			_currentContainer = _currentContainer.parent;
+			_lastAddedNode = null;
 			return this;
 		}
 
 		public function withTheConstructorArguments(...args):BlockContent$InstanceModification {
+			_lastAddedNode.constructorArgs = args;
 			return this;
 		}
 
 		public function theInstance(object:DisplayObject):BlockContent$Property {
 
-
+			//TODO (arneschroppe 03/08/2012) implement me
 			return this;
 		}
-
-
-
 
 
 
@@ -114,10 +122,6 @@ package net.wooga.displaytreebuilder {
 
 
 
-		public function withTheProperty(instancePropertyName:String):_setToThe {
-
-			return this;
-		}
 
 
 
@@ -134,24 +138,35 @@ package net.wooga.displaytreebuilder {
 		}
 
 
+		private var _property:String;
+		public function withTheProperty(instancePropertyName:String):_setToThe {
+
+			_property = instancePropertyName;
+			return this;
+		}
+
+
 		public function get setToThe():ItemToUse {
 			return this;
 		}
 
 
 		public function value(value:*):BlockContent$InstanceModification {
+			_lastAddedNode.setProperty(_property, value);
+			_property = null;
 			return this;
 		}
 
 
 		public function withTheName(name:String):BlockContent$InstanceModification {
-
+			_lastAddedNode.setProperty("name", name);
 			return this;
 		}
 
 
 
 		public function withTheInitializationFunction(initFunction:Function):InstanceModification {
+			_lastAddedNode.initFunction = initFunction;
 			return this;
 		}
 	}

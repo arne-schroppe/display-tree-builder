@@ -4,7 +4,7 @@ package net.wooga.displaytreebuilder.treenodes {
 
 	public class RootTreeNode implements ITreeNode {
 
-		private var _children:Vector.<SingleTreeNode> = new <SingleTreeNode>[];
+		private var _children:Vector.<ITreeNode> = new <ITreeNode>[];
 
 
 		public function RootTreeNode() {
@@ -12,18 +12,17 @@ package net.wooga.displaytreebuilder.treenodes {
 
 
 		private var _root:DisplayObject;
+		private var _parent:ITreeNode;
 
 
 		public function buildSelfAndChildren():void {
 
-			for each(var child:SingleTreeNode in _children) {
+			for each(var child:ITreeNode in _children) {
 				child.container = DisplayObjectContainer(_root);
 				child.buildSelfAndChildren();
 			}
 		}
 
-		public function set type(value:Class):void {
-		}
 
 		public function set constructorArgs(value:Array):void {
 		}
@@ -35,17 +34,24 @@ package net.wooga.displaytreebuilder.treenodes {
 		}
 
 		public function addChild(child:ITreeNode):void {
+			_children.push(child);
+			child.parent = this;
 		}
 
-		public function set container(value:DisplayObjectContainer):void {
-		}
 
 		public function set root(value:DisplayObject):void {
 			_root = value;
 		}
 
 		public function get parent():ITreeNode {
-			return null;
+			return _parent;
+		}
+
+		public function set parent(value:ITreeNode):void {
+			_parent = value;
+		}
+
+		public function set container(container:DisplayObjectContainer):void {
 		}
 	}
 }

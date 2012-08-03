@@ -12,7 +12,9 @@ package net.wooga.displaytreebuilder.treenodes {
 
 		function addChild(child:ITreeNode):void;
 		function get parent():ITreeNode;
+		function set parent(value:ITreeNode):void;
 
-		function set container(value:DisplayObjectContainer):void;
+
+		function set container(container:DisplayObjectContainer):void;
 	}
 }

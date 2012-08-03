@@ -14,13 +14,14 @@ package net.wooga.displaytreebuilder.treenodes {
 
 		private var _initFunction:Function;
 
-		private var _children:Vector.<SingleTreeNode> = new <SingleTreeNode>[];
+		private var _children:Vector.<ITreeNode> = new <ITreeNode>[];
 
 
 		private var _container:DisplayObjectContainer;
 
 		//Only available after a call to build
 		private var _instance:DisplayObject;
+		private var _parent:ITreeNode;
 
 
 		public function buildSelfAndChildren():void {
@@ -53,12 +54,15 @@ package net.wooga.displaytreebuilder.treenodes {
 		}
 
 		private function executeInitFunction():void {
-			_initFunction.apply(null, _instance);
+			if(_initFunction == null) {
+				return;
+			}
+			_initFunction.call(null, _instance);
 		}
 
 
 		private function buildChildren():void {
-			for each(var child:SingleTreeNode in _children) {
+			for each(var child:ITreeNode in _children) {
 				child.container = DisplayObjectContainer(_instance);
 				child.buildSelfAndChildren();
 			}
@@ -84,6 +88,7 @@ package net.wooga.displaytreebuilder.treenodes {
 
 		public function addChild(child:ITreeNode):void {
 			_children.push(child);
+			child.parent = this;
 		}
 
 		public function set container(value:DisplayObjectContainer):void {
@@ -91,7 +96,11 @@ package net.wooga.displaytreebuilder.treenodes {
 		}
 
 		public function get parent():ITreeNode {
-			return null;
+			return _parent;
+		}
+
+		public function set parent(value:ITreeNode):void {
+			_parent = value;
 		}
 	}
 }

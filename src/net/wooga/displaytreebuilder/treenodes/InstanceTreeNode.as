@@ -45,5 +45,9 @@ package net.wooga.displaytreebuilder.treenodes {
 		public function get parent():ITreeNode {
 			return _parent;
 		}
+
+		public function set parent(value:ITreeNode):void {
+			_parent = value;
+		}
 	}
 }

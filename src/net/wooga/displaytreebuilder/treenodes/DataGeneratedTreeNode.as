@@ -41,12 +41,19 @@ package net.wooga.displaytreebuilder.treenodes {
 			_multipliedTreeNode.addChild(child);
 		}
 
-		public function set container(value:DisplayObjectContainer):void {
-			_multipliedTreeNode.container = value;
-		}
+
 
 		public function get parent():ITreeNode {
-			return null;
+			return _multipliedTreeNode.parent;
+		}
+
+		public function set parent(value:ITreeNode):void {
+			_multipliedTreeNode.parent = value;
+
+		}
+
+		public function set container(container:DisplayObjectContainer):void {
+			_multipliedTreeNode.container = container;
 		}
 	}
 }
