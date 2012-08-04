@@ -16,5 +16,8 @@ package net.wooga.displaytreebuilder.treenodes {
 
 
 		function set container(container:DisplayObjectContainer):void;
+		function set storage(value:Array):void;
+
+
 	}
 }

@@ -18,6 +18,7 @@ package net.wooga.displaytreebuilder {
 	import net.wooga.displaytreebuilder.grammar._setToThe;
 	import net.wooga.displaytreebuilder.grammar.datadefinition.BlockContent$CollectionProperty__DataDef$BlockStart;
 	import net.wooga.displaytreebuilder.treenodes.ITreeNode;
+	import net.wooga.displaytreebuilder.treenodes.InstanceTreeNode;
 	import net.wooga.displaytreebuilder.treenodes.MultipleTreeNode;
 	import net.wooga.displaytreebuilder.treenodes.RootTreeNode;
 	import net.wooga.displaytreebuilder.treenodes.SingleTreeNode;
@@ -109,7 +110,13 @@ package net.wooga.displaytreebuilder {
 
 		public function theInstance(object:DisplayObject):BlockContent$Property {
 
-			//TODO (arneschroppe 03/08/2012) implement me
+			if(_parkedMultipleTreeNode) {
+				throw new ArgumentError("cannot add multiple concrete instances");
+			}
+			var node:InstanceTreeNode = new InstanceTreeNode(object);
+			_currentContainer.addChild(node);
+			_lastAddedNode = node;
+
 			return this;
 		}
 
@@ -127,7 +134,7 @@ package net.wooga.displaytreebuilder {
 
 
 		public function whichWillBeStoredIn(instances:Array):BlockContent$InstanceModification {
-
+			_lastAddedNode.storage = instances;
 
 			return this;
 		}

@@ -49,5 +49,9 @@ package net.wooga.displaytreebuilder.treenodes {
 		public function set container(container:DisplayObjectContainer):void {
 			_multipliedNode.container = container;
 		}
+
+		public function set storage(value:Array):void {
+			_multipliedNode.storage = value;
+		}
 	}
 }

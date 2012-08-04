@@ -22,6 +22,7 @@ package net.wooga.displaytreebuilder.treenodes {
 		//Only available after a call to build
 		private var _instance:DisplayObject;
 		private var _parent:ITreeNode;
+		private var _storage:Array;
 
 
 		public function buildSelfAndChildren():void {
@@ -39,6 +40,9 @@ package net.wooga.displaytreebuilder.treenodes {
 
 		private function createInstance():void {
 			_instance = DisplayObject(InstantiationTool.instantiate(_type, _constructorArgs));
+			if(_storage) {
+				_storage.push(_instance);
+			}
 		}
 
 
@@ -101,6 +105,10 @@ package net.wooga.displaytreebuilder.treenodes {
 
 		public function set parent(value:ITreeNode):void {
 			_parent = value;
+		}
+
+		public function set storage(value:Array):void {
+			_storage = value;
 		}
 	}
 }

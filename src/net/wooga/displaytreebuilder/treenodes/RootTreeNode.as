@@ -5,7 +5,7 @@ package net.wooga.displaytreebuilder.treenodes {
 	public class RootTreeNode implements ITreeNode {
 
 		private var _children:Vector.<ITreeNode> = new <ITreeNode>[];
-
+		private var _storage:Array;
 
 		public function RootTreeNode() {
 		}
@@ -16,6 +16,10 @@ package net.wooga.displaytreebuilder.treenodes {
 
 
 		public function buildSelfAndChildren():void {
+
+			if(_storage) {
+				_storage.push(_root);
+			}
 
 			for each(var child:ITreeNode in _children) {
 				child.container = DisplayObjectContainer(_root);
@@ -52,6 +56,10 @@ package net.wooga.displaytreebuilder.treenodes {
 		}
 
 		public function set container(container:DisplayObjectContainer):void {
+		}
+
+		public function set storage(value:Array):void {
+			_storage = value;
 		}
 	}
 }
