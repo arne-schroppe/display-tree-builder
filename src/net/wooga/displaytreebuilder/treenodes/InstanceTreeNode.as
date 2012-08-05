@@ -3,12 +3,15 @@ package net.wooga.displaytreebuilder.treenodes {
 	import flash.display.DisplayObjectContainer;
 	import flash.utils.Dictionary;
 
+	import net.wooga.displaytreebuilder.values.IValue;
+
 	public class InstanceTreeNode implements ITreeNode {
 
+		private var _wasAlreadyAdded:Boolean = false;
 		private var _container:DisplayObjectContainer;
 		private var _instance:DisplayObject;
 		private var _parent:ITreeNode;
-		private var _initFunction:Function;
+		private var _initFunctions:Array = [];
 
 		private var _children:Vector.<ITreeNode> = new <ITreeNode>[];
 		private var _storage:Array;
@@ -22,14 +25,14 @@ package net.wooga.displaytreebuilder.treenodes {
 			addInstance();
 			storeInStorage();
 			applyProperties();
-			executeInitFunction();
+			executeInitFunctions();
 			buildChildren();
 		}
 
 		private function applyProperties():void {
 			for(var key:String in _properties) {
-				var value:* = _properties[key];
-				_instance[key] = value;
+				var value:IValue = _properties[key];
+				_instance[key] = value.getValue(null);
 			}
 		}
 
@@ -39,7 +42,13 @@ package net.wooga.displaytreebuilder.treenodes {
 			if(!_container) {
 				return;
 			}
+
+			if(_wasAlreadyAdded) {
+				throw new Error("Cannot add an instance several times");
+			}
+
 			_container.addChild(_instance);
+			_wasAlreadyAdded = true;
 		}
 
 		private function storeInStorage():void {
@@ -50,11 +59,10 @@ package net.wooga.displaytreebuilder.treenodes {
 			_storage.push(_instance);
 		}
 
-		private function executeInitFunction():void {
-			if(_initFunction == null) {
-				return;
+		private function executeInitFunctions():void {
+			for each(var func:Function in _initFunctions) {
+				func.call(null, _instance);
 			}
-			_initFunction.call(null, _instance);
 		}
 
 		private function buildChildren():void {
@@ -64,18 +72,11 @@ package net.wooga.displaytreebuilder.treenodes {
 			}
 		}
 
-
-		public function set constructorArgs(value:Array):void {
-			throw new Error("Invalid operation");
-		}
-
-		public function setProperty(key:String, value:*):void {
+		public function setProperty(key:String, value:IValue):void {
 			_properties[key] = value;
 		}
 
-		public function set initFunction(value:Function):void {
-			_initFunction = value;
-		}
+
 
 		public function addChild(child:ITreeNode):void {
 			_children.push(child);
@@ -99,12 +100,19 @@ package net.wooga.displaytreebuilder.treenodes {
 		}
 
 		public function addInitFunction(value:Function):void {
+			_initFunctions.push(value);
 		}
 
-		public function setConstructorArg(position:int, value:*):void {
+		public function setConstructorArg(position:int, value:IValue):void {
+			throw new Error("Invalid Operation"); //TODO (arneschroppe 05/08/2012) test this
 		}
 
 		public function set multiplier(multiplier:int):void {
+			throw new Error("Invalid Operation"); //TODO (arneschroppe 05/08/2012) test this
+		}
+
+		public function set buildingData(data:*):void {
+			throw new Error("Invalid Operation"); //TODO (arneschroppe 05/08/2012) test this
 		}
 	}
 }

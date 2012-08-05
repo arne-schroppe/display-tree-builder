@@ -1,6 +1,8 @@
 package net.wooga.displaytreebuilder.treenodes {
 	import flash.display.DisplayObjectContainer;
 
+	import net.wooga.displaytreebuilder.values.IValue;
+
 	public interface ITreeNode {
 
 		function build():void;
@@ -16,8 +18,8 @@ package net.wooga.displaytreebuilder.treenodes {
 		function set storage(value:Array):void;
 
 
-		function setConstructorArg(position:int,  value:*):void;
-		function setProperty(key:String, value:*):void;
+		function setConstructorArg(position:int,  value:IValue):void;
+		function setProperty(key:String, value:IValue):void;
 
 		function set multiplier(multiplier:int):void;
 		function set buildingData(data:*):void;

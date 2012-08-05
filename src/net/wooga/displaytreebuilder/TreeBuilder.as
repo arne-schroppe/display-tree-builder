@@ -20,6 +20,8 @@ package net.wooga.displaytreebuilder {
 	import net.wooga.displaytreebuilder.treenodes.ITreeNode;
 	import net.wooga.displaytreebuilder.treenodes.InstanceTreeNode;
 	import net.wooga.displaytreebuilder.treenodes.TypeTreeNode;
+	import net.wooga.displaytreebuilder.values.IValue;
+	import net.wooga.displaytreebuilder.values.StaticValue;
 
 	internal class TreeBuilder implements BlockContent$Property, _finish, ItemToUse, _setToThe, BlockContent$CollectionProperty$BlockStart, BlockContent$Finish, BlockContent$InstanceModification, BlockStart, DataDefinition, TreeStart, Instantiation, NameProperty, Storage {
 
@@ -28,11 +30,13 @@ package net.wooga.displaytreebuilder {
 		private var _currentContainer:ITreeNode;
 		private var _lastAddedNode:ITreeNode;
 
-		private var _countForNextNode:int = 1;
-
+		private var _countForNextNode:int;
+		private var _property:String;
 
 		private var _isCheckingUnfinishedStatements:Boolean = true;
 
+		private var _numberOfOpenSubBranches:int;
+		private var _isStarted:Boolean;
 
 
 		public function set isCheckingUnfinishedStatements(value:Boolean):void {
@@ -44,10 +48,26 @@ package net.wooga.displaytreebuilder {
 		}
 
 		public function uses(object:DisplayObject):BlockStart {
+			checkPreviousStart();
+			reset();
 			_rootTreeNode = new InstanceTreeNode(object);
 			_lastAddedNode = _rootTreeNode;
 
 			return this;
+		}
+
+		private function checkPreviousStart():void {
+			if(_isStarted) {
+				throw new Error("Previous tree was not finished (needs 'finish' keyword)");
+			}
+		}
+
+		//TODO (arneschroppe 06/08/2012) test using a tree builder instance several times
+		private function reset():void {
+			_countForNextNode = 1;
+			_property = null;
+			_numberOfOpenSubBranches = 0;
+			_isStarted = true;
 		}
 
 
@@ -77,6 +97,7 @@ package net.wooga.displaytreebuilder {
 
 
 		public function get containing():BlockContent {
+			++_numberOfOpenSubBranches;
 			_currentContainer = _lastAddedNode;
 			_lastAddedNode = null;
 			return this;
@@ -91,6 +112,7 @@ package net.wooga.displaytreebuilder {
 
 
 		public function get end():BlockContent$Finish {
+			--_numberOfOpenSubBranches;
 			_currentContainer = _currentContainer.parent;
 			_lastAddedNode = null;
 			return this;
@@ -99,7 +121,7 @@ package net.wooga.displaytreebuilder {
 		public function withTheConstructorArguments(...args):BlockContent$InstanceModification {
 
 			for(var i:int = 0; i < args.length; ++i) {
-				_lastAddedNode.setConstructorArg(i, args[i]);
+				_lastAddedNode.setConstructorArg(i, new StaticValue(args[i]));
 			}
 
 			return this;
@@ -107,9 +129,6 @@ package net.wooga.displaytreebuilder {
 
 		public function theInstance(object:DisplayObject):BlockContent$Property {
 
-			if(_countForNextNode > 1) { //TODO (arneschroppe 05/08/2012) get rid of this ugly hack
-				throw new ArgumentError("cannot add multiple concrete instances");
-			}
 			var node:InstanceTreeNode = new InstanceTreeNode(object);
 
 			_currentContainer.addChild(node);
@@ -121,7 +140,7 @@ package net.wooga.displaytreebuilder {
 
 
 		public function forEveryItemIn(collection:*):BlockContent$CollectionProperty__DataDef$BlockStart {
-
+			_lastAddedNode.buildingData = collection;
 			return new DataDefinitionBranch(this);
 		}
 
@@ -135,14 +154,9 @@ package net.wooga.displaytreebuilder {
 		}
 
 
-		public function finish():void {
-			_rootTreeNode.build();
-		}
 
 
-		private var _property:String;
 		public function withTheProperty(instancePropertyName:String):_setToThe {
-
 			_property = instancePropertyName;
 			return this;
 		}
@@ -154,14 +168,19 @@ package net.wooga.displaytreebuilder {
 
 
 		public function value(value:*):BlockContent$InstanceModification {
-			_lastAddedNode.setProperty(_property, value);
-			_property = null;
+			setValueForCurrentProperty(new StaticValue(value));
 			return this;
 		}
 
 
+		public function setValueForCurrentProperty(value:IValue):void {
+			_lastAddedNode.setProperty(_property, value);
+			_property = null;
+		}
+
+
 		public function withTheName(name:String):BlockContent$InstanceModification {
-			_lastAddedNode.setProperty("name", name);
+			_lastAddedNode.setProperty("name", new StaticValue(name));
 			return this;
 		}
 
@@ -171,5 +190,30 @@ package net.wooga.displaytreebuilder {
 			_lastAddedNode.addInitFunction(initFunction);
 			return this;
 		}
+
+
+
+		public function finish():void {
+			checkUnbalancedSubTrees();
+			buildStructure();
+			endInvocation();
+		}
+
+
+
+		private function checkUnbalancedSubTrees():void {
+			if(_isCheckingUnfinishedStatements && _numberOfOpenSubBranches != 0) {
+				throw new Error("The number of 'containing' and 'end' does not match");
+			}
+		}
+
+		private function buildStructure():void {
+			_rootTreeNode.build();
+		}
+
+		private function endInvocation():void {
+			_isStarted = false;
+		}
+
 	}
 }
