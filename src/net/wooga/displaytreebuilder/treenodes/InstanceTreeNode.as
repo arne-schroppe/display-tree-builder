@@ -18,7 +18,7 @@ package net.wooga.displaytreebuilder.treenodes {
 			_instance = instance;
 		}
 
-		public function buildSelfAndChildren():void {
+		public function build():void {
 			addInstance();
 			storeInStorage();
 			applyProperties();
@@ -36,6 +36,9 @@ package net.wooga.displaytreebuilder.treenodes {
 
 
 		private function addInstance():void {
+			if(!_container) {
+				return;
+			}
 			_container.addChild(_instance);
 		}
 
@@ -57,7 +60,7 @@ package net.wooga.displaytreebuilder.treenodes {
 		private function buildChildren():void {
 			for each(var child:ITreeNode in _children) {
 				child.container = DisplayObjectContainer(_instance);
-				child.buildSelfAndChildren();
+				child.build();
 			}
 		}
 
@@ -93,6 +96,15 @@ package net.wooga.displaytreebuilder.treenodes {
 
 		public function set storage(value:Array):void {
 			_storage = value;
+		}
+
+		public function addInitFunction(value:Function):void {
+		}
+
+		public function setConstructorArg(position:int, value:*):void {
+		}
+
+		public function set multiplier(multiplier:int):void {
 		}
 	}
 }

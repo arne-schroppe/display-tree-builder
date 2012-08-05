@@ -19,18 +19,16 @@ package net.wooga.displaytreebuilder {
 	import net.wooga.displaytreebuilder.grammar.datadefinition.BlockContent$CollectionProperty__DataDef$BlockStart;
 	import net.wooga.displaytreebuilder.treenodes.ITreeNode;
 	import net.wooga.displaytreebuilder.treenodes.InstanceTreeNode;
-	import net.wooga.displaytreebuilder.treenodes.MultipleTreeNode;
-	import net.wooga.displaytreebuilder.treenodes.RootTreeNode;
-	import net.wooga.displaytreebuilder.treenodes.SingleTreeNode;
+	import net.wooga.displaytreebuilder.treenodes.TypeTreeNode;
 
 	internal class TreeBuilder implements BlockContent$Property, _finish, ItemToUse, _setToThe, BlockContent$CollectionProperty$BlockStart, BlockContent$Finish, BlockContent$InstanceModification, BlockStart, DataDefinition, TreeStart, Instantiation, NameProperty, Storage {
 
 
-		private var _rootTreeNode:RootTreeNode;
+		private var _rootTreeNode:InstanceTreeNode;
 		private var _currentContainer:ITreeNode;
 		private var _lastAddedNode:ITreeNode;
 
-		private var _parkedMultipleTreeNode:MultipleTreeNode;
+		private var _countForNextNode:int = 1;
 
 
 		private var _isCheckingUnfinishedStatements:Boolean = true;
@@ -46,8 +44,7 @@ package net.wooga.displaytreebuilder {
 		}
 
 		public function uses(object:DisplayObject):BlockStart {
-			_rootTreeNode = new RootTreeNode();
-			_rootTreeNode.root = object;
+			_rootTreeNode = new InstanceTreeNode(object);
 			_lastAddedNode = _rootTreeNode;
 
 			return this;
@@ -56,24 +53,21 @@ package net.wooga.displaytreebuilder {
 
 
 		public function a(Type:Class):InstanceModification {
-			var node:SingleTreeNode = new SingleTreeNode();
+			var node:TypeTreeNode = new TypeTreeNode();
 			node.type = Type;
 
-			var addedNode:ITreeNode;
-			if(_parkedMultipleTreeNode) {
-				_parkedMultipleTreeNode.multipliedNode = node;
-				addedNode = _parkedMultipleTreeNode;
-				_parkedMultipleTreeNode = null;
-			}
-			else {
-				addedNode = node;
-			}
+			setStoredCount(node);
 
-			_currentContainer.addChild(addedNode);
+			_currentContainer.addChild(node);
 
-			_lastAddedNode = addedNode;
+			_lastAddedNode = node;
 
 			return this;
+		}
+
+		private function setStoredCount(node:ITreeNode):void {
+			node.multiplier = _countForNextNode;
+			_countForNextNode = 1;
 		}
 
 
@@ -91,8 +85,7 @@ package net.wooga.displaytreebuilder {
 
 
 		public function times(count:int):Instantiation {
-			_parkedMultipleTreeNode = new MultipleTreeNode(count);
-
+			_countForNextNode = count;
 			return this;
 		}
 
@@ -104,16 +97,21 @@ package net.wooga.displaytreebuilder {
 		}
 
 		public function withTheConstructorArguments(...args):BlockContent$InstanceModification {
-			_lastAddedNode.constructorArgs = args;
+
+			for(var i:int = 0; i < args.length; ++i) {
+				_lastAddedNode.setConstructorArg(i, args[i]);
+			}
+
 			return this;
 		}
 
 		public function theInstance(object:DisplayObject):BlockContent$Property {
 
-			if(_parkedMultipleTreeNode) {
+			if(_countForNextNode > 1) { //TODO (arneschroppe 05/08/2012) get rid of this ugly hack
 				throw new ArgumentError("cannot add multiple concrete instances");
 			}
 			var node:InstanceTreeNode = new InstanceTreeNode(object);
+
 			_currentContainer.addChild(node);
 			_lastAddedNode = node;
 
@@ -130,9 +128,6 @@ package net.wooga.displaytreebuilder {
 
 
 
-
-
-
 		public function whichWillBeStoredIn(instances:Array):BlockContent$InstanceModification {
 			_lastAddedNode.storage = instances;
 
@@ -141,7 +136,7 @@ package net.wooga.displaytreebuilder {
 
 
 		public function finish():void {
-			_rootTreeNode.buildSelfAndChildren();
+			_rootTreeNode.build();
 		}
 
 
@@ -173,7 +168,7 @@ package net.wooga.displaytreebuilder {
 
 
 		public function withTheInitializationFunction(initFunction:Function):InstanceModification {
-			_lastAddedNode.initFunction = initFunction;
+			_lastAddedNode.addInitFunction(initFunction);
 			return this;
 		}
 	}

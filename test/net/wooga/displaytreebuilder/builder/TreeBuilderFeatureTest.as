@@ -12,6 +12,7 @@ package net.wooga.displaytreebuilder.builder {
 
 	import org.as3commons.collections.ArrayList;
 	import org.flexunit.asserts.assertEquals;
+	import org.flexunit.asserts.fail;
 	import org.hamcrest.assertThat;
 	import org.hamcrest.core.allOf;
 	import org.hamcrest.core.isA;
@@ -730,5 +731,16 @@ package net.wooga.displaytreebuilder.builder {
 
 		}
 
+		[Test]
+		public function should_allow_multiple_init_functions():void {
+
+			fail("implement me");
+		}
+
+
+		[Test]
+		public function should_allow_this_argument_in_init_functions():void {
+
+		}
  	}
 }
