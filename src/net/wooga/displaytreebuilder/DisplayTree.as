@@ -20,12 +20,5 @@ package net.wooga.displaytreebuilder {
 			return _builder.uses(object);
 		}
 
-		public function set isCheckingUnfinishedStatements(value:Boolean):void {
-			_builder.isCheckingUnfinishedStatements = value;
-		}
-
-		public function get isCheckingUnfinishedStatements():Boolean {
-			return _builder.isCheckingUnfinishedStatements;
-		}
 	}
 }

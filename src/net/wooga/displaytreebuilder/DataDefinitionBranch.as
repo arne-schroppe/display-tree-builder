@@ -9,6 +9,8 @@ package net.wooga.displaytreebuilder {
 	import net.wooga.displaytreebuilder.grammar.datadefinition.BlockContent$CollectionProperty__DataDef$BlockStart;
 	import net.wooga.displaytreebuilder.grammar.datadefinition.ItemToUse__DataDef;
 	import net.wooga.displaytreebuilder.grammar.datadefinition._setToThe__DataDef;
+	import net.wooga.displaytreebuilder.values.DataItem;
+	import net.wooga.displaytreebuilder.values.DataItemProperty;
 
 	internal class DataDefinitionBranch implements BlockContent$CollectionProperty__DataDef$BlockStart, _setToThe__DataDef, ItemToUse__DataDef {
 		private var _originalObject:TreeBuilder;
@@ -19,8 +21,7 @@ package net.wooga.displaytreebuilder {
 
 
 		public function withTheProperty(propertyName:String):_setToThe__DataDef {
-			_originalObject.createDelayedInstanceIfNeeded();
-			_originalObject.instancePropertyName = propertyName;
+			_originalObject.withTheProperty(propertyName);
 			return this;
 		}
 
@@ -30,17 +31,17 @@ package net.wooga.displaytreebuilder {
 		}
 
 		public function itemProperty(propertyName:String):BlockContent$CollectionProperty__DataDef$BlockStart {
-			_originalObject.itemPropertyExternal(propertyName);
+			_originalObject.setValueForCurrentProperty(new DataItemProperty(propertyName));
 			return this;
 		}
 
 		public function get item():BlockContent$CollectionProperty__DataDef$BlockStart {
-			_originalObject.itemExternal();
+			_originalObject.setValueForCurrentProperty(new DataItem());
 			return this;
 		}
 
 		public function value(value:*):BlockContent$CollectionProperty__DataDef$BlockStart {
-			_originalObject.valueExternal(value);
+			_originalObject.value(value);
 			return this;
 		}
 
@@ -70,9 +71,7 @@ package net.wooga.displaytreebuilder {
 			return _originalObject.containing;
 		}
 
-
 		public function withTheInitializationFunction(initFunction:Function):InstanceModification {
-
 			return _originalObject.withTheInitializationFunction(initFunction);
 		}
 	}

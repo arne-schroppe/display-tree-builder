@@ -12,6 +12,7 @@ package net.wooga.displaytreebuilder.builder {
 
 	import org.as3commons.collections.ArrayList;
 	import org.flexunit.asserts.assertEquals;
+	import org.flexunit.asserts.fail;
 	import org.hamcrest.assertThat;
 	import org.hamcrest.core.allOf;
 	import org.hamcrest.core.isA;
@@ -723,9 +724,60 @@ package net.wooga.displaytreebuilder.builder {
 						.withTheProperty("testProperty").setToThe.item
 						.withTheInitializationFunction(function(element:TestSprite2):void{ assertThat(element.testProperty, equalTo(data[pointer])); ++pointer })
 					.a(TestSprite2)
-					.end.finish();
+				.end.finish();
+
+
+			assertThat(pointer, equalTo(data.length));
 
 		}
 
+		[Test]
+		public function should_allow_multiple_init_functions_which_are_called_in_order():void {
+
+			var instances:Array = [];
+
+			var calledInitFunctions:Array = [];
+
+			_displayTreeBuilder.uses(_contextView).containing
+					.a(TestSprite1).whichWillBeStoredIn(instances)
+						.withTheInitializationFunction(function(element:DisplayObject):void{ calledInitFunctions.push(1) })
+						.withTheInitializationFunction(function(element:DisplayObject):void{ calledInitFunctions.push(2) })
+						.withTheInitializationFunction(function(element:DisplayObject):void{ calledInitFunctions.push(3) })
+
+					.a(TestSprite2)
+				.end.finish();
+
+			assertThat(calledInitFunctions.length, equalTo(3));
+			assertThat(calledInitFunctions[0], equalTo(1));
+			assertThat(calledInitFunctions[1], equalTo(2));
+			assertThat(calledInitFunctions[2], equalTo(3));
+		}
+
+
+
+		[Test]
+		public function should_allow_multiple_init_functions_with_instances_which_are_called_in_order():void {
+
+			var calledInitFunctions:Array = [];
+
+			var instance:TestSprite1 = new TestSprite1();
+
+			_displayTreeBuilder.uses(_contextView).containing
+					.theInstance(instance)
+						.withTheInitializationFunction(function(element:DisplayObject):void{ calledInitFunctions.push(1) })
+						.withTheInitializationFunction(function(element:DisplayObject):void{ calledInitFunctions.push(2) })
+						.withTheInitializationFunction(function(element:DisplayObject):void{ calledInitFunctions.push(3) })
+					.end.finish();
+
+			assertThat(calledInitFunctions.length, equalTo(3));
+			assertThat(calledInitFunctions[0], equalTo(1));
+			assertThat(calledInitFunctions[1], equalTo(2));
+			assertThat(calledInitFunctions[2], equalTo(3));
+		}
+
+		[Test]
+		public function should_allow_this_argument_in_init_functions():void {
+			//fail("implement me");
+		}
  	}
 }
