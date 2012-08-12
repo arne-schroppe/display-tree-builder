@@ -777,7 +777,7 @@ package net.wooga.displaytreebuilder.builder {
 
 		[Test]
 		public function should_allow_this_argument_in_init_functions():void {
-
+			//fail("implement me");
 		}
  	}
 }

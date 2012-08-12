@@ -2,6 +2,8 @@ package net.wooga.displaytreebuilder.builder {
 	import flash.display.Sprite;
 
 	import net.wooga.displaytreebuilder.DisplayTree;
+	import net.wooga.fixtures.TestSprite1;
+	import net.wooga.fixtures.TestSprite2;
 	import net.wooga.utils.flexunit.FlexUnitUtils;
 
 	import org.hamcrest.assertThat;
@@ -60,18 +62,4 @@ package net.wooga.displaytreebuilder.builder {
 
 		}
 	}
-}
-
-import flash.display.Sprite;
-
-class TestSprite1 extends Sprite {
-
-	public var testProperty:String = "";
-	public var testProperty2:String = "";
-
-}
-
-
-class TestSprite2 extends TestSprite1 {
-
 }

@@ -33,19 +33,8 @@ package net.wooga.displaytreebuilder {
 		private var _countForNextNode:int;
 		private var _property:String;
 
-		private var _isCheckingUnfinishedStatements:Boolean = true;
-
 		private var _numberOfOpenSubBranches:int;
 		private var _isStarted:Boolean;
-
-
-		public function set isCheckingUnfinishedStatements(value:Boolean):void {
-			_isCheckingUnfinishedStatements = value;
-		}
-
-		public function get isCheckingUnfinishedStatements():Boolean {
-			return _isCheckingUnfinishedStatements;
-		}
 
 		public function uses(object:DisplayObject):BlockStart {
 			checkPreviousStart();
@@ -202,7 +191,7 @@ package net.wooga.displaytreebuilder {
 
 
 		private function checkUnbalancedSubTrees():void {
-			if(_isCheckingUnfinishedStatements && _numberOfOpenSubBranches != 0) {
+			if(_numberOfOpenSubBranches != 0) {
 				throw new Error("The number of 'containing' and 'end' does not match");
 			}
 		}
