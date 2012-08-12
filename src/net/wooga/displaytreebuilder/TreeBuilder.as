@@ -95,6 +95,10 @@ package net.wooga.displaytreebuilder {
 
 
 		public function times(count:int):Instantiation {
+			if(count < 0) {
+				throw new ArgumentError("'times' cannot be used with negative numbers (argument was " + count + ")");
+			}
+
 			_countForNextNode = count;
 			return this;
 		}

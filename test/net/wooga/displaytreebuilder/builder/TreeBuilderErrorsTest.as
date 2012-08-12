@@ -91,6 +91,34 @@ package net.wooga.displaytreebuilder.builder {
 			}, not(throws(isA(Error))))
 
 		}
+
+
+		[Test]
+		public function should_throw_an_exception_if_times_is_used_with_negative_number():void {
+
+			assertThat(function():void {
+				_displayTreeBuilder.uses(_contextView).containing
+						.times(-1).a(TestSprite1).containing
+							.a(TestSprite2)
+						.end
+					.end.finish()
+			}, throws(isA(Error)))
+
+		}
+
+
+		[Test]
+		public function should_not_throw_an_exception_if_times_is_used_with_zero():void {
+
+			assertThat(function():void {
+				_displayTreeBuilder.uses(_contextView).containing
+						.times(0).a(TestSprite1).containing
+							.a(TestSprite2)
+						.end
+					.end.finish()
+			}, not(throws(isA(Error))))
+
+		}
 	}
 }
 
