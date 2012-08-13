@@ -2,7 +2,8 @@ package net.wooga.displaytreebuilder.builder {
 	import flash.display.Sprite;
 
 	import net.wooga.displaytreebuilder.DisplayTree;
-
+	import net.wooga.fixtures.TestSprite1;
+	import net.wooga.fixtures.TestSprite2;
 	import net.wooga.utils.flexunit.FlexUnitUtils;
 
 	import org.hamcrest.assertThat;
@@ -34,9 +35,6 @@ package net.wooga.displaytreebuilder.builder {
 		}
 
 
-
-
-
 		[Test]
 		public function should_throw_exception_for_unfinished_invocations():void {
 
@@ -52,22 +50,6 @@ package net.wooga.displaytreebuilder.builder {
 			);
 		}
 
-
-		[Test]
-		public function check_for_unfinished_invocation_should_be_optional():void {
-
-			_displayTreeBuilder.uses(_contextView).containing
-				.a(TestSprite1)
-			.end //not finished
-
-
-			assertThat(
-					function ():void {
-						_displayTreeBuilder.isCheckingUnfinishedStatements = false;
-						_displayTreeBuilder.uses(_contextView)
-					}, not(throws(isA(Error)))
-			);
-		}
 
 		[Test]
 		public function should_throw_error_for_unaligned_containing_and_end():void {
@@ -109,22 +91,37 @@ package net.wooga.displaytreebuilder.builder {
 			}, not(throws(isA(Error))))
 
 		}
+
+
+		[Test]
+		public function should_throw_an_exception_if_times_is_used_with_negative_number():void {
+
+			assertThat(function():void {
+				_displayTreeBuilder.uses(_contextView).containing
+						.times(-1).a(TestSprite1).containing
+							.a(TestSprite2)
+						.end
+					.end.finish()
+			}, throws(isA(Error)))
+
+		}
+
+
+		[Test]
+		public function should_not_throw_an_exception_if_times_is_used_with_zero():void {
+
+			assertThat(function():void {
+				_displayTreeBuilder.uses(_contextView).containing
+						.times(0).a(TestSprite1).containing
+							.a(TestSprite2)
+						.end
+					.end.finish()
+			}, not(throws(isA(Error))))
+
+		}
 	}
 }
 
 
-import flash.display.Sprite;
 
-class TestSprite1 extends Sprite {
-
-
-}
-
-class TestSprite2 extends Sprite {
-
-}
-
-class TestSprite3 extends Sprite {
-
-}
 
