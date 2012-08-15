@@ -133,8 +133,9 @@ package net.wooga.displaytreebuilder.treenodes {
 		}
 
 
-		public function setConstructorArg(position:int, value:IValue):void {
-			_constructorArgs[position] = value;
+		public function addConstructorArg(value:IValue):void {
+
+			_constructorArgs.push(value);
 		}
 
 		public function setProperty(key:String, value:IValue):void {

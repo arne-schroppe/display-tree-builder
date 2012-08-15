@@ -18,7 +18,7 @@ package net.wooga.displaytreebuilder.treenodes {
 		function set storage(value:Array):void;
 
 
-		function setConstructorArg(position:int,  value:IValue):void;
+		function addConstructorArg(value:IValue):void;
 		function setProperty(key:String, value:IValue):void;
 
 		function set multiplier(multiplier:int):void;

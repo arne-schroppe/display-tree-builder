@@ -103,7 +103,7 @@ package net.wooga.displaytreebuilder.treenodes {
 			_initFunctions.push(value);
 		}
 
-		public function setConstructorArg(position:int, value:IValue):void {
+		public function addConstructorArg(value:IValue):void {
 			throw new Error("Invalid Operation"); //TODO (arneschroppe 05/08/2012) test this
 		}
 

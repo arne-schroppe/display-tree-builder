@@ -7,6 +7,7 @@ package net.wooga.displaytreebuilder {
 	import net.wooga.displaytreebuilder.grammar.BlockContent$InstanceModification;
 	import net.wooga.displaytreebuilder.grammar.BlockContent$Property;
 	import net.wooga.displaytreebuilder.grammar.BlockStart;
+	import net.wooga.displaytreebuilder.grammar.CtorArgument$BlockContent$InstanceModification;
 	import net.wooga.displaytreebuilder.grammar.DataDefinition;
 	import net.wooga.displaytreebuilder.grammar.InstanceModification;
 	import net.wooga.displaytreebuilder.grammar.Instantiation;
@@ -23,7 +24,7 @@ package net.wooga.displaytreebuilder {
 	import net.wooga.displaytreebuilder.values.IValue;
 	import net.wooga.displaytreebuilder.values.StaticValue;
 
-	internal class TreeBuilder implements BlockContent$Property, _finish, ItemToUse, _setToThe, BlockContent$CollectionProperty$BlockStart, BlockContent$Finish, BlockContent$InstanceModification, BlockStart, DataDefinition, TreeStart, Instantiation, NameProperty, Storage {
+	internal class TreeBuilder implements CtorArgument$BlockContent$InstanceModification, BlockContent$Property, _finish, ItemToUse, _setToThe, BlockContent$CollectionProperty$BlockStart, BlockContent$Finish, BlockContent$InstanceModification, BlockStart, DataDefinition, TreeStart, Instantiation, NameProperty, Storage {
 
 
 		private var _rootTreeNode:InstanceTreeNode;
@@ -111,14 +112,23 @@ package net.wooga.displaytreebuilder {
 			return this;
 		}
 
-		public function withTheConstructorArguments(...args):BlockContent$InstanceModification {
-
-			for(var i:int = 0; i < args.length; ++i) {
-				_lastAddedNode.setConstructorArg(i, new StaticValue(args[i]));
-			}
-
+		public function withTheConstructorArgument(firstArgument:*):CtorArgument$BlockContent$InstanceModification {
+			addConstructorArgument(new StaticValue(firstArgument));
 			return this;
 		}
+
+
+
+		public function and(ctorArgument:*):CtorArgument$BlockContent$InstanceModification {
+			addConstructorArgument(new StaticValue(ctorArgument));
+			return this;
+		}
+
+
+		public function addConstructorArgument(value:IValue):void {
+			_lastAddedNode.addConstructorArg(value);
+		}
+
 
 		public function theInstance(object:DisplayObject):BlockContent$Property {
 
@@ -207,6 +217,7 @@ package net.wooga.displaytreebuilder {
 		private function endInvocation():void {
 			_isStarted = false;
 		}
+
 
 	}
 }
