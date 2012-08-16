@@ -3,16 +3,18 @@ package net.wooga.displaytreebuilder {
 
 	import net.wooga.displaytreebuilder.grammar.BlockContent;
 	import net.wooga.displaytreebuilder.grammar.BlockContent$Finish;
+	import net.wooga.displaytreebuilder.grammar.BlockContent$InstanceModification;
 	import net.wooga.displaytreebuilder.grammar.BlockContent$Property;
 	import net.wooga.displaytreebuilder.grammar.InstanceModification;
 	import net.wooga.displaytreebuilder.grammar.Instantiation;
 	import net.wooga.displaytreebuilder.grammar.datadefinition.BlockContent$CollectionProperty__DataDef$BlockStart;
+	import net.wooga.displaytreebuilder.grammar.datadefinition.CtorArgument__DataDef$BlockContent$BlockStart;
 	import net.wooga.displaytreebuilder.grammar.datadefinition.ItemToUse__DataDef;
 	import net.wooga.displaytreebuilder.grammar.datadefinition._setToThe__DataDef;
 	import net.wooga.displaytreebuilder.values.DataItem;
 	import net.wooga.displaytreebuilder.values.DataItemProperty;
 
-	internal class DataDefinitionBranch implements BlockContent$CollectionProperty__DataDef$BlockStart, _setToThe__DataDef, ItemToUse__DataDef {
+	internal class DataDefinitionBranch implements CtorArgument__DataDef$BlockContent$BlockStart, BlockContent$CollectionProperty__DataDef$BlockStart, _setToThe__DataDef, ItemToUse__DataDef {
 		private var _originalObject:TreeBuilder;
 
 		public function DataDefinitionBranch(originalObject:TreeBuilder) {
@@ -74,5 +76,26 @@ package net.wooga.displaytreebuilder {
 		public function withTheInitializationFunction(initFunction:Function):InstanceModification {
 			return _originalObject.withTheInitializationFunction(initFunction);
 		}
+
+		public function get constructedWith():CtorArgument__DataDef$BlockContent$BlockStart {
+			_originalObject.constructedWith;
+			return this;
+		}
+
+		public function theValue(ctorArgument:*):CtorArgument__DataDef$BlockContent$BlockStart {
+			_originalObject.theValue(ctorArgument);
+			return this;
+		}
+
+		public function get theItem():CtorArgument__DataDef$BlockContent$BlockStart {
+			_originalObject.addConstructorArgument(new DataItem());
+			return this;
+		}
+
+		public function theItemProperty(propertyName:String):CtorArgument__DataDef$BlockContent$BlockStart {
+			_originalObject.addConstructorArgument(new DataItemProperty(propertyName));
+			return this;
+		}
+
 	}
 }
