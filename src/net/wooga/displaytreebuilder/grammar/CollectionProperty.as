@@ -3,7 +3,7 @@ package net.wooga.displaytreebuilder.grammar {
 		function withTheProperty(propertyName:String):_setToThe;
 		//function withTheConstructorArguments(...args):BlockContent$InstanceModification;
 
-		function withTheConstructorArgument(firstArgument:*):CtorArgument$BlockContent$InstanceModification;
+		function get constructed():CtorArgument$BlockContent$InstanceModification;
 
 	}
 }

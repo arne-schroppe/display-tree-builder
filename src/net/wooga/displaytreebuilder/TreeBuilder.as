@@ -112,14 +112,13 @@ package net.wooga.displaytreebuilder {
 			return this;
 		}
 
-		public function withTheConstructorArgument(firstArgument:*):CtorArgument$BlockContent$InstanceModification {
-			addConstructorArgument(new StaticValue(firstArgument));
+		public function get constructed():CtorArgument$BlockContent$InstanceModification {
 			return this;
 		}
 
 
 
-		public function and(ctorArgument:*):CtorArgument$BlockContent$InstanceModification {
+		public function withArg(ctorArgument:*):CtorArgument$BlockContent$InstanceModification {
 			addConstructorArgument(new StaticValue(ctorArgument));
 			return this;
 		}

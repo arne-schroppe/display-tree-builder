@@ -503,7 +503,7 @@ package net.wooga.displaytreebuilder.builder {
 
 			_displayTreeBuilder.uses(_contextView).containing
 					.a(CtorTestSprite)
-						.withTheConstructorArgument("testprop").and(-129873)
+						.constructed.withArg("testprop").withArg(-129873)
 				.end.finish();
 
 			assertThat(_contextView.numChildren, equalTo(1));
@@ -519,7 +519,7 @@ package net.wooga.displaytreebuilder.builder {
 			var data:Array = ["a", "b", "c"];
 
 			_displayTreeBuilder.uses(_contextView).containing
-					.a(CtorTestSprite).withTheConstructorArgument("testprop").and(-129873)
+					.a(CtorTestSprite).constructed.withArg("testprop").withArg(-129873)
 						.forEveryItemIn(data)
 							.withTheProperty("name").setToThe.item
 					.end.finish();
@@ -542,7 +542,7 @@ package net.wooga.displaytreebuilder.builder {
 
 			_displayTreeBuilder.uses(_contextView).containing
 					.a(CtorTestSprite).forEveryItemIn(data)
-						.withTheConstructorArgument("testprop").andTheItem
+						.constructed.withArg("testprop").withTheItem
 					.end.finish();
 
 			assertThat(_contextView.numChildren, equalTo(3));
@@ -556,7 +556,8 @@ package net.wooga.displaytreebuilder.builder {
 		public function should_allow_setting_of_constructor_arguments_with_content():void {
 
 			_displayTreeBuilder.uses(_contextView).containing
-				.a(CtorTestSprite).withTheConstructorArgument("test2").and(-78686).containing
+				.a(CtorTestSprite).constructed.withArg("test2").withArg(-78686)
+				.containing
 					.a(TestSprite1)
 				.end
 			.end.finish();
@@ -575,8 +576,8 @@ package net.wooga.displaytreebuilder.builder {
 		public function should_allow_nesting_of_constructor_arguments():void {
 
 			_displayTreeBuilder.uses(_contextView).containing
-					.a(CtorTestSprite).withTheConstructorArgument("test2").and(-78686).containing
-						.a(CtorTestSprite).withTheConstructorArgument("nested").and(1233243)
+					.a(CtorTestSprite).constructed.withArg("test2").withArg(-78686).containing
+						.a(CtorTestSprite).constructed.withArg("nested").withArg(1233243)
 					.end
 				.end.finish();
 
@@ -595,10 +596,10 @@ package net.wooga.displaytreebuilder.builder {
 		public function should_allow_nesting_of_constructor_arguments_with_another_ctor_afterwards():void {
 
 			_displayTreeBuilder.uses(_contextView).containing
-					.a(CtorTestSprite).withTheConstructorArgument("test2").and(-78686).containing
-						.a(CtorTestSprite).withTheConstructorArgument("nested").and(1233243)
+					.a(CtorTestSprite).constructed.withArg("test2").withArg(-78686).containing
+						.a(CtorTestSprite).constructed.withArg("nested").withArg(1233243)
 					.end
-					.a(CtorTestSprite).withTheConstructorArgument("sequence").and(3746)
+					.a(CtorTestSprite).constructed.withArg("sequence").withArg(3746)
 				.end.finish();
 
 
