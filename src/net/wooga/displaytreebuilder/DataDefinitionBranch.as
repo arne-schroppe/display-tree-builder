@@ -91,5 +91,11 @@ package net.wooga.displaytreebuilder {
 			_originalObject.addConstructorArgument(new DataItem());
 			return this;
 		}
+
+		public function theItemProperty(propertyName:String):CtorArgument__DataDef$BlockContent$BlockStart {
+			_originalObject.addConstructorArgument(new DataItemProperty(propertyName));
+			return this;
+		}
+
 	}
 }

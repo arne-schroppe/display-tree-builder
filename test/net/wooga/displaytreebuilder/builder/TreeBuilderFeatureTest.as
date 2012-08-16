@@ -551,6 +551,23 @@ package net.wooga.displaytreebuilder.builder {
 
 
 		[Test]
+		public function should_allow_setting_of_constructor_arguments_with_item_values():void {
+
+			var data:Array = [{"val": "a"}, {"val": "b"}, {"val": "c"}];
+
+			_displayTreeBuilder.uses(_contextView).containing
+					.a(CtorTestSprite).forEveryItemIn(data)
+						.constructedWith.theValue("testprop").theItemProperty("val")
+					.end.finish();
+
+			assertThat(_contextView.numChildren, equalTo(3));
+			assertThat(_contextView.getChildAt(0), allOf(isA(CtorTestSprite), hasPropertyWithValue("prop1", "testprop"), hasPropertyWithValue("prop2", "a")));
+			assertThat(_contextView.getChildAt(1), allOf(isA(CtorTestSprite), hasPropertyWithValue("prop1", "testprop"), hasPropertyWithValue("prop2", "b")));
+			assertThat(_contextView.getChildAt(2), allOf(isA(CtorTestSprite), hasPropertyWithValue("prop1", "testprop"), hasPropertyWithValue("prop2", "c")));
+		}
+
+
+		[Test]
 		public function should_allow_setting_the_data_item_several_times_in_constructor():void {
 
 			var data:Array = ["a", "b", "c"];
