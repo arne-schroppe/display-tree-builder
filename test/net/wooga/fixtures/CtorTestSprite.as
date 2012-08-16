@@ -5,11 +5,13 @@ package net.wooga.fixtures {
 
 		private var _prop1:String;
 		private var _prop2:*;
+		private var _prop3:*;
 
 
-		public function CtorTestSprite(prop1:String, prop2:*) {
+		public function CtorTestSprite(prop1:String, prop2:*, prop3:*=null) {
 			_prop1 = prop1;
 			_prop2 = prop2;
+			_prop3 = prop3;
 		}
 
 
@@ -22,5 +24,8 @@ package net.wooga.fixtures {
 		}
 
 
+		public function get prop3():* {
+			return _prop3;
+		}
 	}
 }

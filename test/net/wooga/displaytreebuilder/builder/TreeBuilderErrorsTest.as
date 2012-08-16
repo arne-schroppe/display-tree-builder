@@ -2,6 +2,7 @@ package net.wooga.displaytreebuilder.builder {
 	import flash.display.Sprite;
 
 	import net.wooga.displaytreebuilder.DisplayTree;
+	import net.wooga.fixtures.CtorTestSprite;
 	import net.wooga.fixtures.TestSprite1;
 	import net.wooga.fixtures.TestSprite2;
 	import net.wooga.utils.flexunit.FlexUnitUtils;
@@ -117,6 +118,31 @@ package net.wooga.displaytreebuilder.builder {
 						.end
 					.end.finish()
 			}, not(throws(isA(Error))))
+
+		}
+
+
+
+		[Test]
+		public function should_throw_an_exception_if_constructor_has_too_few_arguments():void {
+
+			assertThat(function():void {
+				_displayTreeBuilder.uses(_contextView).containing
+							.a(CtorTestSprite).constructedWith.theValue("abc") //one argument missing
+						.end.finish()
+			}, throws(isA(Error)));
+
+		}
+
+
+		[Test]
+		public function should_throw_an_exception_if_constructor_has_too_many_arguments():void {
+
+			assertThat(function():void {
+				_displayTreeBuilder.uses(_contextView).containing
+						.a(CtorTestSprite).constructedWith.theValue(1).theValue(2).theValue(3).theValue(4) //one too many
+						.end.finish()
+			}, throws(isA(Error)));
 
 		}
 	}

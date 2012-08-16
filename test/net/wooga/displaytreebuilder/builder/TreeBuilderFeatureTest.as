@@ -503,7 +503,7 @@ package net.wooga.displaytreebuilder.builder {
 
 			_displayTreeBuilder.uses(_contextView).containing
 					.a(CtorTestSprite)
-						.constructed.withArg("testprop").withArg(-129873)
+						.constructedWith.theValue("testprop").theValue(-129873)
 				.end.finish();
 
 			assertThat(_contextView.numChildren, equalTo(1));
@@ -519,7 +519,7 @@ package net.wooga.displaytreebuilder.builder {
 			var data:Array = ["a", "b", "c"];
 
 			_displayTreeBuilder.uses(_contextView).containing
-					.a(CtorTestSprite).constructed.withArg("testprop").withArg(-129873)
+					.a(CtorTestSprite).constructedWith.theValue("testprop").theValue(-129873)
 						.forEveryItemIn(data)
 							.withTheProperty("name").setToThe.item
 					.end.finish();
@@ -532,9 +532,6 @@ package net.wooga.displaytreebuilder.builder {
 
 
 
-		//TODO (arneschroppe 15/08/2012) what if the first arg needs to be the item?
-		//TODO (arneschroppe 15/08/2012) test using the item several times!
-
 		[Test]
 		public function should_allow_setting_of_constructor_arguments_with_data_definitions():void {
 
@@ -542,7 +539,7 @@ package net.wooga.displaytreebuilder.builder {
 
 			_displayTreeBuilder.uses(_contextView).containing
 					.a(CtorTestSprite).forEveryItemIn(data)
-						.constructed.withArg("testprop").withTheItem
+						.constructedWith.theValue("testprop").theItem
 					.end.finish();
 
 			assertThat(_contextView.numChildren, equalTo(3));
@@ -552,11 +549,28 @@ package net.wooga.displaytreebuilder.builder {
 		}
 
 
+
+		[Test]
+		public function should_allow_setting_the_data_item_several_times_in_constructor():void {
+
+			var data:Array = ["a", "b", "c"];
+
+			_displayTreeBuilder.uses(_contextView).containing
+					.a(CtorTestSprite).forEveryItemIn(data)
+						.constructedWith.theItem.theValue("Test123").theItem
+					.end.finish();
+
+			assertThat(_contextView.numChildren, equalTo(3));
+			assertThat(_contextView.getChildAt(0), allOf(isA(CtorTestSprite), hasPropertyWithValue("prop1", "a"), hasPropertyWithValue("prop2", "Test123"), hasPropertyWithValue("prop3", "a")));
+			assertThat(_contextView.getChildAt(1), allOf(isA(CtorTestSprite), hasPropertyWithValue("prop1", "b"), hasPropertyWithValue("prop2", "Test123"), hasPropertyWithValue("prop3", "b")));
+			assertThat(_contextView.getChildAt(2), allOf(isA(CtorTestSprite), hasPropertyWithValue("prop1", "c"), hasPropertyWithValue("prop2", "Test123"), hasPropertyWithValue("prop3", "c")));
+		}
+
 		[Test]
 		public function should_allow_setting_of_constructor_arguments_with_content():void {
 
 			_displayTreeBuilder.uses(_contextView).containing
-				.a(CtorTestSprite).constructed.withArg("test2").withArg(-78686)
+				.a(CtorTestSprite).constructedWith.theValue("test2").theValue(-78686)
 				.containing
 					.a(TestSprite1)
 				.end
@@ -576,8 +590,8 @@ package net.wooga.displaytreebuilder.builder {
 		public function should_allow_nesting_of_constructor_arguments():void {
 
 			_displayTreeBuilder.uses(_contextView).containing
-					.a(CtorTestSprite).constructed.withArg("test2").withArg(-78686).containing
-						.a(CtorTestSprite).constructed.withArg("nested").withArg(1233243)
+					.a(CtorTestSprite).constructedWith.theValue("test2").theValue(-78686).containing
+						.a(CtorTestSprite).constructedWith.theValue("nested").theValue(1233243)
 					.end
 				.end.finish();
 
@@ -596,10 +610,10 @@ package net.wooga.displaytreebuilder.builder {
 		public function should_allow_nesting_of_constructor_arguments_with_another_ctor_afterwards():void {
 
 			_displayTreeBuilder.uses(_contextView).containing
-					.a(CtorTestSprite).constructed.withArg("test2").withArg(-78686).containing
-						.a(CtorTestSprite).constructed.withArg("nested").withArg(1233243)
+					.a(CtorTestSprite).constructedWith.theValue("test2").theValue(-78686).containing
+						.a(CtorTestSprite).constructedWith.theValue("nested").theValue(1233243)
 					.end
-					.a(CtorTestSprite).constructed.withArg("sequence").withArg(3746)
+					.a(CtorTestSprite).constructedWith.theValue("sequence").theValue(3746)
 				.end.finish();
 
 

@@ -77,17 +77,17 @@ package net.wooga.displaytreebuilder {
 			return _originalObject.withTheInitializationFunction(initFunction);
 		}
 
-		public function get constructed():CtorArgument__DataDef$BlockContent$BlockStart {
-			_originalObject.constructed;
+		public function get constructedWith():CtorArgument__DataDef$BlockContent$BlockStart {
+			_originalObject.constructedWith;
 			return this;
 		}
 
-		public function withArg(ctorArgument:*):CtorArgument__DataDef$BlockContent$BlockStart {
-			_originalObject.withArg(ctorArgument);
+		public function theValue(ctorArgument:*):CtorArgument__DataDef$BlockContent$BlockStart {
+			_originalObject.theValue(ctorArgument);
 			return this;
 		}
 
-		public function get withTheItem():CtorArgument__DataDef$BlockContent$BlockStart {
+		public function get theItem():CtorArgument__DataDef$BlockContent$BlockStart {
 			_originalObject.addConstructorArgument(new DataItem());
 			return this;
 		}
