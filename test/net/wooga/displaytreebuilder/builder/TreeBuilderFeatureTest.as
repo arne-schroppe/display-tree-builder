@@ -5,6 +5,7 @@ package net.wooga.displaytreebuilder.builder {
 
 	import net.wooga.displaytreebuilder.DisplayTree;
 	import net.wooga.fixtures.CtorTestSprite;
+	import net.wooga.fixtures.MethodsSprite;
 	import net.wooga.fixtures.TestSprite1;
 	import net.wooga.fixtures.TestSprite2;
 	import net.wooga.fixtures.TestSprite3;
@@ -823,9 +824,85 @@ package net.wooga.displaytreebuilder.builder {
 			assertThat(calledInitFunctions[2], equalTo(3));
 		}
 
+
+
 		[Test]
-		public function should_allow_this_argument_in_init_functions():void {
-			//fail("implement me");
+		public function should_call_a_method_with_no_params():void {
+			_displayTreeBuilder.uses(_contextView).containing
+					.a(MethodsSprite)
+						.withTheMethod("noParamMethod").calledWithNoParams
+				.end.finish();
+
+			var firstSprite:MethodsSprite = MethodsSprite(_contextView.getChildAt(0));
+			assertThat(firstSprite.noParamMethodCalled, equalTo(true));
 		}
+
+
+		[Test]
+		public function should_call_method_with_value():void {
+
+			var param:String = "Test1234";
+
+			_displayTreeBuilder.uses(_contextView).containing
+					.a(MethodsSprite)
+						.withTheMethod("oneParamMethod").calledWithThe.value(param)
+				.end.finish();
+
+			var firstSprite:MethodsSprite = MethodsSprite(_contextView.getChildAt(0));
+			assertThat(firstSprite.noParamMethodCalled, equalTo(false));
+			assertThat(firstSprite.oneParamMethodParam1, equalTo(param));
+		}
+
+
+		[Test]
+		public function should_call_method_with_item():void {
+
+
+			_displayTreeBuilder.uses(_contextView).containing
+					.a(MethodsSprite).forEveryItemIn(["a", "b", "c"])
+						.withTheMethod("oneParamMethod").calledWithThe.item
+					.end.finish();
+
+			var spriteA:MethodsSprite = MethodsSprite(_contextView.getChildAt(0));
+			assertThat(spriteA.oneParamMethodParam1, equalTo("a"));
+
+			var spriteB:MethodsSprite = MethodsSprite(_contextView.getChildAt(1));
+			assertThat(spriteB.oneParamMethodParam1, equalTo("b"));
+
+
+			var spriteC:MethodsSprite = MethodsSprite(_contextView.getChildAt(2));
+			assertThat(spriteC.oneParamMethodParam1, equalTo("c"));
+
+		}
+
+//
+//		[Test]
+//		public function should_call_a_method_with_no_params_on_a_prebuilt_instance():void {
+//
+//			var firstSprite:MethodsSprite = new MethodsSprite();
+//
+//			_displayTreeBuilder.uses(_contextView).containing
+//					.theInstance(firstSprite)
+//						.withTheMethod("noParamMethod").calledWithNoParams
+//					.end.finish();
+//
+//			assertThat(firstSprite.noParamMethodCalled, equalTo(true));
+//		}
+//
+//
+//		[Test]
+//		public function should_call_method_with_value_on_a_prebuilt_instance():void {
+//
+//			var param:String = "Test1234";
+//			var firstSprite:MethodsSprite = new MethodsSprite();
+//
+//			_displayTreeBuilder.uses(_contextView).containing
+//					.theInstance(firstSprite)
+//						.withTheMethod("oneParamMethod").calledWith.value(param)
+//					.end.finish();
+//
+//			assertThat(firstSprite.noParamMethodCalled, equalTo(false));
+//			assertThat(firstSprite.oneParamMethodParam1, equalTo(param));
+//		}
  	}
 }

@@ -10,11 +10,12 @@ package net.wooga.displaytreebuilder {
 	import net.wooga.displaytreebuilder.grammar.datadefinition.BlockContent$CollectionProperty__DataDef$BlockStart;
 	import net.wooga.displaytreebuilder.grammar.datadefinition.CtorArgument__DataDef$BlockContent$BlockStart;
 	import net.wooga.displaytreebuilder.grammar.datadefinition.ItemToUse__DataDef;
+	import net.wooga.displaytreebuilder.grammar.datadefinition._calledWithThe__DataDef;
 	import net.wooga.displaytreebuilder.grammar.datadefinition._setToThe__DataDef;
 	import net.wooga.displaytreebuilder.values.DataItem;
 	import net.wooga.displaytreebuilder.values.DataItemProperty;
 
-	internal class DataDefinitionBranch implements CtorArgument__DataDef$BlockContent$BlockStart, BlockContent$CollectionProperty__DataDef$BlockStart, _setToThe__DataDef, ItemToUse__DataDef {
+	internal class DataDefinitionBranch implements CtorArgument__DataDef$BlockContent$BlockStart, BlockContent$CollectionProperty__DataDef$BlockStart, _setToThe__DataDef, _calledWithThe__DataDef, ItemToUse__DataDef {
 		private var _originalObject:TreeBuilder;
 
 		public function DataDefinitionBranch(originalObject:TreeBuilder) {
@@ -33,12 +34,12 @@ package net.wooga.displaytreebuilder {
 		}
 
 		public function itemProperty(propertyName:String):BlockContent$CollectionProperty__DataDef$BlockStart {
-			_originalObject.setValueForCurrentProperty(new DataItemProperty(propertyName));
+			_originalObject.addData(new DataItemProperty(propertyName));
 			return this;
 		}
 
 		public function get item():BlockContent$CollectionProperty__DataDef$BlockStart {
-			_originalObject.setValueForCurrentProperty(new DataItem());
+			_originalObject.addData(new DataItem());
 			return this;
 		}
 
@@ -97,5 +98,19 @@ package net.wooga.displaytreebuilder {
 			return this;
 		}
 
+		public function withTheMethod(methodName:String):_calledWithThe__DataDef {
+			_originalObject.withTheMethod(methodName);
+			return this;
+		}
+
+		public function get calledWithThe():ItemToUse__DataDef {
+			_originalObject.calledWithThe;
+			return this;
+		}
+
+		public function get calledWithNoParams():BlockContent$CollectionProperty__DataDef$BlockStart {
+			_originalObject.calledWithNoParams;
+			return this;
+		}
 	}
 }

@@ -15,6 +15,7 @@ package net.wooga.displaytreebuilder {
 	import net.wooga.displaytreebuilder.grammar.NameProperty;
 	import net.wooga.displaytreebuilder.grammar.Storage;
 	import net.wooga.displaytreebuilder.grammar.TreeStart;
+	import net.wooga.displaytreebuilder.grammar._calledWithThe;
 	import net.wooga.displaytreebuilder.grammar._finish;
 	import net.wooga.displaytreebuilder.grammar._setToThe;
 	import net.wooga.displaytreebuilder.grammar.datadefinition.BlockContent$CollectionProperty__DataDef$BlockStart;
@@ -24,7 +25,7 @@ package net.wooga.displaytreebuilder {
 	import net.wooga.displaytreebuilder.values.IValue;
 	import net.wooga.displaytreebuilder.values.StaticValue;
 
-	internal class TreeBuilder implements CtorArgument$BlockContent$InstanceModification, BlockContent$Property, _finish, ItemToUse, _setToThe, BlockContent$CollectionProperty$BlockStart, BlockContent$Finish, BlockContent$InstanceModification, BlockStart, DataDefinition, TreeStart, Instantiation, NameProperty, Storage {
+	internal class TreeBuilder implements CtorArgument$BlockContent$InstanceModification, BlockContent$Property, _finish, ItemToUse, _setToThe, _calledWithThe, BlockContent$CollectionProperty$BlockStart, BlockContent$Finish, BlockContent$InstanceModification, BlockStart, DataDefinition, TreeStart, Instantiation, NameProperty, Storage {
 
 
 		private var _rootTreeNode:InstanceTreeNode;
@@ -33,6 +34,7 @@ package net.wooga.displaytreebuilder {
 
 		private var _countForNextNode:int;
 		private var _property:String;
+		private var _method:String;
 
 		private var _numberOfOpenSubBranches:int;
 		private var _isStarted:Boolean;
@@ -90,6 +92,8 @@ package net.wooga.displaytreebuilder {
 			++_numberOfOpenSubBranches;
 			_currentContainer = _lastAddedNode;
 			_lastAddedNode = null;
+			_property = null;
+			_method = null;
 			return this;
 		}
 
@@ -160,6 +164,7 @@ package net.wooga.displaytreebuilder {
 
 		public function withTheProperty(instancePropertyName:String):_setToThe {
 			_property = instancePropertyName;
+			_method = null;
 			return this;
 		}
 
@@ -170,14 +175,30 @@ package net.wooga.displaytreebuilder {
 
 
 		public function value(value:*):BlockContent$InstanceModification {
-			setValueForCurrentProperty(new StaticValue(value));
+			var wrappedValue:IValue = new StaticValue(value);
+			addData(wrappedValue);
 			return this;
 		}
 
 
+		//TODO (arneschroppe 04/09/2012) use a better name than "addData". It should convey that this is a general method used to add items or values to properties, methods, constructors, etc
+		internal function addData(value:IValue):void {
+			if(_property) {
+				setValueForCurrentProperty(value);
+			}
+			else if(_method) {
+				addArgumentForCurrentMethodCall(value);
+			}
+		}
+
 		public function setValueForCurrentProperty(value:IValue):void {
 			_lastAddedNode.setProperty(_property, value);
 			_property = null;
+		}
+
+
+		private function addArgumentForCurrentMethodCall(value:IValue):void {
+			_lastAddedNode.addArgumentToMethodCall(_method, value);
 		}
 
 
@@ -218,5 +239,20 @@ package net.wooga.displaytreebuilder {
 		}
 
 
+		public function withTheMethod(methodName:String):_calledWithThe {
+			_method = methodName;
+			_property = null;
+			return this;
+		}
+
+		public function get calledWithThe():ItemToUse {
+			return this;
+		}
+
+		public function get calledWithNoParams():BlockContent$InstanceModification {
+			_lastAddedNode.addMethodCallWithNoParams(_method);
+			_method = null;
+			return this;
+		}
 	}
 }

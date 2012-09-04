@@ -21,6 +21,12 @@ package net.wooga.displaytreebuilder.treenodes {
 		function addConstructorArg(value:IValue):void;
 		function setProperty(key:String, value:IValue):void;
 
+
+		function addMethodCallWithNoParams(methodName:String):void;
+		function addArgumentToMethodCall(methodName:String, value:IValue):void;
+
+
+
 		function set multiplier(multiplier:int):void;
 		function set buildingData(data:*):void;
 	}

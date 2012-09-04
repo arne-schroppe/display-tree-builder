@@ -16,6 +16,7 @@ package net.wooga.displaytreebuilder.treenodes {
 		private var _children:Vector.<ITreeNode> = new <ITreeNode>[];
 		private var _storage:Array;
 		private var _properties:Dictionary = new Dictionary();
+		private var _methods:Dictionary = new Dictionary();
 
 		public function InstanceTreeNode(instance:DisplayObject) {
 			_instance = instance;
@@ -25,9 +26,11 @@ package net.wooga.displaytreebuilder.treenodes {
 			addInstance();
 			storeInStorage();
 			applyProperties();
+			callMethods();
 			executeInitFunctions();
 			buildChildren();
 		}
+
 
 		private function applyProperties():void {
 			for(var key:String in _properties) {
@@ -36,6 +39,14 @@ package net.wooga.displaytreebuilder.treenodes {
 			}
 		}
 
+
+		private function callMethods():void {
+			for(var methodName:String in _methods) {
+				var params:Array = _methods[methodName];
+				var method:Function = Function(_instance[methodName]);
+				method.apply(_instance, params);
+			}
+		}
 
 
 		private function addInstance():void {
@@ -113,6 +124,14 @@ package net.wooga.displaytreebuilder.treenodes {
 
 		public function set buildingData(data:*):void {
 			throw new Error("Invalid Operation"); //TODO (arneschroppe 05/08/2012) test this
+		}
+
+		public function addMethodCallWithNoParams(methodName:String):void {
+			_methods[methodName] = [];
+		}
+
+		public function addArgumentToMethodCall(methodName:String, value:IValue):void {
+			//TODO (arneschroppe 04/09/2012) it's not even possible to get here. fix grammar first
 		}
 	}
 }
