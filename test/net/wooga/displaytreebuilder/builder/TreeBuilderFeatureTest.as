@@ -17,6 +17,7 @@ package net.wooga.displaytreebuilder.builder {
 	import org.hamcrest.assertThat;
 	import org.hamcrest.core.allOf;
 	import org.hamcrest.core.isA;
+	import org.hamcrest.core.not;
 	import org.hamcrest.object.equalTo;
 	import org.hamcrest.object.hasPropertyWithValue;
 	import org.hamcrest.object.notNullValue;
@@ -118,6 +119,40 @@ package net.wooga.displaytreebuilder.builder {
 			assertThat((_contextView.getChildAt(0) as DisplayObjectContainer).getChildAt(0), isA(TestSprite1));
 		}
 
+
+
+
+		[Test]
+		public function should_set_property_to_value():void {
+
+			var name:String = "abcde";
+
+			_displayTreeBuilder.uses(_contextView).containing
+					.a(TestSprite1)
+						.withTheProperty("name").setToThe.value(name)
+					.end.finish();
+
+			var firstSprite:TestSprite1 = TestSprite1(_contextView.getChildAt(0));
+			assertThat(firstSprite.name, equalTo(name));
+		}
+
+
+
+		[Test]
+		public function should_set_property_for_instance_to_value():void {
+
+			var testSprite:TestSprite1 = new TestSprite1();
+			var name:String = "abcde";
+
+			assertThat(testSprite.name, not(equalTo(name)));
+
+			_displayTreeBuilder.uses(_contextView).containing
+					.theInstance(testSprite)
+						.withTheProperty("name").setToThe.value(name)
+					.end.finish();
+
+			assertThat(testSprite.name, equalTo(name));
+		}
 
 
 		[Test]
