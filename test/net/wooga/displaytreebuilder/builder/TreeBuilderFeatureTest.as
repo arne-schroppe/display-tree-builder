@@ -875,6 +875,60 @@ package net.wooga.displaytreebuilder.builder {
 
 		}
 
+
+
+
+
+		[Test]
+		public function should_call_method_with_item_property():void {
+
+
+			_displayTreeBuilder.uses(_contextView).containing
+					.a(MethodsSprite).forEveryItemIn([{"prop": "a"}, {"prop": "b"}, {"prop": "c"}])
+					.withTheMethod("oneParamMethod").calledWithThe.itemProperty("prop")
+				.end.finish();
+
+			var spriteA:MethodsSprite = MethodsSprite(_contextView.getChildAt(0));
+			assertThat(spriteA.oneParamMethodParam1, equalTo("a"));
+
+			var spriteB:MethodsSprite = MethodsSprite(_contextView.getChildAt(1));
+			assertThat(spriteB.oneParamMethodParam1, equalTo("b"));
+
+
+			var spriteC:MethodsSprite = MethodsSprite(_contextView.getChildAt(2));
+			assertThat(spriteC.oneParamMethodParam1, equalTo("c"));
+
+		}
+
+
+
+
+//		[Test]
+//		public function should_call_method_with_two_values():void {
+//
+//			var value:String = "Test1234";
+//
+//			_displayTreeBuilder.uses(_contextView).containing
+//					.a(MethodsSprite).forEveryItemIn(["a", "b", "c"])
+//						.withTheMethod("twoParamMethod").calledWithThe
+//							.item
+//							.theValue(value)
+//					.end.finish();
+//
+//			var spriteA:MethodsSprite = MethodsSprite(_contextView.getChildAt(0));
+//			assertThat(spriteA.twoParamMethodParam1, equalTo("a"));
+//			assertThat(spriteA.twoParamMethodParam2, equalTo(value));
+//
+//			var spriteB:MethodsSprite = MethodsSprite(_contextView.getChildAt(1));
+//			assertThat(spriteB.twoParamMethodParam1, equalTo("b"));
+//			assertThat(spriteB.twoParamMethodParam2, equalTo(value));
+//
+//			var spriteC:MethodsSprite = MethodsSprite(_contextView.getChildAt(2));
+//			assertThat(spriteC.oneParamMethodParam1, equalTo("c"));
+//			assertThat(spriteC.twoParamMethodParam2, equalTo(value));
+//
+//		}
+
 //
 //		[Test]
 //		public function should_call_a_method_with_no_params_on_a_prebuilt_instance():void {
