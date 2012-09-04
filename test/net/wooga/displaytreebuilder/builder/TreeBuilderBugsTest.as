@@ -2,8 +2,10 @@ package net.wooga.displaytreebuilder.builder {
 	import flash.display.Sprite;
 
 	import net.wooga.displaytreebuilder.DisplayTree;
+	import net.wooga.fixtures.InitTestSprite;
 	import net.wooga.fixtures.TestSprite1;
 	import net.wooga.fixtures.TestSprite2;
+	import net.wooga.fixtures.TestSprite3;
 	import net.wooga.utils.flexunit.FlexUnitUtils;
 
 	import org.hamcrest.assertThat;
@@ -60,6 +62,22 @@ package net.wooga.displaytreebuilder.builder {
 			assertThat(_contextView.getChildAt(4).name, equalTo("5"));
 
 
+		}
+
+
+		[Test]
+		public function should_add_children_in_the_order_they_are_added_to_the_tree():void {
+			_displayTreeBuilder.uses(_contextView).containing
+					.a(TestSprite1)
+					.a(TestSprite2)
+					.a(TestSprite3)
+					.a(InitTestSprite)
+				.end.finish();
+
+			assertThat(_contextView.getChildAt(0), isA(TestSprite1));
+			assertThat(_contextView.getChildAt(1), isA(TestSprite2));
+			assertThat(_contextView.getChildAt(2), isA(TestSprite3));
+			assertThat(_contextView.getChildAt(3), isA(InitTestSprite));
 		}
 	}
 }
