@@ -7,6 +7,7 @@ package net.wooga.displaytreebuilder.treenodes {
 	import net.wooga.displaytreebuilder.tools.UnifiedCollection;
 	import net.wooga.displaytreebuilder.values.IValue;
 
+//TODO (arneschroppe 05/09/2012) move common code in this an instance tree node to a common super class
 	public class TypeTreeNode implements ITreeNode {
 
 		private var _type:Class;

@@ -7,7 +7,8 @@ package net.wooga.displaytreebuilder {
 	import net.wooga.displaytreebuilder.grammar.BlockContent$InstanceModification;
 	import net.wooga.displaytreebuilder.grammar.BlockContent$Property;
 	import net.wooga.displaytreebuilder.grammar.BlockStart;
-	import net.wooga.displaytreebuilder.grammar.CtorArgument$BlockContent$InstanceModification;
+	import net.wooga.displaytreebuilder.grammar.DataArgument;
+	import net.wooga.displaytreebuilder.grammar.DataArgument$BlockContent$InstanceModification;
 	import net.wooga.displaytreebuilder.grammar.DataDefinition;
 	import net.wooga.displaytreebuilder.grammar.InstanceModification;
 	import net.wooga.displaytreebuilder.grammar.Instantiation;
@@ -15,7 +16,7 @@ package net.wooga.displaytreebuilder {
 	import net.wooga.displaytreebuilder.grammar.NameProperty;
 	import net.wooga.displaytreebuilder.grammar.Storage;
 	import net.wooga.displaytreebuilder.grammar.TreeStart;
-	import net.wooga.displaytreebuilder.grammar._calledWithThe;
+	import net.wooga.displaytreebuilder.grammar._calledWith;
 	import net.wooga.displaytreebuilder.grammar._finish;
 	import net.wooga.displaytreebuilder.grammar._setToThe;
 	import net.wooga.displaytreebuilder.grammar.datadefinition.BlockContent$CollectionProperty__DataDef$BlockStart;
@@ -29,7 +30,7 @@ package net.wooga.displaytreebuilder {
 
 	//TODO (arneschroppe 04/09/2012) unify values for constructors and the rest.
 	// syntax should be withTheProperty(xyz).setTo.theValue(123), a(Sprite).constructedWith.theValue(123), withTheMethod(addStuff).calledWith.theValue(123)
-	internal class TreeBuilder implements CtorArgument$BlockContent$InstanceModification, BlockContent$Property, _finish, ItemToUse, _setToThe, _calledWithThe, BlockContent$CollectionProperty$BlockStart, BlockContent$Finish, BlockContent$InstanceModification, BlockStart, DataDefinition, TreeStart, Instantiation, NameProperty, Storage {
+	internal class TreeBuilder implements DataArgument$BlockContent$InstanceModification, BlockContent$Property, _finish, ItemToUse, _setToThe, _calledWith, BlockContent$CollectionProperty$BlockStart, BlockContent$Finish, BlockContent$InstanceModification, BlockStart, DataDefinition, TreeStart, Instantiation, NameProperty, Storage {
 
 
 		private var _rootTreeNode:InstanceTreeNode;
@@ -37,6 +38,9 @@ package net.wooga.displaytreebuilder {
 		private var _lastAddedNode:ITreeNode;
 
 		private var _countForNextNode:int;
+
+
+		private var _isAddingCtorParams:Boolean;
 		private var _property:String;
 		private var _method:String;
 
@@ -98,6 +102,7 @@ package net.wooga.displaytreebuilder {
 			_lastAddedNode = null;
 			_property = null;
 			_method = null;
+			_isAddingCtorParams = false;
 			return this;
 		}
 
@@ -120,14 +125,17 @@ package net.wooga.displaytreebuilder {
 			return this;
 		}
 
-		public function get constructedWith():CtorArgument$BlockContent$InstanceModification {
+		public function get constructedWith():DataArgument$BlockContent$InstanceModification {
+			_isAddingCtorParams = true;
+			_method = null;
+			_property = null;
 			return this;
 		}
 
 
 
-		public function theValue(ctorArgument:*):CtorArgument$BlockContent$InstanceModification {
-			addConstructorArgument(new StaticValue(ctorArgument));
+		public function theValue(ctorArgument:*):DataArgument$BlockContent$InstanceModification {
+			addData(new StaticValue(ctorArgument));
 			return this;
 		}
 
@@ -187,6 +195,9 @@ package net.wooga.displaytreebuilder {
 
 		//TODO (arneschroppe 04/09/2012) use a better name than "addData". It should convey that this is a general method used to add items or values to properties, methods, constructors, etc
 		internal function addData(value:IValue):void {
+			if(_isAddingCtorParams) {
+				addConstructorArgument(value);
+			}
 			if(_property) {
 				setValueForCurrentProperty(value);
 			}
@@ -243,19 +254,21 @@ package net.wooga.displaytreebuilder {
 		}
 
 
-		public function withTheMethod(methodName:String):_calledWithThe {
+		public function withTheMethod(methodName:String):_calledWith {
 			_method = methodName;
 			_property = null;
+			_isAddingCtorParams = false;
 			return this;
 		}
 
-		public function get calledWithThe():ItemToUse {
+		public function get calledWith():DataArgument {
 			return this;
 		}
 
 		public function get calledWithNoParams():BlockContent$InstanceModification {
 			_lastAddedNode.addMethodCallWithNoParams(_method);
 			_method = null;
+			_isAddingCtorParams = false;
 			return this;
 		}
 	}

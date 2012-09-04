@@ -42,10 +42,22 @@ package net.wooga.displaytreebuilder.treenodes {
 
 		private function callMethods():void {
 			for(var methodName:String in _methods) {
-				var params:Array = _methods[methodName];
-				var method:Function = Function(_instance[methodName]);
+				var wrappedParams:Vector.<IValue> = _methods[methodName];
+				var params:Array = extractValues(wrappedParams);
+
+				var method:Function = _instance[methodName] as Function;
 				method.apply(_instance, params);
 			}
+		}
+
+		private function extractValues(wrappedParams:Vector.<IValue>):Array {
+			var params:Array = [];
+
+			for each(var wrappedValue:IValue in wrappedParams) {
+				params.push(wrappedValue.getValue(null));
+			}
+
+			return params;
 		}
 
 
@@ -127,11 +139,15 @@ package net.wooga.displaytreebuilder.treenodes {
 		}
 
 		public function addMethodCallWithNoParams(methodName:String):void {
-			_methods[methodName] = [];
+			_methods[methodName] = new Vector.<IValue>();
 		}
 
 		public function addArgumentToMethodCall(methodName:String, value:IValue):void {
-			//TODO (arneschroppe 04/09/2012) it's not even possible to get here. fix grammar first
+			if(!(methodName in _methods)) {
+				_methods[methodName] = new Vector.<IValue>();
+			}
+
+			Vector.<IValue>(_methods[methodName]).push(value);
 		}
 	}
 }

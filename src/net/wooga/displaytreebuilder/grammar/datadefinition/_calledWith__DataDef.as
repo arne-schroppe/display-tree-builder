@@ -1,6 +1,6 @@
 package net.wooga.displaytreebuilder.grammar.datadefinition {
-	public interface _calledWithThe__DataDef {
-		function get calledWithThe():ItemToUse__DataDef;
+	public interface _calledWith__DataDef {
+		function get calledWith():DataArgument__DataDef;
 		function get calledWithNoParams():BlockContent$CollectionProperty__DataDef$BlockStart;
 	}
 }

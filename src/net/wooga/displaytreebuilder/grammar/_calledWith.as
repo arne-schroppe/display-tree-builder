@@ -1,6 +1,6 @@
 package net.wooga.displaytreebuilder.grammar {
-	public interface _calledWithThe {
-		function get calledWithThe():ItemToUse;
+	public interface _calledWith {
+		function get calledWith():DataArgument;
 		function get calledWithNoParams():BlockContent$InstanceModification;
 	}
 }

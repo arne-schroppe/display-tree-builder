@@ -29,6 +29,25 @@ package net.wooga.displaytreebuilder.builder {
 		private var _displayTreeBuilder:DisplayTree;
 
 
+//		[BeforeClass]
+//		public static function setUpClass():void {
+//			_contextView = new Sprite();
+//			FlexUnitUtils.stage.addChild(_contextView);
+//
+//			_displayTreeBuilder = new DisplayTree();
+//		}
+//
+//
+//
+//		[Before]
+//		public function setUp():void {
+//			while(_contextView.numChildren > 0) {
+//				_contextView.removeChildAt(0);
+//			}
+//		}
+
+
+
 		[Before]
 		public function setUp():void {
 			_contextView = new Sprite();
@@ -36,7 +55,6 @@ package net.wooga.displaytreebuilder.builder {
 
 			_displayTreeBuilder = new DisplayTree();
 		}
-
 
 		[After]
 		public function tearDown():void {
@@ -845,7 +863,7 @@ package net.wooga.displaytreebuilder.builder {
 
 			_displayTreeBuilder.uses(_contextView).containing
 					.a(MethodsSprite)
-						.withTheMethod("oneParamMethod").calledWithThe.value(param)
+						.withTheMethod("oneParamMethod").calledWith.theValue(param)
 				.end.finish();
 
 			var firstSprite:MethodsSprite = MethodsSprite(_contextView.getChildAt(0));
@@ -860,7 +878,7 @@ package net.wooga.displaytreebuilder.builder {
 
 			_displayTreeBuilder.uses(_contextView).containing
 					.a(MethodsSprite).forEveryItemIn(["a", "b", "c"])
-						.withTheMethod("oneParamMethod").calledWithThe.item
+						.withTheMethod("oneParamMethod").calledWith.theItem
 					.end.finish();
 
 			var spriteA:MethodsSprite = MethodsSprite(_contextView.getChildAt(0));
@@ -885,7 +903,7 @@ package net.wooga.displaytreebuilder.builder {
 
 			_displayTreeBuilder.uses(_contextView).containing
 					.a(MethodsSprite).forEveryItemIn([{"prop": "a"}, {"prop": "b"}, {"prop": "c"}])
-					.withTheMethod("oneParamMethod").calledWithThe.itemProperty("prop")
+					.withTheMethod("oneParamMethod").calledWith.theItemProperty("prop")
 				.end.finish();
 
 			var spriteA:MethodsSprite = MethodsSprite(_contextView.getChildAt(0));
@@ -903,60 +921,60 @@ package net.wooga.displaytreebuilder.builder {
 
 
 
-//		[Test]
-//		public function should_call_method_with_two_values():void {
-//
-//			var value:String = "Test1234";
-//
-//			_displayTreeBuilder.uses(_contextView).containing
-//					.a(MethodsSprite).forEveryItemIn(["a", "b", "c"])
-//						.withTheMethod("twoParamMethod").calledWithThe
-//							.item
-//							.theValue(value)
-//					.end.finish();
-//
-//			var spriteA:MethodsSprite = MethodsSprite(_contextView.getChildAt(0));
-//			assertThat(spriteA.twoParamMethodParam1, equalTo("a"));
-//			assertThat(spriteA.twoParamMethodParam2, equalTo(value));
-//
-//			var spriteB:MethodsSprite = MethodsSprite(_contextView.getChildAt(1));
-//			assertThat(spriteB.twoParamMethodParam1, equalTo("b"));
-//			assertThat(spriteB.twoParamMethodParam2, equalTo(value));
-//
-//			var spriteC:MethodsSprite = MethodsSprite(_contextView.getChildAt(2));
-//			assertThat(spriteC.oneParamMethodParam1, equalTo("c"));
-//			assertThat(spriteC.twoParamMethodParam2, equalTo(value));
-//
-//		}
+		[Test]
+		public function should_call_method_with_two_values():void {
 
-//
-//		[Test]
-//		public function should_call_a_method_with_no_params_on_a_prebuilt_instance():void {
-//
-//			var firstSprite:MethodsSprite = new MethodsSprite();
-//
-//			_displayTreeBuilder.uses(_contextView).containing
-//					.theInstance(firstSprite)
-//						.withTheMethod("noParamMethod").calledWithNoParams
-//					.end.finish();
-//
-//			assertThat(firstSprite.noParamMethodCalled, equalTo(true));
-//		}
-//
-//
-//		[Test]
-//		public function should_call_method_with_value_on_a_prebuilt_instance():void {
-//
-//			var param:String = "Test1234";
-//			var firstSprite:MethodsSprite = new MethodsSprite();
-//
-//			_displayTreeBuilder.uses(_contextView).containing
-//					.theInstance(firstSprite)
-//						.withTheMethod("oneParamMethod").calledWith.value(param)
-//					.end.finish();
-//
-//			assertThat(firstSprite.noParamMethodCalled, equalTo(false));
-//			assertThat(firstSprite.oneParamMethodParam1, equalTo(param));
-//		}
+			var value:String = "Test1234";
+
+			_displayTreeBuilder.uses(_contextView).containing
+					.a(MethodsSprite).forEveryItemIn(["a", "b", "c"])
+						.withTheMethod("twoParamMethod").calledWith
+							.theItem
+							.theValue(value)
+					.end.finish();
+
+			var spriteA:MethodsSprite = MethodsSprite(_contextView.getChildAt(0));
+			assertThat(spriteA.twoParamMethodParam1, equalTo("a"));
+			assertThat(spriteA.twoParamMethodParam2, equalTo(value));
+
+			var spriteB:MethodsSprite = MethodsSprite(_contextView.getChildAt(1));
+			assertThat(spriteB.twoParamMethodParam1, equalTo("b"));
+			assertThat(spriteB.twoParamMethodParam2, equalTo(value));
+
+			var spriteC:MethodsSprite = MethodsSprite(_contextView.getChildAt(2));
+			assertThat(spriteC.twoParamMethodParam1, equalTo("c"));
+			assertThat(spriteC.twoParamMethodParam2, equalTo(value));
+
+		}
+
+
+		[Test]
+		public function should_call_a_method_with_no_params_on_a_prebuilt_instance():void {
+
+			var firstSprite:MethodsSprite = new MethodsSprite();
+
+			_displayTreeBuilder.uses(_contextView).containing
+					.theInstance(firstSprite)
+						.withTheMethod("noParamMethod").calledWithNoParams
+					.end.finish();
+
+			assertThat(firstSprite.noParamMethodCalled, equalTo(true));
+		}
+
+
+		[Test]
+		public function should_call_method_with_value_on_a_prebuilt_instance():void {
+
+			var param:String = "Test1234";
+			var firstSprite:MethodsSprite = new MethodsSprite();
+
+			_displayTreeBuilder.uses(_contextView).containing
+					.theInstance(firstSprite)
+						.withTheMethod("oneParamMethod").calledWith.theValue(param)
+					.end.finish();
+
+			assertThat(firstSprite.noParamMethodCalled, equalTo(false));
+			assertThat(firstSprite.oneParamMethodParam1, equalTo(param));
+		}
  	}
 }
