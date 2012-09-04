@@ -25,6 +25,10 @@ package net.wooga.displaytreebuilder {
 	import net.wooga.displaytreebuilder.values.IValue;
 	import net.wooga.displaytreebuilder.values.StaticValue;
 
+
+
+	//TODO (arneschroppe 04/09/2012) unify values for constructors and the rest.
+	// syntax should be withTheProperty(xyz).setTo.theValue(123), a(Sprite).constructedWith.theValue(123), withTheMethod(addStuff).calledWith.theValue(123)
 	internal class TreeBuilder implements CtorArgument$BlockContent$InstanceModification, BlockContent$Property, _finish, ItemToUse, _setToThe, _calledWithThe, BlockContent$CollectionProperty$BlockStart, BlockContent$Finish, BlockContent$InstanceModification, BlockStart, DataDefinition, TreeStart, Instantiation, NameProperty, Storage {
 
 
