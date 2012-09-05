@@ -3,21 +3,20 @@ package net.wooga.displaytreebuilder {
 
 	import net.wooga.displaytreebuilder.grammar.BlockContent;
 	import net.wooga.displaytreebuilder.grammar.BlockContent$Finish;
-	import net.wooga.displaytreebuilder.grammar.BlockContent$InstanceModification;
 	import net.wooga.displaytreebuilder.grammar.BlockContent$Property;
-	import net.wooga.displaytreebuilder.grammar.DataArgument;
 	import net.wooga.displaytreebuilder.grammar.InstanceModification;
 	import net.wooga.displaytreebuilder.grammar.Instantiation;
 	import net.wooga.displaytreebuilder.grammar.datadefinition.BlockContent$CollectionProperty__DataDef$BlockStart;
+	import net.wooga.displaytreebuilder.grammar.datadefinition.CollectionProperty__DataDef$BlockContent$BlockStart;
 	import net.wooga.displaytreebuilder.grammar.datadefinition.DataArgument__DataDef;
 	import net.wooga.displaytreebuilder.grammar.datadefinition.DataArgument__DataDef$BlockContent$BlockStart;
-	import net.wooga.displaytreebuilder.grammar.datadefinition.ItemToUse__DataDef;
+	import net.wooga.displaytreebuilder.grammar.datadefinition.DataArgument__DataDef$CollectionProperty__DataDef$BlockContent$BlockStart;
 	import net.wooga.displaytreebuilder.grammar.datadefinition._calledWith__DataDef;
-	import net.wooga.displaytreebuilder.grammar.datadefinition._setToThe__DataDef;
+	import net.wooga.displaytreebuilder.grammar.datadefinition.singlevalue._setToThe__DataDef_SingleValue;
 	import net.wooga.displaytreebuilder.values.DataItem;
 	import net.wooga.displaytreebuilder.values.DataItemProperty;
 
-	internal class DataDefinitionBranch implements DataArgument__DataDef$BlockContent$BlockStart, BlockContent$CollectionProperty__DataDef$BlockStart, _setToThe__DataDef, _calledWith__DataDef, ItemToUse__DataDef {
+	internal class DataDefinitionBranch implements DataArgument__DataDef$CollectionProperty__DataDef$BlockContent$BlockStart, CollectionProperty__DataDef$BlockContent$BlockStart, DataArgument__DataDef$BlockContent$BlockStart, BlockContent$CollectionProperty__DataDef$BlockStart, _calledWith__DataDef {
 		private var _originalObject:TreeBuilder;
 
 		public function DataDefinitionBranch(originalObject:TreeBuilder) {
@@ -25,30 +24,25 @@ package net.wooga.displaytreebuilder {
 		}
 
 
-		public function withTheProperty(propertyName:String):_setToThe__DataDef {
+		public function withTheProperty(propertyName:String):_setToThe__DataDef_SingleValue {
 			_originalObject.withTheProperty(propertyName);
-			return this;
+			return new DataDefinitionSingleValueBranch(this);
 		}
 
+//		public function itemProperty(propertyName:String):BlockContent$CollectionProperty__DataDef$BlockStart {
+//			_originalObject.addData(new DataItemProperty(propertyName));
+//			return this;
+//		}
+//
+//		public function get item():BlockContent$CollectionProperty__DataDef$BlockStart {
+//			_originalObject.addData(new DataItem());
+//			return this;
+//		}
 
-		public function get setToThe():ItemToUse__DataDef {
-			return this;
-		}
-
-		public function itemProperty(propertyName:String):BlockContent$CollectionProperty__DataDef$BlockStart {
-			_originalObject.addData(new DataItemProperty(propertyName));
-			return this;
-		}
-
-		public function get item():BlockContent$CollectionProperty__DataDef$BlockStart {
-			_originalObject.addData(new DataItem());
-			return this;
-		}
-
-		public function value(value:*):BlockContent$CollectionProperty__DataDef$BlockStart {
-			_originalObject.value(value);
-			return this;
-		}
+//		public function value(value:*):BlockContent$CollectionProperty__DataDef$BlockStart {
+//			_originalObject.theValue(value);
+//			return this;
+//		}
 
 
 		public function times(count:int):Instantiation {
@@ -85,17 +79,17 @@ package net.wooga.displaytreebuilder {
 			return this;
 		}
 
-		public function theValue(ctorArgument:*):DataArgument__DataDef$BlockContent$BlockStart {
+		public function theValue(ctorArgument:*):DataArgument__DataDef$CollectionProperty__DataDef$BlockContent$BlockStart {
 			_originalObject.theValue(ctorArgument);
 			return this;
 		}
 
-		public function get theItem():DataArgument__DataDef$BlockContent$BlockStart {
+		public function get theItem():DataArgument__DataDef$CollectionProperty__DataDef$BlockContent$BlockStart {
 			_originalObject.addData(new DataItem());
 			return this;
 		}
 
-		public function theItemProperty(propertyName:String):DataArgument__DataDef$BlockContent$BlockStart {
+		public function theItemProperty(propertyName:String):DataArgument__DataDef$CollectionProperty__DataDef$BlockContent$BlockStart {
 			_originalObject.addData(new DataItemProperty(propertyName));
 			return this;
 		}

@@ -12,13 +12,12 @@ package net.wooga.displaytreebuilder {
 	import net.wooga.displaytreebuilder.grammar.DataDefinition;
 	import net.wooga.displaytreebuilder.grammar.InstanceModification;
 	import net.wooga.displaytreebuilder.grammar.Instantiation;
-	import net.wooga.displaytreebuilder.grammar.ItemToUse;
 	import net.wooga.displaytreebuilder.grammar.NameProperty;
 	import net.wooga.displaytreebuilder.grammar.Storage;
 	import net.wooga.displaytreebuilder.grammar.TreeStart;
 	import net.wooga.displaytreebuilder.grammar._calledWith;
 	import net.wooga.displaytreebuilder.grammar._finish;
-	import net.wooga.displaytreebuilder.grammar._setToThe;
+	import net.wooga.displaytreebuilder.grammar.singlevalue._setToThe__SingleValue;
 	import net.wooga.displaytreebuilder.grammar.datadefinition.BlockContent$CollectionProperty__DataDef$BlockStart;
 	import net.wooga.displaytreebuilder.treenodes.ITreeNode;
 	import net.wooga.displaytreebuilder.treenodes.InstanceTreeNode;
@@ -26,11 +25,9 @@ package net.wooga.displaytreebuilder {
 	import net.wooga.displaytreebuilder.values.IValue;
 	import net.wooga.displaytreebuilder.values.StaticValue;
 
-
-
 	//TODO (arneschroppe 04/09/2012) unify values for constructors and the rest.
 	// syntax should be withTheProperty(xyz).setTo.theValue(123), a(Sprite).constructedWith.theValue(123), withTheMethod(addStuff).calledWith.theValue(123)
-	internal class TreeBuilder implements DataArgument$BlockContent$InstanceModification, BlockContent$Property, _finish, ItemToUse, _setToThe, _calledWith, BlockContent$CollectionProperty$BlockStart, BlockContent$Finish, BlockContent$InstanceModification, BlockStart, DataDefinition, TreeStart, Instantiation, NameProperty, Storage {
+	internal class TreeBuilder implements DataArgument$BlockContent$InstanceModification, BlockContent$Property, _finish, _calledWith, BlockContent$CollectionProperty$BlockStart, BlockContent$Finish, BlockContent$InstanceModification, BlockStart, DataDefinition, TreeStart, Instantiation, NameProperty, Storage {
 
 
 		private var _rootTreeNode:InstanceTreeNode;
@@ -134,12 +131,6 @@ package net.wooga.displaytreebuilder {
 
 
 
-		public function theValue(ctorArgument:*):DataArgument$BlockContent$InstanceModification {
-			addData(new StaticValue(ctorArgument));
-			return this;
-		}
-
-
 		public function addConstructorArgument(value:IValue):void {
 			_lastAddedNode.addConstructorArg(value);
 		}
@@ -174,23 +165,19 @@ package net.wooga.displaytreebuilder {
 
 
 
-		public function withTheProperty(instancePropertyName:String):_setToThe {
+		public function withTheProperty(instancePropertyName:String):_setToThe__SingleValue {
 			_property = instancePropertyName;
 			_method = null;
-			return this;
+			return new SingleValueBranch(this);
 		}
 
 
-		public function get setToThe():ItemToUse {
-			return this;
-		}
-
-
-		public function value(value:*):BlockContent$InstanceModification {
+		public function theValue(value:*):DataArgument$BlockContent$InstanceModification {
 			var wrappedValue:IValue = new StaticValue(value);
 			addData(wrappedValue);
 			return this;
 		}
+
 
 
 		//TODO (arneschroppe 04/09/2012) use a better name than "addData". It should convey that this is a general method used to add items or values to properties, methods, constructors, etc

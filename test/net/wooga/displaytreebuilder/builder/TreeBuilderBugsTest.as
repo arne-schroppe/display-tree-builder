@@ -38,10 +38,10 @@ package net.wooga.displaytreebuilder.builder {
 
 			_displayTreeBuilder.uses(_contextView).containing
 					.a(TestSprite1).forEveryItemIn(["1", "2", "3"])
-						.withTheProperty("name").setToThe.item
+						.withTheProperty("name").setTo.theItem
 
 					.a(TestSprite2).forEveryItemIn(["4", "5"])
-						.withTheProperty("name").setToThe.item
+						.withTheProperty("name").setTo.theItem
 
 					.end.finish()
 
