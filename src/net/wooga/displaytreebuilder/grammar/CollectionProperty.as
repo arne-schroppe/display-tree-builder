@@ -1,9 +1,11 @@
 package net.wooga.displaytreebuilder.grammar {
-	public interface CollectionProperty {
-		function withTheProperty(propertyName:String):_setToThe;
-		//function withTheConstructorArguments(...args):BlockContent$InstanceModification;
+	import net.wooga.displaytreebuilder.grammar.singlevalue._setToThe__SingleValue;
 
-		function get constructedWith():CtorArgument$BlockContent$InstanceModification;
+	public interface CollectionProperty {
+		function withTheProperty(propertyName:String):_setToThe__SingleValue;
+		function withTheMethod(methodName:String):_calledWith;
+
+		function get constructedWith():DataArgument$BlockContent$InstanceModification;
 
 	}
 }

@@ -7,12 +7,14 @@ package net.wooga.displaytreebuilder.treenodes {
 	import net.wooga.displaytreebuilder.tools.UnifiedCollection;
 	import net.wooga.displaytreebuilder.values.IValue;
 
+//TODO (arneschroppe 05/09/2012) move common code in this an instance tree node to a common super class
 	public class TypeTreeNode implements ITreeNode {
 
 		private var _type:Class;
 
 		private var _constructorArgs:Array = []; //Array of IValue (we're not using Vector because we want a sparse array)
 		private var _properties:Dictionary = new Dictionary();
+		private var _methods:Dictionary = new Dictionary();
 
 		private var _initFunctions:Vector.<Function> = new <Function>[];
 
@@ -45,6 +47,7 @@ package net.wooga.displaytreebuilder.treenodes {
 		private function buildInstance(item:*):void {
 			var instance:DisplayObject = createInstance(item);
 			applyProperties(instance, item);
+			callMethods(instance, item);
 			addToContainer(instance);
 			executeInitFunctions(instance);
 			buildChildren(instance);
@@ -80,6 +83,28 @@ package net.wooga.displaytreebuilder.treenodes {
 				instance[key] = value.getValue(item);
 			}
 		}
+
+
+		private function callMethods(instance:DisplayObject, item:*):void {
+			for(var methodName:String in _methods) {
+				var wrappedParams:Vector.<IValue> = _methods[methodName];
+				var params:Array = extractValues(wrappedParams, item);
+
+				var method:Function = instance[methodName] as Function;
+				method.apply(instance, params);
+			}
+		}
+
+		private function extractValues(wrappedParams:Vector.<IValue>, item:*):Array {
+			var params:Array = [];
+
+			for each(var wrappedValue:IValue in wrappedParams) {
+				params.push(wrappedValue.getValue(item));
+			}
+
+			return params;
+		}
+
 
 		private function addToContainer(instance:DisplayObject):void {
 			_container.addChild(instance)
@@ -149,6 +174,19 @@ package net.wooga.displaytreebuilder.treenodes {
 
 		public function set buildingData(value:*):void {
 			_buildingData = new UnifiedCollection(value);
+		}
+
+		public function addMethodCallWithNoParams(methodName:String):void {
+			_methods[methodName] = new Vector.<IValue>();
+		}
+
+
+		public function addArgumentToMethodCall(methodName:String, value:IValue):void {
+			if(!(methodName in _methods)) {
+				_methods[methodName] = new Vector.<IValue>();
+			}
+
+			Vector.<IValue>(_methods[methodName]).push(value);
 		}
 	}
 }

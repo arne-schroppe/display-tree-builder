@@ -5,6 +5,7 @@ package net.wooga.displaytreebuilder.builder {
 
 	import net.wooga.displaytreebuilder.DisplayTree;
 	import net.wooga.fixtures.CtorTestSprite;
+	import net.wooga.fixtures.MethodsSprite;
 	import net.wooga.fixtures.TestSprite1;
 	import net.wooga.fixtures.TestSprite2;
 	import net.wooga.fixtures.TestSprite3;
@@ -16,6 +17,7 @@ package net.wooga.displaytreebuilder.builder {
 	import org.hamcrest.assertThat;
 	import org.hamcrest.core.allOf;
 	import org.hamcrest.core.isA;
+	import org.hamcrest.core.not;
 	import org.hamcrest.object.equalTo;
 	import org.hamcrest.object.hasPropertyWithValue;
 	import org.hamcrest.object.notNullValue;
@@ -28,6 +30,25 @@ package net.wooga.displaytreebuilder.builder {
 		private var _displayTreeBuilder:DisplayTree;
 
 
+//		[BeforeClass]
+//		public static function setUpClass():void {
+//			_contextView = new Sprite();
+//			FlexUnitUtils.stage.addChild(_contextView);
+//
+//			_displayTreeBuilder = new DisplayTree();
+//		}
+//
+//
+//
+//		[Before]
+//		public function setUp():void {
+//			while(_contextView.numChildren > 0) {
+//				_contextView.removeChildAt(0);
+//			}
+//		}
+
+
+
 		[Before]
 		public function setUp():void {
 			_contextView = new Sprite();
@@ -35,7 +56,6 @@ package net.wooga.displaytreebuilder.builder {
 
 			_displayTreeBuilder = new DisplayTree();
 		}
-
 
 		[After]
 		public function tearDown():void {
@@ -101,6 +121,40 @@ package net.wooga.displaytreebuilder.builder {
 
 
 
+
+		[Test]
+		public function should_set_property_to_value():void {
+
+			var name:String = "abcde";
+
+			_displayTreeBuilder.uses(_contextView).containing
+					.a(TestSprite1)
+						.withTheProperty("name").setTo.theValue(name)
+					.end.finish();
+
+			var firstSprite:TestSprite1 = TestSprite1(_contextView.getChildAt(0));
+			assertThat(firstSprite.name, equalTo(name));
+		}
+
+
+
+		[Test]
+		public function should_set_property_for_instance_to_value():void {
+
+			var testSprite:TestSprite1 = new TestSprite1();
+			var name:String = "abcde";
+
+			assertThat(testSprite.name, not(equalTo(name)));
+
+			_displayTreeBuilder.uses(_contextView).containing
+					.theInstance(testSprite)
+						.withTheProperty("name").setTo.theValue(name)
+					.end.finish();
+
+			assertThat(testSprite.name, equalTo(name));
+		}
+
+
 		[Test]
 		public function should_allow_containing_after_data_generated_items_with_set_properties():void {
 
@@ -108,7 +162,7 @@ package net.wooga.displaytreebuilder.builder {
 
 			_displayTreeBuilder.uses(_contextView).containing
 					.a(Sprite).forEveryItemIn(data)
-						.withTheProperty("name").setToThe.item
+						.withTheProperty("name").setTo.theItem
 						.containing
 							.a(TestSprite1)
 						.end
@@ -318,7 +372,7 @@ package net.wooga.displaytreebuilder.builder {
 
 			_displayTreeBuilder.uses(_contextView).containing
 				.a(TestSprite1).forEveryItemIn(dataArray)
-					.withTheProperty("name").setToThe.itemProperty("field")
+					.withTheProperty("name").setTo.theItemProperty("field")
 
 			.end.finish();
 
@@ -349,7 +403,7 @@ package net.wooga.displaytreebuilder.builder {
 
 			_displayTreeBuilder.uses(_contextView).containing
 					.a(TestSprite1).forEveryItemIn(data)
-					.withTheProperty("name").setToThe.item
+					.withTheProperty("name").setTo.theItem
 					.end.finish();
 
 			assertThat(_contextView.numChildren, equalTo(3));
@@ -375,7 +429,7 @@ package net.wooga.displaytreebuilder.builder {
 
 			_displayTreeBuilder.uses(_contextView).containing
 					.a(TestSprite1).forEveryItemIn(dataArray)
-						.withTheProperty("name").setToThe.item
+						.withTheProperty("name").setTo.theItem
 
 				.end.finish();
 
@@ -401,7 +455,7 @@ package net.wooga.displaytreebuilder.builder {
 
 			_displayTreeBuilder.uses(_contextView).containing
 					.a(TestSprite1).forEveryItemIn(dataArray)
-						.withTheProperty("name").setToThe.value("SUCCESS")
+						.withTheProperty("name").setTo.theValue("SUCCESS")
 					.end.finish();
 
 			assertThat(_contextView.numChildren, equalTo(3));
@@ -428,7 +482,7 @@ package net.wooga.displaytreebuilder.builder {
 
 			_displayTreeBuilder.uses(_contextView).containing
 					.a(TestSprite1).forEveryItemIn(data)
-						.withTheProperty("name").setToThe.itemProperty("field")
+						.withTheProperty("name").setTo.theItemProperty("field")
 
 			.end.finish();
 
@@ -457,7 +511,7 @@ package net.wooga.displaytreebuilder.builder {
 
 			_displayTreeBuilder.uses(_contextView).containing
 					.a(TestSprite1).forEveryItemIn(data.iterator())
-						.withTheProperty("name").setToThe.itemProperty("field")
+						.withTheProperty("name").setTo.theItemProperty("field")
 				.end.finish()
 
 			assertThat(_contextView.numChildren, equalTo(3));
@@ -484,7 +538,7 @@ package net.wooga.displaytreebuilder.builder {
 
 			_displayTreeBuilder.uses(_contextView).containing.
 					times(2).a(TestSprite1).forEveryItemIn(data)
-						.withTheProperty("name").setToThe.itemProperty("field")
+						.withTheProperty("name").setTo.theItemProperty("field")
 				.end.finish();
 
 			assertThat(_contextView.numChildren, equalTo(4));
@@ -521,7 +575,7 @@ package net.wooga.displaytreebuilder.builder {
 			_displayTreeBuilder.uses(_contextView).containing
 					.a(CtorTestSprite).constructedWith.theValue("testprop").theValue(-129873)
 						.forEveryItemIn(data)
-							.withTheProperty("name").setToThe.item
+							.withTheProperty("name").setTo.theItem
 					.end.finish();
 
 			assertThat(_contextView.numChildren, equalTo(3));
@@ -655,8 +709,8 @@ package net.wooga.displaytreebuilder.builder {
 
 			_displayTreeBuilder.uses(_contextView).containing
 					.a(TestSprite1).forEveryItemIn(dataArray)
-						.withTheProperty("name").setToThe.value("Some Name")
-						.withTheProperty("x").setToThe.item
+						.withTheProperty("name").setTo.theValue("Some Name")
+						.withTheProperty("x").setTo.theItem
 
 					.end.finish();
 
@@ -710,8 +764,8 @@ package net.wooga.displaytreebuilder.builder {
 		public function should_allow_to_set_a_property_on_created_objects():void {
 
 			_displayTreeBuilder.uses(_contextView).containing
-					.a(TestSprite2).withTheProperty("testProperty").setToThe.value("foo")
-					.a(TestSprite2).withTheProperty("testProperty2").setToThe.value("bar")
+					.a(TestSprite2).withTheProperty("testProperty").setTo.theValue("foo")
+					.a(TestSprite2).withTheProperty("testProperty2").setTo.theValue("bar")
 					.a(TestSprite2)
 				.end.finish();
 
@@ -758,8 +812,6 @@ package net.wooga.displaytreebuilder.builder {
 
 
 
-
-
 		[Test]
 		public function should_execute_init_function_after_all_other_properties_have_been_set():void {
 
@@ -769,7 +821,7 @@ package net.wooga.displaytreebuilder.builder {
 			_displayTreeBuilder.uses(_contextView).containing
 					.a(TestSprite2)
 					.a(TestSprite2) .forEveryItemIn(data)
-						.withTheProperty("testProperty").setToThe.item
+						.withTheProperty("testProperty").setTo.theItem
 						.withTheInitializationFunction(function(element:TestSprite2):void{ assertThat(element.testProperty, equalTo(data[pointer])); ++pointer })
 					.a(TestSprite2)
 				.end.finish();
@@ -823,9 +875,139 @@ package net.wooga.displaytreebuilder.builder {
 			assertThat(calledInitFunctions[2], equalTo(3));
 		}
 
+
+
 		[Test]
-		public function should_allow_this_argument_in_init_functions():void {
-			//fail("implement me");
+		public function should_call_a_method_with_no_params():void {
+			_displayTreeBuilder.uses(_contextView).containing
+					.a(MethodsSprite)
+						.withTheMethod("noParamMethod").calledWithNoParams
+				.end.finish();
+
+			var firstSprite:MethodsSprite = MethodsSprite(_contextView.getChildAt(0));
+			assertThat(firstSprite.noParamMethodCalled, equalTo(true));
+		}
+
+
+		[Test]
+		public function should_call_method_with_value():void {
+
+			var param:String = "Test1234";
+
+			_displayTreeBuilder.uses(_contextView).containing
+					.a(MethodsSprite)
+						.withTheMethod("oneParamMethod").calledWith.theValue(param)
+				.end.finish();
+
+			var firstSprite:MethodsSprite = MethodsSprite(_contextView.getChildAt(0));
+			assertThat(firstSprite.noParamMethodCalled, equalTo(false));
+			assertThat(firstSprite.oneParamMethodParam1, equalTo(param));
+		}
+
+
+		[Test]
+		public function should_call_method_with_item():void {
+
+
+			_displayTreeBuilder.uses(_contextView).containing
+					.a(MethodsSprite).forEveryItemIn(["a", "b", "c"])
+						.withTheMethod("oneParamMethod").calledWith.theItem
+					.end.finish();
+
+			var spriteA:MethodsSprite = MethodsSprite(_contextView.getChildAt(0));
+			assertThat(spriteA.oneParamMethodParam1, equalTo("a"));
+
+			var spriteB:MethodsSprite = MethodsSprite(_contextView.getChildAt(1));
+			assertThat(spriteB.oneParamMethodParam1, equalTo("b"));
+
+
+			var spriteC:MethodsSprite = MethodsSprite(_contextView.getChildAt(2));
+			assertThat(spriteC.oneParamMethodParam1, equalTo("c"));
+
+		}
+
+
+
+
+
+		[Test]
+		public function should_call_method_with_item_property():void {
+
+
+			_displayTreeBuilder.uses(_contextView).containing
+					.a(MethodsSprite).forEveryItemIn([{"prop": "a"}, {"prop": "b"}, {"prop": "c"}])
+					.withTheMethod("oneParamMethod").calledWith.theItemProperty("prop")
+				.end.finish();
+
+			var spriteA:MethodsSprite = MethodsSprite(_contextView.getChildAt(0));
+			assertThat(spriteA.oneParamMethodParam1, equalTo("a"));
+
+			var spriteB:MethodsSprite = MethodsSprite(_contextView.getChildAt(1));
+			assertThat(spriteB.oneParamMethodParam1, equalTo("b"));
+
+
+			var spriteC:MethodsSprite = MethodsSprite(_contextView.getChildAt(2));
+			assertThat(spriteC.oneParamMethodParam1, equalTo("c"));
+
+		}
+
+
+
+
+		[Test]
+		public function should_call_method_with_two_values():void {
+
+			var value:String = "Test1234";
+
+			_displayTreeBuilder.uses(_contextView).containing
+					.a(MethodsSprite).forEveryItemIn(["a", "b", "c"])
+						.withTheMethod("twoParamMethod").calledWith
+							.theItem
+							.theValue(value)
+					.end.finish();
+
+			var spriteA:MethodsSprite = MethodsSprite(_contextView.getChildAt(0));
+			assertThat(spriteA.twoParamMethodParam1, equalTo("a"));
+			assertThat(spriteA.twoParamMethodParam2, equalTo(value));
+
+			var spriteB:MethodsSprite = MethodsSprite(_contextView.getChildAt(1));
+			assertThat(spriteB.twoParamMethodParam1, equalTo("b"));
+			assertThat(spriteB.twoParamMethodParam2, equalTo(value));
+
+			var spriteC:MethodsSprite = MethodsSprite(_contextView.getChildAt(2));
+			assertThat(spriteC.twoParamMethodParam1, equalTo("c"));
+			assertThat(spriteC.twoParamMethodParam2, equalTo(value));
+
+		}
+
+
+		[Test]
+		public function should_call_a_method_with_no_params_on_a_prebuilt_instance():void {
+
+			var firstSprite:MethodsSprite = new MethodsSprite();
+
+			_displayTreeBuilder.uses(_contextView).containing
+					.theInstance(firstSprite)
+						.withTheMethod("noParamMethod").calledWithNoParams
+					.end.finish();
+
+			assertThat(firstSprite.noParamMethodCalled, equalTo(true));
+		}
+
+
+		[Test]
+		public function should_call_method_with_value_on_a_prebuilt_instance():void {
+
+			var param:String = "Test1234";
+			var firstSprite:MethodsSprite = new MethodsSprite();
+
+			_displayTreeBuilder.uses(_contextView).containing
+					.theInstance(firstSprite)
+						.withTheMethod("oneParamMethod").calledWith.theValue(param)
+					.end.finish();
+
+			assertThat(firstSprite.noParamMethodCalled, equalTo(false));
+			assertThat(firstSprite.oneParamMethodParam1, equalTo(param));
 		}
  	}
 }
