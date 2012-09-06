@@ -11,6 +11,7 @@ package net.wooga.displaytreebuilder {
 	import net.wooga.displaytreebuilder.grammar.datadefinition.DataArgument__DataDef;
 	import net.wooga.displaytreebuilder.grammar.datadefinition.DataArgument__DataDef$BlockContent$BlockStart;
 	import net.wooga.displaytreebuilder.grammar.datadefinition.DataArgument__DataDef$CollectionProperty__DataDef$BlockContent$BlockStart;
+	import net.wooga.displaytreebuilder.grammar.datadefinition.InstanceModification__DataDef;
 	import net.wooga.displaytreebuilder.grammar.datadefinition._calledWith__DataDef;
 	import net.wooga.displaytreebuilder.grammar.datadefinition.singlevalue._setToThe__DataDef_SingleValue;
 	import net.wooga.displaytreebuilder.values.DataItem;
@@ -70,8 +71,9 @@ package net.wooga.displaytreebuilder {
 			return _originalObject.containing;
 		}
 
-		public function withTheInitializationFunction(initFunction:Function):InstanceModification {
-			return _originalObject.withTheInitializationFunction(initFunction);
+		public function withTheInitializationFunction(initFunction:Function):InstanceModification__DataDef {
+			_originalObject.withTheInitializationFunction(initFunction);
+			return this;
 		}
 
 		public function get constructedWith():DataArgument__DataDef$BlockContent$BlockStart {
@@ -106,6 +108,16 @@ package net.wooga.displaytreebuilder {
 
 		public function get calledWithNoParams():BlockContent$CollectionProperty__DataDef$BlockStart {
 			_originalObject.calledWithNoParams;
+			return this;
+		}
+
+		public function withTheName(name:String):InstanceModification__DataDef {
+			_originalObject.withTheName(name);
+			return this;
+		}
+
+		public function whichWillBeStoredIn(collection:Array):InstanceModification__DataDef {
+			_originalObject.whichWillBeStoredIn(collection);
 			return this;
 		}
 	}

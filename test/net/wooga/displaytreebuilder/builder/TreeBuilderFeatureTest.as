@@ -812,27 +812,24 @@ package net.wooga.displaytreebuilder.builder {
 
 
 
+		[Test]
+		public function should_execute_init_function_after_all_other_properties_have_been_set():void {
 
-		//TODO (arneschroppe 05/09/2012) test had to be disabled because of grammar problems
-//		[Test]
-//		public function should_execute_init_function_after_all_other_properties_have_been_set():void {
-//
-//			var data:Array = ["1", "2", "3", "4"];
-//			var pointer:int = 0;
-//
-//			_displayTreeBuilder.uses(_contextView).containing
-//					.a(TestSprite2)
-//					.a(TestSprite2) .forEveryItemIn(data)
-//					.withTheProperty("testProperty").setTo.theItem
-//					.withTheInitializationFunction(function(element:TestSprite2):void{ assertThat(element.testProperty, equalTo(data[pointer])); ++pointer })
-//
-//					.a(TestSprite2)
-//				.end.finish();
-//
-//
-//			assertThat(pointer, equalTo(data.length));
-//
-//		}
+			var data:Array = ["1", "2", "3", "4"];
+			var pointer:int = 0;
+
+			_displayTreeBuilder.uses(_contextView).containing
+					.a(TestSprite2)
+					.a(TestSprite2) .forEveryItemIn(data)
+						.withTheProperty("testProperty").setTo.theItem
+						.withTheInitializationFunction(function(element:TestSprite2):void{ assertThat(element.testProperty, equalTo(data[pointer])); ++pointer })
+					.a(TestSprite2)
+				.end.finish();
+
+
+			assertThat(pointer, equalTo(data.length));
+
+		}
 
 		[Test]
 		public function should_allow_multiple_init_functions_which_are_called_in_order():void {
