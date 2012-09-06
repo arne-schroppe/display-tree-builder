@@ -30,21 +30,6 @@ package net.wooga.displaytreebuilder {
 			return new DataDefinitionSingleValueBranch(this);
 		}
 
-//		public function itemProperty(propertyName:String):BlockContent$CollectionProperty__DataDef$BlockStart {
-//			_originalObject.addData(new DataItemProperty(propertyName));
-//			return this;
-//		}
-//
-//		public function get item():BlockContent$CollectionProperty__DataDef$BlockStart {
-//			_originalObject.addData(new DataItem());
-//			return this;
-//		}
-
-//		public function value(value:*):BlockContent$CollectionProperty__DataDef$BlockStart {
-//			_originalObject.theValue(value);
-//			return this;
-//		}
-
 
 		public function times(count:int):Instantiation {
 			return _originalObject.times(count);

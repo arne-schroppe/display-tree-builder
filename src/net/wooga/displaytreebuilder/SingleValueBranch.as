@@ -17,7 +17,7 @@ package net.wooga.displaytreebuilder {
 			return this;
 		}
 
-		public function theValue(value:*):DataArgument$BlockContent$InstanceModification {
+		public function theValue(value:*):BlockContent$InstanceModification {
 			_originalObject.theValue(value);
 			return _originalObject;
 		}
