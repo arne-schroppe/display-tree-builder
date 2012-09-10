@@ -3,6 +3,7 @@ package {
 	import net.wooga.displaytreebuilder.builder.TreeBuilderErrorsTest;
 	import net.wooga.displaytreebuilder.builder.TreeBuilderFeatureTest;
 	import net.wooga.displaytreebuilder.builder.TreeBuilderGrammarTest;
+	import net.wooga.testingtools.ReflectionTest;
 
 	[Suite]
 	[RunWith("org.flexunit.runners.Suite")]
@@ -19,6 +20,10 @@ package {
 		public var displayTreeBuilderErrorsTest:TreeBuilderErrorsTest;
 		public var treeBuilderBugsTest:TreeBuilderBugsTest;
 		public var treeBuilderGrammarTest:TreeBuilderGrammarTest;
+
+		public var reflectionTest:ReflectionTest;
+
+
 
 
 

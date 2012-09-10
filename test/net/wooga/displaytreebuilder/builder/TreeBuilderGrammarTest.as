@@ -44,7 +44,8 @@ package net.wooga.displaytreebuilder.builder {
 			assertThat(_reflection.isFollowedBy(
 					_displayTreeBuilder.uses(_contextView).containing
 						.a(TestSprite1)
-					.withTheProperty("name").setTo.theValue("abc"),
+					.withTheProperty("name").setTo,
+					"theValue",
 					"theValue"),
 
 				equalTo(false)
