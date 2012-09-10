@@ -2,9 +2,9 @@ package net.wooga.testingtools {
 	import flash.utils.describeType;
 	import flash.utils.getDefinitionByName;
 
+
+//TODO (arneschroppe 10/09/2012) turn this into hamcrest matcher. optionally allow arrays of methods and followingMethods
 	public class Reflection {
-		public function Reflection() {
-		}
 
 
 		public function isFollowedBy(value:*, methodName:String, followingMethodName:String):Boolean {

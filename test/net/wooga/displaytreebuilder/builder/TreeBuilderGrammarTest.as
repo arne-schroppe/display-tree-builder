@@ -37,7 +37,6 @@ package net.wooga.displaytreebuilder.builder {
 		}
 
 
-
 		[Test]
 		public function should_not_have_more_than_one_property_value():void {
 
@@ -51,6 +50,33 @@ package net.wooga.displaytreebuilder.builder {
 				equalTo(false)
 			);
 		}
+
+		[Test]
+		public function should_allow_for_several_method_values():void {
+			assertThat(_reflection.isFollowedBy(
+					_displayTreeBuilder.uses(_contextView).containing
+							.a(TestSprite1)
+							.withTheMethod("name").calledWith,
+					"theValue",
+					"theValue"),
+
+					equalTo(true)
+			);
+		}
+
+		[Test]
+		public function item_should_not_be_available():void {
+			assertThat(_reflection.isFollowedBy(
+					_displayTreeBuilder.uses(_contextView).containing
+							.a(TestSprite1)
+								.withTheMethod("name").calledWith,
+					"theValue",
+					"theItem"),
+
+					equalTo(false)
+			);
+		}
+
 
 
 
