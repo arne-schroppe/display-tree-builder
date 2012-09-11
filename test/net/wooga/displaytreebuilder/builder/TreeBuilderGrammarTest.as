@@ -33,6 +33,16 @@ package net.wooga.displaytreebuilder.builder {
 
 		}
 
+		[Test]
+		public function should_start_with_block():void {
+			assertThat(
+					method(
+							_displayTreeBuilder,
+							"uses"),
+
+					isFollowedBy("containing"));
+		}
+
 
 		[Test]
 		public function should_not_have_more_than_one_property_value():void {
