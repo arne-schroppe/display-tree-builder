@@ -1,5 +1,6 @@
 package net.wooga.testingtools {
 	import net.wooga.fixtures.reflection.TestClassA;
+	import net.wooga.testingtools.hamcrest.method;
 
 	import org.hamcrest.assertThat;
 	import org.hamcrest.core.isA;
@@ -20,27 +21,27 @@ package net.wooga.testingtools {
 		[Test]
 		public function should_correctly_show_that_a_method_is_followed_by_another_method():void {
 			var testObject:TestClassA = new TestClassA();
-			assertThat(_reflection.isFollowedBy(testObject, "someMethod", "followingMethod"), equalTo(true));
+			assertThat(_reflection.isFollowedBy(method(testObject, "someMethod"), "followingMethod"), equalTo(true));
 		}
 
 
 		[Test]
 		public function should_correctly_show_that_a_property_is_followed_by_a_method():void {
 			var testObject:TestClassA = new TestClassA();
-			assertThat(_reflection.isFollowedBy(testObject, "someProperty", "followingMethod"), equalTo(true));
+			assertThat(_reflection.isFollowedBy(method(testObject, "someProperty"), "followingMethod"), equalTo(true));
 		}
 
 
 		[Test]
 		public function should_correctly_show_that_a_property_is_followed_by_another_property():void {
 			var testObject:TestClassA = new TestClassA();
-			assertThat(_reflection.isFollowedBy(testObject, "someProperty", "followingProperty"), equalTo(true));
+			assertThat(_reflection.isFollowedBy(method(testObject, "someProperty"), "followingProperty"), equalTo(true));
 		}
 
 		[Test]
 		public function should_correctly_show_that_a_method_is_followed_by_a_property():void {
 			var testObject:TestClassA = new TestClassA();
-			assertThat(_reflection.isFollowedBy(testObject, "someMethod", "followingProperty"), equalTo(true));
+			assertThat(_reflection.isFollowedBy(method(testObject, "someMethod"), "followingProperty"), equalTo(true));
 		}
 
 
@@ -49,7 +50,7 @@ package net.wooga.testingtools {
 
 			var testObject:TestClassA = new TestClassA();
 			assertThat(function ():void {
-				_reflection.isFollowedBy(testObject, "DOES_NOT_EXIST", "followingProperty")
+				_reflection.isFollowedBy(method(testObject, "DOES_NOT_EXIST"), "followingProperty")
 			}, throws(isA(ArgumentError)));
 		}
 
@@ -57,47 +58,28 @@ package net.wooga.testingtools {
 		[Test]
 		public function should_not_indicate_a_connection_with_write_only_properties():void {
 			var testObject:TestClassA = new TestClassA();
-			assertThat(_reflection.isFollowedBy(testObject, "someWriteOnlyProperty", "invisibleMethod"), equalTo(false));
+			assertThat(_reflection.isFollowedBy(method(testObject, "someWriteOnlyProperty"), "invisibleMethod"), equalTo(false));
 		}
 
 
 		[Test]
 		public function should_not_indicate_a_connection_to_invisible_methods():void {
 			var testObject:TestClassA = new TestClassA();
-			assertThat(_reflection.isFollowedBy(testObject, "someMethod", "invisibleMethod"), equalTo(false));
+			assertThat(_reflection.isFollowedBy(method(testObject, "someMethod"), "invisibleMethod"), equalTo(false));
 		}
 
 
 		[Test]
 		public function should_find_connections_through_implemented_interfaces():void {
 			var testObject:TestClassA = new TestClassA();
-			assertThat(_reflection.isFollowedBy(testObject, "methodInImplementedInterface", "followingMethod"), equalTo(true));
+			assertThat(_reflection.isFollowedBy(method(testObject, "methodInImplementedInterface"), "followingMethod"), equalTo(true));
 		}
 
 
 		[Test]
 		public function should_find_connections_through_implemented_interfaces_for_following_method():void {
 			var testObject:TestClassA = new TestClassA();
-			assertThat(_reflection.isFollowedBy(testObject, "someMethod", "followingMethodInImplementedInterface"), equalTo(true));
-		}
-
-
-		[Test]
-		public function should_allow_several_methods_that_must_all_be_satisfied():void {
-
-		}
-
-
-		[Test]
-		public function should_allow_several_following_methods_that_must_all_be_satisfied():void {
-
-		}
-
-
-
-		[Test]
-		public function should_allow_several_methods_and_following_methods_that_must_all_be_satisfied():void {
-
+			assertThat(_reflection.isFollowedBy(method(testObject, "someMethod"), "followingMethodInImplementedInterface"), equalTo(true));
 		}
 	}
 }

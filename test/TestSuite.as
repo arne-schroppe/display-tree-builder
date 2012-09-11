@@ -4,6 +4,7 @@ package {
 	import net.wooga.displaytreebuilder.builder.TreeBuilderFeatureTest;
 	import net.wooga.displaytreebuilder.builder.TreeBuilderGrammarTest;
 	import net.wooga.testingtools.ReflectionTest;
+	import net.wooga.testingtools.hamcrest.IsFollowedByMethodMatcherTest;
 
 	[Suite]
 	[RunWith("org.flexunit.runners.Suite")]
@@ -22,6 +23,7 @@ package {
 		public var treeBuilderGrammarTest:TreeBuilderGrammarTest;
 
 		public var reflectionTest:ReflectionTest;
+		public var isFollowedByMethodMatcherTest:IsFollowedByMethodMatcherTest;
 
 
 

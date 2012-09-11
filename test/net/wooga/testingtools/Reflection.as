@@ -3,27 +3,26 @@ package net.wooga.testingtools {
 	import flash.utils.getDefinitionByName;
 
 
-//TODO (arneschroppe 10/09/2012) turn this into hamcrest matcher. optionally allow arrays of methods and followingMethods
 	public class Reflection {
 
 
-		public function isFollowedBy(value:*, methodName:String, followingMethodName:String):Boolean {
+		public function isFollowedBy(method:Method, followingMethodName:String):Boolean {
 
-			var description:XML = describeType(value);
+			var description:XML = describeType(method.value);
 
 			//Find methodName in value
-			var method:XML = findMethod(description, methodName);
+			var methodXML:XML = findMethod(description, method.methodName);
 
-			if(!method) {
-				throw new ArgumentError(methodName + " could not be found");
+			if(!methodXML) {
+				throw new ArgumentError(method.methodName + " could not be found");
 			}
 
-			if(method.@access == "writeonly") {
+			if(methodXML.@access == "writeonly") {
 				return false;
 			}
 
 			//Get it's return type
-			var returnTypeName:String = getType(method);
+			var returnTypeName:String = getType(methodXML);
 
 			//See if it contains followingMethodName
 			var returnType:Class = getDefinitionByName(returnTypeName) as Class;
