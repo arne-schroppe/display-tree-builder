@@ -11,5 +11,9 @@ package net.wooga.fixtures.reflection {
 
 		public function set someWriteOnlyProperty(value:InterfaceB):void {
 		}
+
+		public function methodInImplementedInterface():InterfaceB {
+			return new TestClassB();
+		}
 	}
 }

@@ -1,5 +1,5 @@
 package net.wooga.fixtures.reflection {
-	public interface InterfaceA {
+	public interface InterfaceA extends SuperInterfaceA {
 
 		function someMethod():InterfaceB;
 

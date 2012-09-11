@@ -1,8 +1,5 @@
 package net.wooga.testingtools {
-	import net.wooga.fixtures.reflection.InterfaceA;
-	import net.wooga.fixtures.reflection.InterfaceB;
 	import net.wooga.fixtures.reflection.TestClassA;
-	import net.wooga.fixtures.reflection.TestClassB;
 
 	import org.hamcrest.assertThat;
 	import org.hamcrest.core.isA;
@@ -13,9 +10,7 @@ package net.wooga.testingtools {
 
 		private var _reflection:Reflection;
 
-		private var _dummy1:InterfaceA;
-		private var _dummy2:InterfaceB;
-		private var _dummy3:TestClassB;
+
 
 		[Before]
 		public function setUp():void {
@@ -75,13 +70,15 @@ package net.wooga.testingtools {
 
 		[Test]
 		public function should_find_connections_through_implemented_interfaces():void {
-
+			var testObject:TestClassA = new TestClassA();
+			assertThat(_reflection.isFollowedBy(testObject, "methodInImplementedInterface", "followingMethod"), equalTo(true));
 		}
 
 
 		[Test]
 		public function should_find_connections_through_implemented_interfaces_for_following_method():void {
-
+			var testObject:TestClassA = new TestClassA();
+			assertThat(_reflection.isFollowedBy(testObject, "someMethod", "followingMethodInImplementedInterface"), equalTo(true));
 		}
 
 

@@ -13,5 +13,8 @@ package net.wooga.fixtures.reflection {
 		public function get followingProperty():* {
 			return null;
 		}
+
+		public function followingMethodInImplementedInterface():void {
+		}
 	}
 }

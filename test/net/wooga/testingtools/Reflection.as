@@ -50,6 +50,29 @@ package net.wooga.testingtools {
 				method = description..accessor.(@name == methodName)[0];
 			}
 
+			if(!method) {
+				method = findMethodInImplementedInterfaces(description, methodName);
+			}
+
+			return method;
+		}
+
+		private function findMethodInImplementedInterfaces(description:XML, methodName:String):XML {
+			var method:XML;
+
+			var implementedInterfaces:XMLList = description..implementsInterface.@type;
+
+			for each(var implementedInterfaceXML:XML in implementedInterfaces) {
+				var interfaceName:String = implementedInterfaceXML.toString();
+				var type:Class = getDefinitionByName(interfaceName) as Class;
+				var typeDescription:XML = describeType(type);
+
+				method = findMethod(typeDescription, methodName);
+				if(method) {
+					break;
+				}
+			}
+
 			return method;
 		}
 	}
