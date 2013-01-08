@@ -24,7 +24,8 @@ A declarative language to set up trees of display objects.
 
 The DSL only allows terms where they make sense (e.g. you can not place
 `withName` after `times(x)`). This is especially useful in IDEs with
-code completion.
+code completion. [Warning: This feature currently is currently a bit shaky, so
+don't lean on it to heavily.]
 
 
 ####Creating display objects from data
