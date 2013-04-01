@@ -3,13 +3,15 @@ package net.wooga.displaytreebuilder.builder {
 	import flash.display.DisplayObjectContainer;
 	import flash.display.Sprite;
 
+	import flashx.textLayout.debug.assert;
+
 	import net.wooga.displaytreebuilder.DisplayTree;
 	import net.wooga.fixtures.CtorTestSprite;
 	import net.wooga.fixtures.MethodsSprite;
 	import net.wooga.fixtures.TestSprite1;
 	import net.wooga.fixtures.TestSprite2;
 	import net.wooga.fixtures.TestSprite3;
-	import net.wooga.utils.flexunit.FlexUnitUtils;
+	import net.wooga.testingtools.TestStage;
 
 	import org.as3commons.collections.ArrayList;
 	import org.flexunit.asserts.assertEquals;
@@ -52,14 +54,14 @@ package net.wooga.displaytreebuilder.builder {
 		[Before]
 		public function setUp():void {
 			_contextView = new Sprite();
-			FlexUnitUtils.stage.addChild(_contextView);
+			TestStage().addChild(_contextView);
 
 			_displayTreeBuilder = new DisplayTree();
 		}
 
 		[After]
 		public function tearDown():void {
-			FlexUnitUtils.stage.removeChild(_contextView);
+			TestStage().removeChild(_contextView);
 			_contextView = null;
 
 		}
@@ -110,6 +112,7 @@ package net.wooga.displaytreebuilder.builder {
 			_displayTreeBuilder.uses(_contextView).containing
 				.a(Sprite).forEveryItemIn(data) .containing
 					.a(TestSprite1)
+
 				.end
 			.end.finish();
 
@@ -980,6 +983,24 @@ package net.wooga.displaytreebuilder.builder {
 
 		}
 
+		[Test]
+		public function should_call_method_multiple_times_in_order():void {
+
+			_displayTreeBuilder.uses(_contextView).containing
+					.a(MethodsSprite)
+						.withTheMethod("multiCallMethod").calledWith.theValue(1)
+						.withTheMethod("multiCallMethod").calledWith.theValue(2)
+						.withTheMethod("multiCallMethod").calledWith.theValue(3)
+						.withTheMethod("multiCallMethod").calledWith.theValue(4)
+					.end.finish();
+
+			var sprite:MethodsSprite = MethodsSprite(_contextView.getChildAt(0));
+			assertThat(sprite.multiCallMethodParams[0], equalTo(1));
+			assertThat(sprite.multiCallMethodParams[1], equalTo(2));
+			assertThat(sprite.multiCallMethodParams[2], equalTo(3));
+			assertThat(sprite.multiCallMethodParams[3], equalTo(4));
+
+		}
 
 		[Test]
 		public function should_call_a_method_with_no_params_on_a_prebuilt_instance():void {
@@ -1008,6 +1029,25 @@ package net.wooga.displaytreebuilder.builder {
 
 			assertThat(firstSprite.noParamMethodCalled, equalTo(false));
 			assertThat(firstSprite.oneParamMethodParam1, equalTo(param));
+		}
+
+		[Test]
+		public function should_call_method_multiple_times_in_order_on_a_prebuilt_instance():void {
+
+			var sprite:MethodsSprite = new MethodsSprite();
+			_displayTreeBuilder.uses(_contextView).containing
+					.theInstance(sprite)
+						.withTheMethod("multiCallMethod").calledWith.theValue(1)
+						.withTheMethod("multiCallMethod").calledWith.theValue(2)
+						.withTheMethod("multiCallMethod").calledWith.theValue(3)
+						.withTheMethod("multiCallMethod").calledWith.theValue(4)
+					.end.finish();
+
+			assertThat(sprite.multiCallMethodParams[0], equalTo(1));
+			assertThat(sprite.multiCallMethodParams[1], equalTo(2));
+			assertThat(sprite.multiCallMethodParams[2], equalTo(3));
+			assertThat(sprite.multiCallMethodParams[3], equalTo(4));
+
 		}
  	}
 }

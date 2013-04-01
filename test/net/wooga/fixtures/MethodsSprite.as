@@ -6,6 +6,7 @@ package net.wooga.fixtures {
 		private var _oneParamMethodParam1:*;
 		private var _twoParamMethodParam1:*;
 		private var _twoParamMethodParam2:*;
+		private var _multiCallMethodParams:Array = [];
 
 		public function MethodsSprite() {
 		}
@@ -30,6 +31,10 @@ package net.wooga.fixtures {
 			_twoParamMethodParam2 = param2;
 		}
 
+		public function multiCallMethod(param:*):void {
+			_multiCallMethodParams.push(param);
+		}
+
 		public function get oneParamMethodParam1():* {
 			return _oneParamMethodParam1;
 		}
@@ -40,6 +45,10 @@ package net.wooga.fixtures {
 
 		public function get twoParamMethodParam2():* {
 			return _twoParamMethodParam2;
+		}
+
+		public function get multiCallMethodParams():Array {
+			return _multiCallMethodParams;
 		}
 	}
 }

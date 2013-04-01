@@ -6,7 +6,7 @@ package net.wooga.displaytreebuilder.builder {
 	import net.wooga.fixtures.TestSprite1;
 	import net.wooga.fixtures.TestSprite2;
 	import net.wooga.fixtures.TestSprite3;
-	import net.wooga.utils.flexunit.FlexUnitUtils;
+	import net.wooga.testingtools.TestStage;
 
 	import org.hamcrest.assertThat;
 	import org.hamcrest.core.isA;
@@ -18,10 +18,11 @@ package net.wooga.displaytreebuilder.builder {
 		private var _displayTreeBuilder:DisplayTree;
 
 
+
 		[Before]
 		public function setUp():void {
 			_contextView = new Sprite();
-			FlexUnitUtils.stage.addChild(_contextView);
+			TestStage().addChild(_contextView);
 
 			_displayTreeBuilder = new DisplayTree();
 		}
@@ -29,7 +30,7 @@ package net.wooga.displaytreebuilder.builder {
 
 		[After]
 		public function tearDown():void {
-			FlexUnitUtils.stage.removeChild(_contextView);
+			TestStage().removeChild(_contextView);
 			_contextView = null;
 
 		}

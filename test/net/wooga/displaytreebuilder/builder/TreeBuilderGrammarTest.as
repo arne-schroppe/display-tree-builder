@@ -5,7 +5,7 @@ package net.wooga.displaytreebuilder.builder {
 	import net.wooga.fixtures.TestSprite1;
 	import net.wooga.testingtools.hamcrest.isFollowedBy;
 	import net.wooga.testingtools.hamcrest.method;
-	import net.wooga.utils.flexunit.FlexUnitUtils;
+	import net.wooga.testingtools.TestStage;
 
 	import org.hamcrest.assertThat;
 	import org.hamcrest.core.allOf;
@@ -21,14 +21,14 @@ package net.wooga.displaytreebuilder.builder {
 		[Before]
 		public function setUp():void {
 			_contextView = new Sprite();
-			FlexUnitUtils.stage.addChild(_contextView);
+			TestStage().addChild(_contextView);
 
 			_displayTreeBuilder = new DisplayTree();
 		}
 
 		[After]
 		public function tearDown():void {
-			FlexUnitUtils.stage.removeChild(_contextView);
+			TestStage().removeChild(_contextView);
 			_contextView = null;
 
 		}
@@ -94,6 +94,14 @@ package net.wooga.displaytreebuilder.builder {
 		}
 
 
+		[Test]
+		public function should_not_have_several_constructors():void {
+			assertThat(
+					method(_displayTreeBuilder.uses(_contextView).containing
+							.a(TestSprite1).constructedWith, "theValue"),
+					not(isFollowedBy("constructedWith"))
+			);
+		}
 
 	}
 }

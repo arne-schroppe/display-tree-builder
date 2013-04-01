@@ -25,6 +25,8 @@ package net.wooga.displaytreebuilder {
 	import net.wooga.displaytreebuilder.values.IValue;
 	import net.wooga.displaytreebuilder.values.StaticValue;
 
+
+	//TODO (arneschroppe 12/09/2012) methods in this class should not have a return value. they should be unaware of the grammar. handle grammar in another class (called MainBranch for example)
 	internal class TreeBuilder implements DataArgument$BlockContent$InstanceModification, BlockContent$Property, _finish, _calledWith, BlockContent$CollectionProperty$BlockStart, BlockContent$Finish, BlockContent$InstanceModification, BlockStart, DataDefinition, TreeStart, Instantiation, NameProperty, Storage {
 
 
